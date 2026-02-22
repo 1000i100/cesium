@@ -22,8 +22,10 @@
       <a class="badge badge-stable" ng-click="openLink($event, $root.settings.sourceLicenseUrl)" title="{{:locale:'HOME.SHOW_LICENSE'|translate}}">AGPL-3.0</a>
     </div>
 
-    <div class="row padding-horizontal no-padding-xxs responsive-lg">
-      <div class="col col-30 no-padding hidden-xs hidden-sm">&nbsp;</div>
+    <div class="row padding-horizontal no-padding-xxs responsive-lg"
+         ng-class=":feed:{'feed-prominent-row': showFeed && feedProminentMode}">
+      <div class="col col-30 no-padding hidden-xs hidden-sm"
+           ng-hide=":feed:showFeed && feedProminentMode">&nbsp;</div>
       <div class="col text-center no-padding-xs main-container">
 
         <div id="helptip-home-logo" class="logo">
@@ -167,11 +169,15 @@
       </div>
 
       <!-- left col spacer-->
-      <div class="col no-padding" ng-class=":feed:{'col-30': !showFeed, 'col-10': showFeed}">&nbsp;
+      <div class="col no-padding"
+           ng-class=":feed:{'col-30': !showFeed || feedProminentMode, 'col-10': showFeed && !feedProminentMode}"
+           ng-hide=":feed:showFeed && feedProminentMode">&nbsp;
       </div>
 
-      <!-- include feeds -->
-      <div class="col col-30 no-padding animate-show-hide ng-hide" ng-show=":feed:showFeed">
+      <!-- include feeds : proéminent pendant le chargement, sidebar après -->
+      <div class="no-padding animate-show-hide ng-hide"
+           ng-show=":feed:showFeed"
+           ng-class=":feed:feedProminentMode ? 'feed-prominent-col' : 'col col-30'">
         <ng-include src="::'templates/feed/feed.html'"></ng-include>
       </div>
     </div>

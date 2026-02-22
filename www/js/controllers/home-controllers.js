@@ -35,6 +35,7 @@ function HomeController($scope, $state, $timeout, $interval, $ionicHistory, $tra
   $scope.smallscreen = UIUtils.screen.isSmall();
   $scope.showInstallHelp = false;
   $scope.showFeed = false;
+  $scope.feedProminentMode = true;
 
   $scope.enter = function(e, state) {
     if (ionic.Platform.isIOS() && window.StatusBar) {
@@ -77,6 +78,11 @@ function HomeController($scope, $state, $timeout, $interval, $ionicHistory, $tra
         $scope.$broadcast('$$rebind::loading'); // force rebind loading
       }, 200);
 
+      // Charger le feed dès que les settings sont prêts (pas besoin du réseau Duniter)
+      csSettings.ready().then(function() {
+        $scope.$broadcast('$ionicParentView.enter');
+      });
+
       var hasLoginParam = state && state.stateParams && state.stateParams.login || false;
 
       // Wait platform to be ready
@@ -92,6 +98,8 @@ function HomeController($scope, $state, $timeout, $interval, $ionicHistory, $tra
           $scope.loading = false;
           $scope.loadingMessage = '';
           $scope.loadingPct = 100;
+          // Garder le feed proéminent si erreur réseau
+          $scope.feedProminentMode = !!$scope.error;
           $scope.$broadcast('$$rebind::loading'); // force rebind loading
           $scope.$broadcast('$$rebind::feed'); // force rebind feed
 
@@ -110,6 +118,7 @@ function HomeController($scope, $state, $timeout, $interval, $ionicHistory, $tra
     $scope.loading = true;
     $scope.loadingPct = 0;
     $scope.loadingMessage = '';
+    $scope.feedProminentMode = true;
     delete $scope.error;
 
     $timeout($scope.enter, 200);
@@ -136,11 +145,8 @@ function HomeController($scope, $state, $timeout, $interval, $ionicHistory, $tra
   };
 
   $scope.toggleFeed = function(show) {
-
     $scope.showFeed = (show !== undefined) ? show : !$scope.showFeed;
-    if (!this.loading) {
-      $scope.$broadcast('$$rebind::feed'); // force rebind feed
-    }
+    $scope.$broadcast('$$rebind::feed'); // force rebind feed
   };
 
   /* -- show/hide locales popup -- */
@@ -201,6 +207,7 @@ function HomeController($scope, $state, $timeout, $interval, $ionicHistory, $tra
     $scope.loading = false;
     $scope.node =  csCurrency.data.node;
     $scope.error = true;
+    $scope.$broadcast('$$rebind::feed'); // feed reste proéminent en mode offline
   });
   Device.api.network.on.online($scope, function() {
     if (!$scope.loading && $scope.error) {
