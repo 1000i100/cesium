@@ -1,10 +1,11 @@
 #!/bin/sh
 
 # Get to the root project
-SCRIPT_DIR=$(dirname "$(readlink "$BASH_SOURCE" || echo "$BASH_SOURCE")")
-PROJECT_DIR=$(cd "${SCRIPT_DIR}/.." && pwd -P)
-export PROJECT_DIR
-
+if [[ "_" == "_${PROJECT_DIR}" ]]; then
+  SCRIPT_DIR=$(dirname "$(readlink "$BASH_SOURCE" || echo "$BASH_SOURCE")")
+  PROJECT_DIR=$(cd "${SCRIPT_DIR}/.." && pwd -P)
+  export PROJECT_DIR
+fi;
 
 # Preparing environment
 . "${PROJECT_DIR}/scripts/env-global.sh"
@@ -74,6 +75,7 @@ fi
 # Copy local files
 ANDROID_OVERWRITE_DIR=${PROJECT_DIR}/.local/android
 if test -d "${ANDROID_OVERWRITE_DIR}"; then
+  echo ""
   echo "Copying files from directory '${ANDROID_OVERWRITE_DIR}' into '${PROJECT_DIR}/platforms/android'..."
   cp -rf ${ANDROID_OVERWRITE_DIR}/* ${PROJECT_DIR}/platforms/android
   if test $? -ne 0; then

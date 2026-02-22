@@ -91,7 +91,7 @@ echo "- Building Android artifact..."
 echo "----------------------------------"
 cd ${PROJECT_DIR}/scripts || exit 1
 ./release-android.sh
-#[[ $? -ne 0 ]] && exit 1
+[[ $? -ne 0 ]] && exit 1
 
 
 echo "----------------------------------"
@@ -109,6 +109,9 @@ gulp webBuild --release
 gulp webExtBuild --release
 [[ $? -ne 0 ]] && exit 1
 
+gulp chromeExtBuild --release
+[[ $? -ne 0 ]] && exit 1
+
 # check files exists
 DIST_WEB_FILE="${DIST_WEB}/${PROJECT_NAME}-v$2-web.zip"
 if [[ ! -f "${DIST_WEB_FILE}" ]]; then
@@ -118,6 +121,11 @@ fi;
 DIST_WEB_EXT_FILE="${DIST_WEB}/${PROJECT_NAME}-v$2-extension.zip"
 if [[ ! -f "${DIST_WEB_EXT_FILE}" ]]; then
   echo "ERROR: Missing web-ext artifact at ${DIST_WEB_EXT_FILE}"
+  exit 1
+fi;
+DIST_CHROME_EXT_FILE="${DIST_WEB}/${PROJECT_NAME}-v$2-extension-chrome.zip"
+if [[ ! -f "${DIST_CHROME_EXT_FILE}" ]]; then
+  echo "ERROR: Missing chrome-ext artifact at ${DIST_CHROME_EXT_FILE}"
   exit 1
 fi;
 

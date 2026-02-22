@@ -2,7 +2,7 @@ var App;
 
 angular.module('cesium.device.services', ['cesium.utils.services', 'cesium.settings.services'])
 
-  .factory('Device', function ($rootScope, $translate, $timeout, $ionicPopup, $q, Api, csConfig,
+  .factory('Device', function ($rootScope, $translate, $timeout, $ionicPopup, $q, $window, Api, csConfig,
                                // removeIf(no-device)
                                $cordovaClipboard, $cordovaBarcodeScanner, $cordovaCamera, $cordovaNetwork,
                                // endRemoveIf(no-device)
@@ -514,6 +514,22 @@ angular.module('cesium.device.services', ['cesium.utils.services', 'cesium.setti
       return !!navigator.userAgent.match(/Macintosh/i) || ionic.Platform.is("osx");
     };
 
+    exports.isMobile = function () {
+      return exports.isAndroid() || exports.isIOS();
+    };
+
+    exports.isChromeExtension = function () {
+      return window.location.protocol === 'chrome-extension:' && chrome && chrome.storage && chrome.storage.local;
+    };
+
+    exports.isMozillaExtension = function () {
+      return window.location.protocol === 'moz-extension:';
+    };
+
+    exports.isWebExtension = function () {
+      return exports.isChromeExtension() || exports.isMozillaExtension();
+    };
+
     exports.isIOS = function () {
       return !!navigator.userAgent.match(/iPhone | iPad | iPod/i) || (!!navigator.userAgent.match(/Mobile/i) && !!navigator.userAgent.match(/Macintosh/i)) || ionic.Platform.isIOS();
     };
@@ -589,6 +605,7 @@ angular.module('cesium.device.services', ['cesium.utils.services', 'cesium.setti
             if (cordova.InAppBrowser) {
               console.debug('[device] Enabling InAppBrowser');
               window.open = cordova.InAppBrowser.open;
+              $window.open = cordova.InAppBrowser.open;
             }
 
             // Add network listeners, using cordova network plugin
