@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Cesium",
-  "version": "1.7.16.2",
+  "version": "1.7.17",
   "description": "Cesium Wallet for Ğ1 libre currency",
   "icons": {
     "32": "img/logo_32px.png",

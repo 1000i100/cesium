@@ -62,6 +62,7 @@ variables:
     - if: $CI_COMMIT_TAG
     - if: $CI_COMMIT_BRANCH == "develop"
     - if: $CI_COMMIT_BRANCH == "master"
+    - if: $CI_MERGE_REQUEST_IID
 
 .desktop_base:
   stage: build
@@ -91,7 +92,7 @@ build:web:
         TAG_VERSION=$(echo "${CI_COMMIT_TAG}" | sed 's/^v//')
         WEB_ZIP=$(find dist/web/build -name "${PROJECT_NAME}-v*-web.zip" 2>/dev/null | head -1 || true)
         [ -n "${WEB_ZIP}" ] && [ "${WEB_ZIP}" != "dist/web/build/${PROJECT_NAME}-v${TAG_VERSION}-web.zip" ] && \
-          cp "${WEB_ZIP}" "dist/web/build/${PROJECT_NAME}-v${TAG_VERSION}-web.zip"
+          cp "${WEB_ZIP}" "dist/web/build/${PROJECT_NAME}-v${TAG_VERSION}-web.zip" || true
       fi
   after_script:
     - ls -la dist/web/ || true
@@ -143,7 +144,8 @@ build:extChrome:
     - |
       TAG_VERSION=$(echo "${CI_COMMIT_TAG}" | sed 's/^v//')
       CHROME_ZIP=$(find dist/web/build -name "${PROJECT_NAME}-v*-extension-chrome.zip" 2>/dev/null | head -1 || true)
-      [ -n "${CHROME_ZIP}" ] && cp "${CHROME_ZIP}" "dist/web/build/${PROJECT_NAME}-v${TAG_VERSION}-extension-chrome.zip"
+      [ -n "${CHROME_ZIP}" ] && [ "${CHROME_ZIP}" != "dist/web/build/${PROJECT_NAME}-v${TAG_VERSION}-extension-chrome.zip" ] && \
+        cp "${CHROME_ZIP}" "dist/web/build/${PROJECT_NAME}-v${TAG_VERSION}-extension-chrome.zip" || true
       # Edge = même zip que Chrome (Manifest v3)
       [ -n "${CHROME_ZIP}" ] && cp "${CHROME_ZIP}" "dist/web/build/${PROJECT_NAME}-v${TAG_VERSION}-extension-edge.zip"
   after_script:

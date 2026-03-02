@@ -205,8 +205,9 @@ angular.module('cesium.settings.services', ['ngApi', 'cesium.config'])
     }
 
     var promise;
+    var savedData;
     if (data.useLocalStorage) {
-      var savedData = data;
+      savedData = data;
       // When node is temporary (fallback node): keep previous node address - issue #476
       if (data.node && data.node.temporary === true) {
         promise = localStorage.getObject(constants.STORAGE_KEY)
