@@ -420,3 +420,63 @@
 .list .item.item-wallet {
   height: 38px;
 }
+
+/**
+ * Android 15+ edge-to-edge safe area fix
+ * https://git.duniter.org/clients/cesium-grp/cesium/-/issues/1011
+ *
+ * Android 15 (API 35) enforces edge-to-edge rendering, causing the app UI to
+ * extend behind the system status bar and navigation bar. Ionic 1 only applies
+ * safe-area-inset CSS rules for iOS — these rules add equivalent handling for
+ * Android. On older Android versions, env(safe-area-inset-*) resolves to 0,
+ * so these rules have no visible effect.
+ */
+
+/* Header bar: add status bar height */
+.platform-android.platform-cordova:not(.fullscreen) .bar-header:not(.bar-subheader) {
+  height: calc(env(safe-area-inset-top) + 44px);
+}
+.platform-android.platform-cordova:not(.fullscreen) .bar-header:not(.bar-subheader) > * {
+  margin-top: env(safe-area-inset-top);
+}
+
+/* Header horizontal safe areas (landscape/foldables) */
+.platform-android.platform-cordova:not(.fullscreen) .bar-header {
+  padding-left: calc(env(safe-area-inset-left) + 5px);
+  padding-right: calc(env(safe-area-inset-right) + 5px);
+}
+.platform-android.platform-cordova:not(.fullscreen) .bar-header .buttons:last-child {
+  right: calc(env(safe-area-inset-right) + 5px);
+}
+
+/* Content area below header */
+.platform-android.platform-cordova:not(.fullscreen) .has-header,
+.platform-android.platform-cordova:not(.fullscreen) .bar-subheader {
+  top: calc(env(safe-area-inset-top) + 44px);
+}
+.platform-android.platform-cordova:not(.fullscreen) .has-subheader {
+  top: calc(env(safe-area-inset-top) + 88px);
+}
+.platform-android.platform-cordova:not(.fullscreen) .has-header.has-tabs-top {
+  top: calc(93px + env(safe-area-inset-top));
+}
+
+/* Bottom tabs: add navigation bar height */
+.platform-android.platform-cordova:not(.fullscreen) .tabs {
+  padding-bottom: env(safe-area-inset-bottom);
+  height: calc(env(safe-area-inset-bottom) + 49px);
+}
+.platform-android.platform-cordova:not(.fullscreen) .has-tabs,
+.platform-android.platform-cordova:not(.fullscreen) .bar-footer.has-tabs {
+  bottom: calc(env(safe-area-inset-bottom) + 49px);
+}
+
+/* Side menu (small screens: hero header is 150px) */
+@media screen and (max-width: 991px) {
+  .platform-android.platform-cordova .menu.menu-left .bar-header {
+    height: calc(env(safe-area-inset-top) + 150px);
+  }
+  .platform-android.platform-cordova .menu.menu-left .has-header {
+    top: calc(env(safe-area-inset-top) + 150px);
+  }
+}
