@@ -1,156 +1,1338 @@
 # ---------------------------------------------------------------
-# Global
+# Cesium CI/CD Pipeline — Refonte complète
+# ---------------------------------------------------------------
+# Stages: build → publish
+#
+# On develop/master: build:web → pages
+# On tags:
+#   build:web ──┬── build:extFirefox ────────────────────────────┐
+#               ├── build:extChrome ─────────────────────────────┤
+#               ├── build:android ───────────────────────────────┤
+#               ├── build:iOS ───────────────────────────────────┤
+#               ├── build:x86_64:deb ────────────────────────────┤
+#               ├── build:x86_64:windows ────────────────────────┤
+#               ├── build:arm64:deb ─────────────────────────────┤
+#               ├── build:macOS:x86_64 ───────────────────────────┤
+#               └── build:macOS:arm64 ───────────────────────────┤
+#                                                                │
+#                            pages (master) ─────────────────────┤
+#                            publish:sign:extFirefox ─────────────┤
+#                            publish:sign:extChrome ──────────────┤
+#                            publish:sign:extEdge ────────────────┤
+#                            publish:release ────────────────────┘
+#
+# Build jobs produce final artifacts (renamed with TAG_VERSION).
+# Signed versions are attempted when secrets are available (allow_failure: true).
 # ---------------------------------------------------------------
 
-# default image
-image: node:12
+image: node:18
 
-# stages (main steps of pipeline)
 stages:
   - build
-  - alt_build
-  - deploy
+  - publish
 
 # ---------------------------------------------------------------
 # Global variables
 # ---------------------------------------------------------------
 
 variables:
-    CI_BUILD_IMAGE: $CI_REGISTRY_IMAGE/build:develop
+  PROJECT_NAME: cesium
+  RELEASE_VERSION: "${CI_COMMIT_TAG}"
+  YARN_CACHE_FOLDER: "${CI_PROJECT_DIR}/.cache/yarn"
+  NWJS_VERSION: "0.83.0"
 
 # ---------------------------------------------------------------
-# Jobs templates
+# Templates réutilisables
 # ---------------------------------------------------------------
 
-.docker:
-  image: docker:latest
-  tags: [redshift]
-  services:
-    - docker:dind
-  before_script:
-    - docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}
-    #- docker login -u "duniterteam" -p "$DUNITERTEAM_PASSWD"
-  after_script:
-    - docker logout ${CI_REGISTRY}
-    #- docker logout
-  allow_failure: false
+.node_cache: &node_cache
+  cache:
+    key: node-modules-${CI_COMMIT_REF_SLUG}
+    paths:
+      - .cache/yarn
+      - node_modules/
+    policy: pull-push
 
-# ---------------------------------------------------------------
-# Build jobs
-# ---------------------------------------------------------------
+.rules_tag_only:
+  rules:
+    - if: $CI_COMMIT_TAG
 
-.build:
+.rules_web:
+  rules:
+    - if: $CI_COMMIT_TAG
+    - if: $CI_COMMIT_BRANCH == "develop"
+    - if: $CI_COMMIT_BRANCH == "master"
+
+.desktop_base:
   stage: build
-  tags: [redshift]
+  needs:
+    - job: build:web
+      artifacts: true
+  rules:
+    - if: $CI_COMMIT_TAG
+
+
+# ---------------------------------------------------------------
+# Stage: build
+# ---------------------------------------------------------------
+
+build:web:
+  stage: build
+  <<: *node_cache
+  extends:
+    - .rules_web
+  before_script:
+    - yarn global add gulp
   script:
     - yarn install
     - yarn run build:web
+    - |
+      if [ -n "${CI_COMMIT_TAG}" ]; then
+        TAG_VERSION=$(echo "${CI_COMMIT_TAG}" | sed 's/^v//')
+        WEB_ZIP=$(find dist/web/build -name "${PROJECT_NAME}-v*-web.zip" 2>/dev/null | head -1 || true)
+        [ -n "${WEB_ZIP}" ] && [ "${WEB_ZIP}" != "dist/web/build/${PROJECT_NAME}-v${TAG_VERSION}-web.zip" ] && \
+          cp "${WEB_ZIP}" "dist/web/build/${PROJECT_NAME}-v${TAG_VERSION}-web.zip"
+      fi
   after_script:
-    - ls -la dist/web/
-    - du -csh dist/web/
+    - ls -la dist/web/ || true
+    - du -csh dist/web/ || true
   artifacts:
-    untracked: true
     paths:
-      - dist/web
-    expire_in: 60 minutes
+      - dist/web/
+    expire_in: 2 hours
 
-build:
-  extends: .build
-  image: ${CI_BUILD_IMAGE}
-  before_script:
-    - mv /tmp/.build-cache/node_modules ./
-  only:
-    - develop
-
-failsafe-build:
-  extends: .build
-  stage: alt_build
-  when: on_failure
+build:extFirefox:
+  stage: build
+  <<: *node_cache
+  extends:
+    - .rules_tag_only
+  needs:
+    - job: build:web
+      artifacts: true
   before_script:
     - yarn global add gulp
-  only:
-    - develop
-
-docker:ci:
-  extends: .docker
-  stage: alt_build
-  when: on_failure
-  allow_failure: true
+    - yarn install
   script:
-    # Create the target directory
-    - mkdir -p dist/ci
-    - cd dist/ci
-    # Create the Dockerfile
-    - echo 'FROM node:12' > Dockerfile
-    - echo 'WORKDIR /tmp/.build-cache' >> Dockerfile
-    - echo 'COPY ./ ./' >> Dockerfile
-    # Store disk usage (before install)
-    - echo 'RUN du -s `find . -maxdepth 1 | egrep -v "^\.$"` > /tmp/before.txt' >> Dockerfile
-    - echo 'RUN du -s `find /tmp/.cache/yarn -maxdepth 1 | egrep -v "^\.$"` >> /tmp/before.txt' >> Dockerfile
-    # Install dependencies
-    - echo 'RUN yarn global add gulp web-ext @ionic/cli' >> Dockerfile
-    - echo 'RUN yarn install' >> Dockerfile
-    # Store disk usage (after install)
-    - echo 'RUN du -s `find . -maxdepth 1 | egrep -v "^\.$"` > /tmp/after.txt' >> Dockerfile
-    - echo 'RUN du -s `find /tmp/.cache/yarn -maxdepth 1 | egrep -v "^\.$"` >> /tmp/after.txt' >> Dockerfile
-    # Force docker to detect any changes
-    - echo "RUN diff /tmp/before.txt /tmp/after.txt || true" >> Dockerfile
-    - echo 'WORKDIR /build' >> Dockerfile
-    # Build and push the CI image
-    - docker build --no-cache -t ${CI_BUILD_IMAGE} .
-    - docker push ${CI_BUILD_IMAGE}
+    - npx gulp webExtBuild --release
+    - |
+      TAG_VERSION=$(echo "${CI_COMMIT_TAG}" | sed 's/^v//')
+      EXT_ZIP=$(find dist/web/build -name "${PROJECT_NAME}-v*-extension.zip" -not -name "*-chrome*" 2>/dev/null | head -1 || true)
+      [ -n "${EXT_ZIP}" ] && cp "${EXT_ZIP}" "dist/web/build/${PROJECT_NAME}-v${TAG_VERSION}-extension-firefox.xpi"
+  after_script:
+    - ls -la dist/web/build/ || true
+    - ls -la dist/web/ext/ || true
   artifacts:
     paths:
-      - dist/ci/Dockerfile
-    expire_in: 60 minutes
+      - dist/web/build/
+      - dist/web/ext/
+    expire_in: 2 hours
+
+build:extChrome:
+  stage: build
+  <<: *node_cache
+  extends:
+    - .rules_tag_only
+  needs:
+    - job: build:web
+      artifacts: true
+  before_script:
+    - yarn global add gulp
+    - yarn install
+  script:
+    - npx gulp chromeExtBuild --release
+    - |
+      TAG_VERSION=$(echo "${CI_COMMIT_TAG}" | sed 's/^v//')
+      CHROME_ZIP=$(find dist/web/build -name "${PROJECT_NAME}-v*-extension-chrome.zip" 2>/dev/null | head -1 || true)
+      [ -n "${CHROME_ZIP}" ] && cp "${CHROME_ZIP}" "dist/web/build/${PROJECT_NAME}-v${TAG_VERSION}-extension-chrome.zip"
+      # Edge = même zip que Chrome (Manifest v3)
+      [ -n "${CHROME_ZIP}" ] && cp "${CHROME_ZIP}" "dist/web/build/${PROJECT_NAME}-v${TAG_VERSION}-extension-edge.zip"
+  after_script:
+    - ls -la dist/web/build/ || true
+  artifacts:
+    paths:
+      - dist/web/build/
+    expire_in: 2 hours
+
+build:android:
+  stage: build
+  image: thyrlian/android-sdk:9.3
+  extends:
+    - .rules_tag_only
+  needs:
+    - job: build:web
+      artifacts: true
+  variables:
+    ANDROID_SDK_ROOT: /opt/android-sdk
+    GRADLE_OPTS: "-Dorg.gradle.jvmargs=-Xmx512m"
+    CORDOVA_ANDROID_GRADLE_DISTRIBUTION_URL: "https://services.gradle.org/distributions/gradle-8.7-all.zip"
+  before_script:
+    # Install Node.js 18
+    - apt-get update && apt-get install -y curl
+    - curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
+    - apt-get install -y nodejs
+    # Install SDK components explicitly
+    - sdkmanager "platforms;android-35" "build-tools;35.0.0" "build-tools;34.0.0"
+    # Install global tools (cordova directly, ionic CLI incompatible with ionic1)
+    - npm install -g yarn gulp cordova
+    # Install project deps
+    - yarn install --ignore-engines
+    # Copy web build into www (needed by cordova)
+    - cp -r dist/web/www/* www/ || true
+    # Add Android platform via cordova directly
+    - cordova platform add android --confirm || true
+  script:
+    - cordova build android --release -- --packageType=apk
+    - |
+      TAG_VERSION=$(echo "${CI_COMMIT_TAG}" | sed 's/^v//')
+      mkdir -p dist/android/build
+      APK_FILE=$(find platforms/android/app/build/outputs/apk/release -name "*.apk" 2>/dev/null | head -1 || true)
+      if [ -z "${APK_FILE}" ]; then
+        echo "ERROR: No APK found after cordova build"
+        exit 1
+      fi
+      echo "Found APK: ${APK_FILE}"
+
+      # Find build-tools directory
+      BUILD_TOOLS_DIR=$(find "${ANDROID_SDK_ROOT}/build-tools" -maxdepth 1 -type d | sort -V | tail -1)
+      echo "Using build-tools: ${BUILD_TOOLS_DIR}"
+
+      if [ -n "${CESIUM_KEYSTORE}" ] && [ -f "${CESIUM_KEYSTORE}" ]; then
+        # --- Release signature with project keystore ---
+        echo "Signing with release keystore"
+        FINAL_APK="dist/android/build/${PROJECT_NAME}-v${TAG_VERSION}-android.apk"
+        "${BUILD_TOOLS_DIR}/zipalign" -v 4 "${APK_FILE}" "${FINAL_APK}"
+        KEY_ALIAS_VALUE="${KEY_ALIAS:-Cesium}"
+        "${BUILD_TOOLS_DIR}/apksigner" sign \
+          --ks "${CESIUM_KEYSTORE}" \
+          --ks-pass "pass:${KEYSTORE_PWD}" \
+          --ks-key-alias "${KEY_ALIAS_VALUE}" \
+          "${FINAL_APK}"
+      else
+        # --- Debug signature (allows installation on any device) ---
+        echo "No release keystore available — signing with generated debug key"
+        DEBUG_KS="/tmp/debug.keystore"
+        keytool -genkey -v \
+          -keystore "${DEBUG_KS}" \
+          -storepass android \
+          -alias androiddebugkey \
+          -keypass android \
+          -keyalg RSA -keysize 2048 -validity 10000 \
+          -dname "CN=Debug,O=Debug,C=US"
+        FINAL_APK="dist/android/build/${PROJECT_NAME}-v${TAG_VERSION}-android-debug.apk"
+        "${BUILD_TOOLS_DIR}/zipalign" -v 4 "${APK_FILE}" "${FINAL_APK}"
+        "${BUILD_TOOLS_DIR}/apksigner" sign \
+          --ks "${DEBUG_KS}" \
+          --ks-pass pass:android \
+          --ks-key-alias androiddebugkey \
+          "${FINAL_APK}"
+      fi
+
+      # Verify signature
+      "${BUILD_TOOLS_DIR}/apksigner" verify --verbose "${FINAL_APK}"
+      echo "Successfully signed APK: ${FINAL_APK}"
+  after_script:
+    - ls -la dist/android/build/ || true
+  artifacts:
+    paths:
+      - dist/android/build/
+    expire_in: 2 hours
+
+build:iOS:
+  stage: build
+  extends:
+    - .rules_tag_only
+  allow_failure: true
+  tags:
+    - macos
+    - ios
+  needs:
+    - job: build:web
+      artifacts: true
+  before_script:
+    # Load nvm if available (shell runner on macOS may not have node in PATH)
+    - 'export NVM_DIR="$HOME/.nvm" && [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" || true'
+    - 'command -v node >/dev/null || (echo "ERROR: node not found. Install Node.js or nvm on this runner." && exit 1)'
+    - npm install -g yarn gulp cordova
+    - yarn install --ignore-engines
+    # Copy web build into www
+    - cp -r dist/web/www/* www/ || true
+    - cordova platform add ios --confirm || true
+  script:
+    - 'export NVM_DIR="$HOME/.nvm" && [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" || true'
+    - cordova build ios --release || cordova build ios
+    - |
+      CURRENT_VERSION=$(echo "${CI_COMMIT_TAG}" | sed 's/^v//')
+      mkdir -p dist/ios/build
+      # Copy IPA or app bundle
+      IPA=$(find platforms/ios/build -name "*.ipa" 2>/dev/null | head -1)
+      if [ -n "${IPA}" ]; then
+        cp "${IPA}" "dist/ios/build/${PROJECT_NAME}-v${CURRENT_VERSION}-ios.ipa"
+      else
+        # Fallback: zip the .app bundle
+        APP_DIR=$(find platforms/ios/build -name "*.app" -type d 2>/dev/null | head -1)
+        if [ -n "${APP_DIR}" ]; then
+          cd "$(dirname "${APP_DIR}")"
+          zip -r "${CI_PROJECT_DIR}/dist/ios/build/${PROJECT_NAME}-v${CURRENT_VERSION}-ios.zip" "$(basename "${APP_DIR}")"
+          cd "${CI_PROJECT_DIR}"
+        fi
+      fi
+  after_script:
+    - ls -la dist/ios/build/ || true
+  artifacts:
+    paths:
+      - dist/ios/build/
+    expire_in: 2 hours
+
+build:x86_64:deb:
+  extends:
+    - .desktop_base
+  image: debian:bookworm
+  before_script:
+    - apt-get update && apt-get install -y curl wget xz-utils zip unzip fakeroot dpkg-dev imagemagick desktop-file-utils git npm
+    # Init desktop submodule
+    # Force HTTPS for submodules (SSH keys not available in CI)
+    - git config --global url."https://git.duniter.org/".insteadOf "git@git.duniter.org:"
+    - git submodule init || true
+    - git submodule sync || true
+    # Clean submodule dirs (gitlink from checkout blocks clone)
+    - rm -rf dist/desktop dist/android/sources
+    - git submodule update --remote --merge || true
+    - CURRENT_VERSION=$(echo "${CI_COMMIT_TAG}" | sed 's/^v//')
+    - echo "VERSION=${CURRENT_VERSION}"
+  script:
+    - |
+      set -e
+      ARCH="x64"
+      NWJS_DIR="nwjs-v${NWJS_VERSION}-linux-${ARCH}"
+      BUILD_DIR="dist/desktop/build"
+      WORK_DIR="$(pwd)/desktop-work"
+      mkdir -p "${BUILD_DIR}" "${WORK_DIR}"
+
+      echo "=== Downloading NW.js v${NWJS_VERSION} linux-${ARCH} ==="
+      cd "${WORK_DIR}"
+      wget -q "https://dl.nwjs.io/v${NWJS_VERSION}/${NWJS_DIR}.tar.gz"
+      tar xzf "${NWJS_DIR}.tar.gz"
+
+      echo "=== Preparing desktop application ==="
+      APP_DIR="${WORK_DIR}/${NWJS_DIR}"
+
+      # Copy web files (desktop code expects "cesium/" not "www/")
+      mkdir -p "${APP_DIR}/cesium"
+      cp -r "${CI_PROJECT_DIR}/dist/web/www/"* "${APP_DIR}/cesium/"
+
+      # Copy desktop files
+      DESKTOP_SRC="${CI_PROJECT_DIR}/dist/desktop/src"
+      if [ -d "${DESKTOP_SRC}" ]; then
+        cp "${DESKTOP_SRC}/cesium-desktop.js" "${APP_DIR}/"
+        cp "${DESKTOP_SRC}/splash.html" "${APP_DIR}/"
+        cp "${DESKTOP_SRC}/package.json" "${APP_DIR}/"
+        [ -f "${DESKTOP_SRC}/package-lock.json" ] && cp "${DESKTOP_SRC}/package-lock.json" "${APP_DIR}/"
+      fi
+
+      # Inject cesium-desktop.js into index.html
+      sed -i 's|<script src="config.js"></script>|<script src="config.js"></script>\n    <script src="../cesium-desktop.js"></script>|' "${APP_DIR}/cesium/index.html"
+
+      # Install desktop node dependencies
+      cd "${APP_DIR}"
+      npm install --production 2>/dev/null || true
+      cd "${WORK_DIR}"
+
+      echo "=== Creating .tar.gz ==="
+      TARBALL="${PROJECT_NAME}-desktop-v${CURRENT_VERSION}-linux-x86_64.tar.gz"
+      tar czf "${CI_PROJECT_DIR}/${BUILD_DIR}/${TARBALL}" -C "${WORK_DIR}" "${NWJS_DIR}"
+      echo "Created: ${TARBALL}"
+
+      echo "=== Creating .deb package ==="
+      DEB_ROOT="${WORK_DIR}/deb-root"
+      mkdir -p "${DEB_ROOT}/opt/cesium"
+
+      # Copy NW.js + app directly into /opt/cesium (no nw.nwb compression)
+      cp -r "${APP_DIR}/"* "${DEB_ROOT}/opt/cesium/"
+      chmod a+x "${DEB_ROOT}/opt/cesium/nw"
+
+      # Copy package structure from submodule (usr/share/*, etc.) but NOT DEBIAN/
+      PKG_SRC="${CI_PROJECT_DIR}/dist/desktop/arch/linux/package"
+      if [ -d "${PKG_SRC}/usr" ]; then
+        cp -r "${PKG_SRC}/usr" "${DEB_ROOT}/"
+      fi
+
+      # Generate our own DEBIAN/ control files (submodule ones are outdated)
+      mkdir -p "${DEB_ROOT}/DEBIAN"
+      INSTALLED_SIZE=$(du -sk "${DEB_ROOT}" | awk '{print $1}')
+      printf '%s\n' \
+        "Package: cesium-desktop" \
+        "Version: ${CURRENT_VERSION}" \
+        "Architecture: amd64" \
+        "Maintainer: Duniter Team <contact@duniter.org>" \
+        "Installed-Size: ${INSTALLED_SIZE}" \
+        "Depends: libnss3 (>= 3.26), libatk-bridge2.0-0, libatomic1, libgtk-3-0" \
+        "Conflicts: cesium-desktop" \
+        "Replaces: cesium-desktop" \
+        "Provides: cesium-desktop" \
+        "Section: contrib/misc" \
+        "Priority: optional" \
+        "Homepage: https://www.cesium.app" \
+        "Description: Cesium Wallet for G1 currency" \
+        " Cesium is a wallet (client-software) for G1 a libre currency." \
+        " Please visit https://www.duniter.org for more information." \
+        " License AGPL-3" \
+        > "${DEB_ROOT}/DEBIAN/control"
+
+      printf '#!/bin/bash\nln -sf /opt/cesium/nw /usr/bin/cesium\nchmod a+rX -R /opt/cesium\n' \
+        > "${DEB_ROOT}/DEBIAN/postinst"
+      chmod 755 "${DEB_ROOT}/DEBIAN/postinst"
+
+      printf '#!/bin/bash\n[ -L /usr/bin/cesium ] && rm -f /usr/bin/cesium\n' \
+        > "${DEB_ROOT}/DEBIAN/prerm"
+      chmod 755 "${DEB_ROOT}/DEBIAN/prerm"
+
+      # Gzip changelog if present
+      [ -f "${DEB_ROOT}/usr/share/doc/cesium-desktop/changelog.Debian" ] && \
+        gzip -9 "${DEB_ROOT}/usr/share/doc/cesium-desktop/changelog.Debian" 2>/dev/null || true
+
+      # Copy icon
+      ICON_SRC="${CI_PROJECT_DIR}/resources/icon.png"
+      if [ -f "${ICON_SRC}" ]; then
+        mkdir -p "${DEB_ROOT}/usr/share/pixmaps"
+        cp "${ICON_SRC}" "${DEB_ROOT}/usr/share/pixmaps/cesium.png"
+      fi
+
+      # Build .deb
+      DEB_FILE="${PROJECT_NAME}-desktop-v${CURRENT_VERSION}-linux-x86_64.deb"
+      fakeroot dpkg-deb --build "${DEB_ROOT}" "${CI_PROJECT_DIR}/${BUILD_DIR}/${DEB_FILE}"
+      echo "Created: ${DEB_FILE}"
+
+      echo "=== Attempting .AppImage (best-effort) ==="
+      # AppImage requires FUSE which may not be available in Docker
+      if command -v pkg2appimage >/dev/null 2>&1; then
+        APPIMAGE_YML="${CI_PROJECT_DIR}/dist/desktop/arch/linux/appimage.yml"
+        if [ -f "${APPIMAGE_YML}" ]; then
+          pkg2appimage "${APPIMAGE_YML}" || echo "WARN: AppImage build failed (FUSE likely unavailable in container)"
+          APPIMAGE_FILE=$(find . -name "*.AppImage" 2>/dev/null | head -1)
+          if [ -n "${APPIMAGE_FILE}" ]; then
+            cp "${APPIMAGE_FILE}" "${CI_PROJECT_DIR}/${BUILD_DIR}/${PROJECT_NAME}-desktop-v${CURRENT_VERSION}-linux-x86_64.AppImage"
+            echo "Created: AppImage"
+          fi
+        fi
+      else
+        echo "WARN: pkg2appimage not found, skipping AppImage build"
+      fi
+
+      echo "=== Generating SHA256 checksums ==="
+      cd "${CI_PROJECT_DIR}/${BUILD_DIR}"
+      for f in *; do
+        case "$f" in *.sha256) continue ;; esac
+        [ -f "$f" ] && sha256sum "$f" > "$f.sha256"
+      done
+
+      echo "=== Build complete ==="
+      ls -la "${CI_PROJECT_DIR}/${BUILD_DIR}/"
+  artifacts:
+    paths:
+      - dist/desktop/build/
+    expire_in: 2 hours
+
+build:x86_64:windows:
+  extends:
+    - .desktop_base
+  image: debian:bookworm
+  before_script:
+    - apt-get update && apt-get install -y curl wget xz-utils zip unzip p7zip-full wine64 git npm
+    # Init desktop submodule
+    # Force HTTPS for submodules (SSH keys not available in CI)
+    - git config --global url."https://git.duniter.org/".insteadOf "git@git.duniter.org:"
+    - git submodule init || true
+    - git submodule sync || true
+    # Clean submodule dirs (gitlink from checkout blocks clone)
+    - rm -rf dist/desktop dist/android/sources
+    - git submodule update --remote --merge || true
+    - CURRENT_VERSION=$(echo "${CI_COMMIT_TAG}" | sed 's/^v//')
+    - echo "VERSION=${CURRENT_VERSION}"
+  script:
+    - |
+      set -e
+      NWJS_DIR="nwjs-v${NWJS_VERSION}-win-x64"
+      BUILD_DIR="dist/desktop/build"
+      WORK_DIR="$(pwd)/desktop-work"
+      mkdir -p "${BUILD_DIR}" "${WORK_DIR}"
+
+      echo "=== Downloading NW.js v${NWJS_VERSION} win-x64 ==="
+      cd "${WORK_DIR}"
+      wget -q "https://dl.nwjs.io/v${NWJS_VERSION}/${NWJS_DIR}.zip"
+      7z x -y "${NWJS_DIR}.zip" >/dev/null
+
+      echo "=== Preparing desktop application ==="
+      APP_DIR="${WORK_DIR}/${NWJS_DIR}"
+
+      # Copy web files (desktop code expects "cesium/" not "www/")
+      mkdir -p "${APP_DIR}/cesium"
+      cp -r "${CI_PROJECT_DIR}/dist/web/www/"* "${APP_DIR}/cesium/"
+
+      # Copy desktop files
+      DESKTOP_SRC="${CI_PROJECT_DIR}/dist/desktop/src"
+      if [ -d "${DESKTOP_SRC}" ]; then
+        cp "${DESKTOP_SRC}/cesium-desktop.js" "${APP_DIR}/"
+        cp "${DESKTOP_SRC}/splash.html" "${APP_DIR}/"
+        cp "${DESKTOP_SRC}/package.json" "${APP_DIR}/"
+        [ -f "${DESKTOP_SRC}/package-lock.json" ] && cp "${DESKTOP_SRC}/package-lock.json" "${APP_DIR}/"
+      fi
+
+      # Inject cesium-desktop.js into index.html
+      sed -i 's|<script src="config.js"></script>|<script src="config.js"></script>\n    <script src="../cesium-desktop.js"></script>|' "${APP_DIR}/cesium/index.html"
+
+      # Install desktop node dependencies
+      cd "${APP_DIR}"
+      npm install --production 2>/dev/null || true
+      cd "${WORK_DIR}"
+
+      echo "=== Attempting Inno Setup via Wine (best-effort) ==="
+      INNO_SETUP_OK=false
+
+      # Try to install Inno Setup 5 under Wine
+      if command -v wine64 >/dev/null 2>&1; then
+        export WINEDEBUG=-all
+        export WINEPREFIX="${WORK_DIR}/.wine"
+        mkdir -p "${WINEPREFIX}"
+
+        # Download Inno Setup 5
+        INNO_URL="https://files.jrsoftware.org/is/5/innosetup-5.5.9-unicode.exe"
+        wget -q "${INNO_URL}" -O innosetup.exe 2>/dev/null || true
+
+        if [ -f "innosetup.exe" ]; then
+          # Silent install
+          wine64 innosetup.exe /VERYSILENT /DIR="C:\\InnoSetup" 2>/dev/null || true
+          ISCC="${WINEPREFIX}/drive_c/InnoSetup/ISCC.exe"
+
+          if [ -f "${ISCC}" ]; then
+            # Prepare Inno Setup script
+            ISS_FILE="${CI_PROJECT_DIR}/dist/desktop/arch/windows/cesium.iss"
+            if [ -f "${ISS_FILE}" ]; then
+              # Update version in .iss file
+              cp "${ISS_FILE}" "${WORK_DIR}/cesium.iss"
+              sed -i "s/#define MyAppVersion.*/#define MyAppVersion \"v${CURRENT_VERSION}\"/" "${WORK_DIR}/cesium.iss"
+
+              # Run Inno Setup compiler
+              cd "${WORK_DIR}"
+              wine64 "${ISCC}" "cesium.iss" "/DROOT_PATH=$(winepath -w "${APP_DIR}")" 2>/dev/null && INNO_SETUP_OK=true || true
+            fi
+          fi
+        fi
+      fi
+
+      if [ "${INNO_SETUP_OK}" = true ]; then
+        # Find the generated .exe
+        EXE_FILE=$(find "${WORK_DIR}" -name "*.exe" -not -name "innosetup.exe" -not -name "ISCC.exe" 2>/dev/null | head -1)
+        if [ -n "${EXE_FILE}" ]; then
+          cp "${EXE_FILE}" "${CI_PROJECT_DIR}/${BUILD_DIR}/${PROJECT_NAME}-desktop-v${CURRENT_VERSION}-windows-x86_64.exe"
+          echo "Created installer: ${PROJECT_NAME}-desktop-v${CURRENT_VERSION}-windows-x86_64.exe"
+        fi
+      fi
+
+      # Always create a .zip fallback
+      echo "=== Creating .zip fallback ==="
+      cd "${WORK_DIR}"
+      ZIP_FILE="${PROJECT_NAME}-desktop-v${CURRENT_VERSION}-windows-x86_64.zip"
+      zip -qr "${CI_PROJECT_DIR}/${BUILD_DIR}/${ZIP_FILE}" "${NWJS_DIR}"
+      echo "Created: ${ZIP_FILE}"
+
+      echo "=== Generating SHA256 checksums ==="
+      cd "${CI_PROJECT_DIR}/${BUILD_DIR}"
+      for f in *; do
+        case "$f" in *.sha256) continue ;; esac
+        [ -f "$f" ] && sha256sum "$f" > "$f.sha256"
+      done
+
+      echo "=== Build complete ==="
+      ls -la "${CI_PROJECT_DIR}/${BUILD_DIR}/"
+  artifacts:
+    paths:
+      - dist/desktop/build/
+    expire_in: 2 hours
+
+build:arm64:deb:
+  extends:
+    - .desktop_base
+  allow_failure: true
+  image: debian:bookworm
+  tags:
+    - dockerARM
+  before_script:
+    - apt-get update && apt-get install -y curl wget xz-utils zip unzip fakeroot dpkg-dev git npm
+    # Init desktop submodule
+    # Force HTTPS for submodules (SSH keys not available in CI)
+    - git config --global url."https://git.duniter.org/".insteadOf "git@git.duniter.org:"
+    - git submodule init || true
+    - git submodule sync || true
+    # Clean submodule dirs (gitlink from checkout blocks clone)
+    - rm -rf dist/desktop dist/android/sources
+    - git submodule update --remote --merge || true
+    - CURRENT_VERSION=$(echo "${CI_COMMIT_TAG}" | sed 's/^v//')
+    - echo "VERSION=${CURRENT_VERSION}"
+  script:
+    - |
+      set -e
+      # WARNING: NW.js does NOT have official ARM64 builds.
+      # This job is experimental and will likely fail at the download step.
+      ARCH="arm64"
+      NWJS_DIR="nwjs-v${NWJS_VERSION}-linux-${ARCH}"
+      BUILD_DIR="dist/desktop/build"
+      WORK_DIR="$(pwd)/desktop-work"
+      mkdir -p "${BUILD_DIR}" "${WORK_DIR}"
+
+      echo "=== Downloading NW.js v${NWJS_VERSION} linux-${ARCH} (experimental) ==="
+      cd "${WORK_DIR}"
+
+      # Try official download first, then community builds
+      wget -q "https://dl.nwjs.io/v${NWJS_VERSION}/${NWJS_DIR}.tar.gz" || {
+        echo "WARN: No official NW.js ARM64 build available"
+        echo "Trying unofficial/community builds..."
+        wget -q "https://github.com/nicedoc/nwjs-arm64/releases/download/v${NWJS_VERSION}/${NWJS_DIR}.tar.gz" || {
+          echo "ERROR: No NW.js ARM64 build found. This job is experimental."
+          exit 1
+        }
+      }
+
+      tar xzf "${NWJS_DIR}.tar.gz"
+
+      echo "=== Preparing desktop application ==="
+      APP_DIR="${WORK_DIR}/${NWJS_DIR}"
+
+      # Copy web files (desktop code expects "cesium/" not "www/")
+      mkdir -p "${APP_DIR}/cesium"
+      cp -r "${CI_PROJECT_DIR}/dist/web/www/"* "${APP_DIR}/cesium/"
+
+      # Copy desktop files
+      DESKTOP_SRC="${CI_PROJECT_DIR}/dist/desktop/src"
+      if [ -d "${DESKTOP_SRC}" ]; then
+        cp "${DESKTOP_SRC}/cesium-desktop.js" "${APP_DIR}/"
+        cp "${DESKTOP_SRC}/splash.html" "${APP_DIR}/"
+        cp "${DESKTOP_SRC}/package.json" "${APP_DIR}/"
+        [ -f "${DESKTOP_SRC}/package-lock.json" ] && cp "${DESKTOP_SRC}/package-lock.json" "${APP_DIR}/"
+      fi
+
+      # Inject cesium-desktop.js into index.html
+      sed -i 's|<script src="config.js"></script>|<script src="config.js"></script>\n    <script src="../cesium-desktop.js"></script>|' "${APP_DIR}/cesium/index.html"
+
+      # Install desktop node dependencies
+      cd "${APP_DIR}"
+      npm install --production 2>/dev/null || true
+      cd "${WORK_DIR}"
+
+      echo "=== Creating .tar.gz ==="
+      TARBALL="${PROJECT_NAME}-desktop-v${CURRENT_VERSION}-linux-arm64.tar.gz"
+      tar czf "${CI_PROJECT_DIR}/${BUILD_DIR}/${TARBALL}" -C "${WORK_DIR}" "${NWJS_DIR}"
+      echo "Created: ${TARBALL}"
+
+      echo "=== Creating .deb package ==="
+      DEB_ROOT="${WORK_DIR}/deb-root"
+      mkdir -p "${DEB_ROOT}/opt/cesium"
+
+      # Copy NW.js + app directly into /opt/cesium (no nw.nwb compression)
+      cp -r "${APP_DIR}/"* "${DEB_ROOT}/opt/cesium/"
+      chmod a+x "${DEB_ROOT}/opt/cesium/nw"
+
+      # Copy package structure from submodule (usr/share/*, etc.) but NOT DEBIAN/
+      PKG_SRC="${CI_PROJECT_DIR}/dist/desktop/arch/linux/package"
+      if [ -d "${PKG_SRC}/usr" ]; then
+        cp -r "${PKG_SRC}/usr" "${DEB_ROOT}/"
+      fi
+
+      # Generate our own DEBIAN/ control files
+      mkdir -p "${DEB_ROOT}/DEBIAN"
+      INSTALLED_SIZE=$(du -sk "${DEB_ROOT}" | awk '{print $1}')
+      printf '%s\n' \
+        "Package: cesium-desktop" \
+        "Version: ${CURRENT_VERSION}" \
+        "Architecture: arm64" \
+        "Maintainer: Duniter Team <contact@duniter.org>" \
+        "Installed-Size: ${INSTALLED_SIZE}" \
+        "Depends: libnss3 (>= 3.26), libatk-bridge2.0-0, libatomic1, libgtk-3-0" \
+        "Conflicts: cesium-desktop" \
+        "Replaces: cesium-desktop" \
+        "Provides: cesium-desktop" \
+        "Section: contrib/misc" \
+        "Priority: optional" \
+        "Homepage: https://www.cesium.app" \
+        "Description: Cesium Wallet for G1 currency" \
+        " Cesium is a wallet (client-software) for G1 a libre currency." \
+        " Please visit https://www.duniter.org for more information." \
+        " License AGPL-3" \
+        > "${DEB_ROOT}/DEBIAN/control"
+
+      printf '#!/bin/bash\nln -sf /opt/cesium/nw /usr/bin/cesium\nchmod a+rX -R /opt/cesium\n' \
+        > "${DEB_ROOT}/DEBIAN/postinst"
+      chmod 755 "${DEB_ROOT}/DEBIAN/postinst"
+
+      printf '#!/bin/bash\n[ -L /usr/bin/cesium ] && rm -f /usr/bin/cesium\n' \
+        > "${DEB_ROOT}/DEBIAN/prerm"
+      chmod 755 "${DEB_ROOT}/DEBIAN/prerm"
+
+      # Gzip changelog if present
+      [ -f "${DEB_ROOT}/usr/share/doc/cesium-desktop/changelog.Debian" ] && \
+        gzip -9 "${DEB_ROOT}/usr/share/doc/cesium-desktop/changelog.Debian" 2>/dev/null || true
+
+      # Copy icon
+      ICON_SRC="${CI_PROJECT_DIR}/resources/icon.png"
+      if [ -f "${ICON_SRC}" ]; then
+        mkdir -p "${DEB_ROOT}/usr/share/pixmaps"
+        cp "${ICON_SRC}" "${DEB_ROOT}/usr/share/pixmaps/cesium.png"
+      fi
+
+      DEB_FILE="${PROJECT_NAME}-desktop-v${CURRENT_VERSION}-linux-arm64.deb"
+      fakeroot dpkg-deb --build "${DEB_ROOT}" "${CI_PROJECT_DIR}/${BUILD_DIR}/${DEB_FILE}"
+      echo "Created: ${DEB_FILE}"
+
+      echo "=== Generating SHA256 checksums ==="
+      cd "${CI_PROJECT_DIR}/${BUILD_DIR}"
+      for f in *; do
+        case "$f" in *.sha256) continue ;; esac
+        [ -f "$f" ] && sha256sum "$f" > "$f.sha256"
+      done
+
+      echo "=== Build complete ==="
+      ls -la "${CI_PROJECT_DIR}/${BUILD_DIR}/"
+  artifacts:
+    paths:
+      - dist/desktop/build/
+    expire_in: 2 hours
+
+build:macOS:x86_64:
+  extends:
+    - .desktop_base
+  tags:
+    - macos
+  before_script:
+    # Init desktop submodule
+    # Force HTTPS for submodules (SSH keys not available in CI)
+    - git config --global url."https://git.duniter.org/".insteadOf "git@git.duniter.org:"
+    - git submodule init || true
+    - git submodule sync || true
+    # Clean submodule dirs (gitlink from checkout blocks clone)
+    - rm -rf dist/desktop dist/android/sources
+    - git submodule update --remote --merge || true
+    - CURRENT_VERSION=$(echo "${CI_COMMIT_TAG}" | sed 's/^v//')
+    - echo "VERSION=${CURRENT_VERSION}"
+  script:
+    - |
+      set -e
+      NWJS_DIR="nwjs-v${NWJS_VERSION}-osx-x64"
+      BUILD_DIR="dist/desktop/build"
+      WORK_DIR="$(pwd)/desktop-work"
+      mkdir -p "${BUILD_DIR}" "${WORK_DIR}"
+
+      echo "=== Downloading NW.js v${NWJS_VERSION} osx-x64 ==="
+      cd "${WORK_DIR}"
+      curl -sLO "https://dl.nwjs.io/v${NWJS_VERSION}/${NWJS_DIR}.zip"
+      unzip -q "${NWJS_DIR}.zip"
+
+      echo "=== Preparing macOS application ==="
+      APP_BUNDLE="${WORK_DIR}/${NWJS_DIR}/nwjs.app"
+      APP_NW="${APP_BUNDLE}/Contents/Resources/app.nw"
+      mkdir -p "${APP_NW}"
+
+      # Copy web files
+      # Copy web files (desktop code expects "cesium/" not "www/")
+      mkdir -p "${APP_NW}/cesium"
+      cp -r "${CI_PROJECT_DIR}/dist/web/www/"* "${APP_NW}/cesium/"
+
+      # Copy desktop files
+      DESKTOP_SRC="${CI_PROJECT_DIR}/dist/desktop/src"
+      if [ -d "${DESKTOP_SRC}" ]; then
+        cp "${DESKTOP_SRC}/cesium-desktop.js" "${APP_NW}/"
+        cp "${DESKTOP_SRC}/splash.html" "${APP_NW}/"
+        cp "${DESKTOP_SRC}/package.json" "${APP_NW}/"
+        [ -f "${DESKTOP_SRC}/package-lock.json" ] && cp "${DESKTOP_SRC}/package-lock.json" "${APP_NW}/"
+      fi
+
+      # Inject cesium-desktop.js into index.html
+      sed -i '' 's|<script src="config.js"></script>|<script src="config.js"></script>\
+          <script src="../cesium-desktop.js"></script>|' "${APP_NW}/cesium/index.html"
+
+      # Install desktop node dependencies
+      cd "${APP_NW}"
+      npm install --production 2>/dev/null || true
+      cd "${WORK_DIR}"
+
+      # Copy app icon
+      ICON_SRC="${CI_PROJECT_DIR}/dist/desktop/arch/osx/package/Contents/Resources/app.icns"
+      if [ -f "${ICON_SRC}" ]; then
+        cp "${ICON_SRC}" "${APP_BUNDLE}/Contents/Resources/app.icns"
+      fi
+
+      # Rename to Cesium.app
+      CESIUM_APP="${WORK_DIR}/${NWJS_DIR}/Cesium.app"
+      mv "${APP_BUNDLE}" "${CESIUM_APP}"
+
+      echo "=== Creating .zip ==="
+      cd "${WORK_DIR}/${NWJS_DIR}"
+      ZIP_FILE="${PROJECT_NAME}-desktop-v${CURRENT_VERSION}-macos-x86_64.zip"
+      zip -qr "${CI_PROJECT_DIR}/${BUILD_DIR}/${ZIP_FILE}" "Cesium.app"
+      echo "Created: ${ZIP_FILE}"
+
+      echo "=== Generating SHA256 checksums ==="
+      cd "${CI_PROJECT_DIR}/${BUILD_DIR}"
+      for f in *; do
+        case "$f" in *.sha256) continue ;; esac
+        [ -f "$f" ] && shasum -a 256 "$f" > "$f.sha256"
+      done
+
+      echo "=== Build complete ==="
+      ls -la "${CI_PROJECT_DIR}/${BUILD_DIR}/"
+  artifacts:
+    paths:
+      - dist/desktop/build/
+    expire_in: 2 hours
+
+build:macOS:arm64:
+  extends:
+    - .desktop_base
+  allow_failure: true
+  tags:
+    - macos
+  before_script:
+    # Init desktop submodule
+    - git config --global url."https://git.duniter.org/".insteadOf "git@git.duniter.org:"
+    - git submodule init || true
+    - git submodule sync || true
+    - rm -rf dist/desktop dist/android/sources
+    - git submodule update --remote --merge || true
+    - CURRENT_VERSION=$(echo "${CI_COMMIT_TAG}" | sed 's/^v//')
+    - echo "VERSION=${CURRENT_VERSION}"
+  script:
+    - |
+      set -e
+      NWJS_DIR="nwjs-v${NWJS_VERSION}-osx-arm64"
+      BUILD_DIR="dist/desktop/build"
+      WORK_DIR="$(pwd)/desktop-work"
+      mkdir -p "${BUILD_DIR}" "${WORK_DIR}"
+
+      echo "=== Downloading NW.js v${NWJS_VERSION} osx-arm64 ==="
+      cd "${WORK_DIR}"
+      curl -sLO "https://dl.nwjs.io/v${NWJS_VERSION}/${NWJS_DIR}.zip"
+      unzip -q "${NWJS_DIR}.zip"
+
+      echo "=== Preparing macOS application ==="
+      APP_BUNDLE="${WORK_DIR}/${NWJS_DIR}/nwjs.app"
+      APP_NW="${APP_BUNDLE}/Contents/Resources/app.nw"
+      mkdir -p "${APP_NW}"
+
+      # Copy web files
+      # Copy web files (desktop code expects "cesium/" not "www/")
+      mkdir -p "${APP_NW}/cesium"
+      cp -r "${CI_PROJECT_DIR}/dist/web/www/"* "${APP_NW}/cesium/"
+
+      # Copy desktop files
+      DESKTOP_SRC="${CI_PROJECT_DIR}/dist/desktop/src"
+      if [ -d "${DESKTOP_SRC}" ]; then
+        cp "${DESKTOP_SRC}/cesium-desktop.js" "${APP_NW}/"
+        cp "${DESKTOP_SRC}/splash.html" "${APP_NW}/"
+        cp "${DESKTOP_SRC}/package.json" "${APP_NW}/"
+        [ -f "${DESKTOP_SRC}/package-lock.json" ] && cp "${DESKTOP_SRC}/package-lock.json" "${APP_NW}/"
+      fi
+
+      # Inject cesium-desktop.js into index.html
+      sed -i '' 's|<script src="config.js"></script>|<script src="config.js"></script>\
+          <script src="../cesium-desktop.js"></script>|' "${APP_NW}/cesium/index.html"
+
+      # Install desktop node dependencies
+      cd "${APP_NW}"
+      npm install --production 2>/dev/null || true
+      cd "${WORK_DIR}"
+
+      # Copy app icon
+      ICON_SRC="${CI_PROJECT_DIR}/dist/desktop/arch/osx/package/Contents/Resources/app.icns"
+      if [ -f "${ICON_SRC}" ]; then
+        cp "${ICON_SRC}" "${APP_BUNDLE}/Contents/Resources/app.icns"
+      fi
+
+      # Rename to Cesium.app
+      CESIUM_APP="${WORK_DIR}/${NWJS_DIR}/Cesium.app"
+      mv "${APP_BUNDLE}" "${CESIUM_APP}"
+
+      echo "=== Creating .zip ==="
+      cd "${WORK_DIR}/${NWJS_DIR}"
+      ZIP_FILE="${PROJECT_NAME}-desktop-v${CURRENT_VERSION}-macos-arm64.zip"
+      zip -qr "${CI_PROJECT_DIR}/${BUILD_DIR}/${ZIP_FILE}" "Cesium.app"
+      echo "Created: ${ZIP_FILE}"
+
+      echo "=== Generating SHA256 checksums ==="
+      cd "${CI_PROJECT_DIR}/${BUILD_DIR}"
+      for f in *; do
+        case "$f" in *.sha256) continue ;; esac
+        [ -f "$f" ] && shasum -a 256 "$f" > "$f.sha256"
+      done
+
+      echo "=== Build complete ==="
+      ls -la "${CI_PROJECT_DIR}/${BUILD_DIR}/"
+  artifacts:
+    paths:
+      - dist/desktop/build/
+    expire_in: 2 hours
 
 # ---------------------------------------------------------------
-# Deploy jobs
+# Stage: publish
 # ---------------------------------------------------------------
 
+publish:sign:extFirefox:
+  stage: publish
+  image: node:20
+  needs:
+    - job: build:extFirefox
+      artifacts: true
+  before_script:
+    - npm install -g web-ext
+  script:
+    - |
+      TAG_VERSION=$(echo "${CI_COMMIT_TAG}" | sed 's/^v//')
+
+      echo "Signing Firefox extension v${TAG_VERSION} via AMO..."
+      web-ext sign \
+        --upload-source-code \
+        --api-key="${AMO_JWT_ISSUER}" \
+        --api-secret="${AMO_JWT_SECRET}" \
+        --source-dir=dist/web/ext \
+        --artifacts-dir=dist/web/build \
+        --channel=unlisted || true
+
+      # Rename output XPI to standard name
+      XPI_FILE=$(find dist/web/build -name "*.xpi" | head -1)
+      if [ -n "${XPI_FILE}" ]; then
+        mv "${XPI_FILE}" "dist/web/build/${PROJECT_NAME}-v${TAG_VERSION}-extension-firefox.xpi"
+        echo "Signed XPI: ${PROJECT_NAME}-v${TAG_VERSION}-extension-firefox.xpi"
+      else
+        echo "WARN: No XPI produced by web-ext sign, falling back to unsigned zip"
+        EXT_ZIP=$(find dist/web/build -name "${PROJECT_NAME}-v*-extension.zip" -not -name "*-chrome*" 2>/dev/null | head -1)
+        if [ -n "${EXT_ZIP}" ]; then
+          cp "${EXT_ZIP}" "dist/web/build/${PROJECT_NAME}-v${TAG_VERSION}-extension-firefox.xpi"
+          echo "Created unsigned XPI from extension zip"
+        fi
+      fi
+  artifacts:
+    paths:
+      - dist/web/build/
+    expire_in: 2 hours
+  allow_failure: true
+  rules:
+    - if: $CI_COMMIT_TAG && $AMO_JWT_ISSUER && $AMO_JWT_SECRET
+
+publish:sign:extChrome:
+  stage: publish
+  image: node:20
+  needs:
+    - job: build:extChrome
+      artifacts: true
+  before_script:
+    - npm install -g chrome-webstore-upload-cli
+  script:
+    - |
+      TAG_VERSION=$(echo "${CI_COMMIT_TAG}" | sed 's/^v//')
+      # Gulp uses package.json version, not tag — find by pattern
+      CHROME_ZIP=$(find dist/web/build -name "${PROJECT_NAME}-v*-extension-chrome.zip" 2>/dev/null | head -1)
+
+      if [ -z "${CHROME_ZIP}" ]; then
+        echo "ERROR: Chrome extension zip not found in dist/web/build/"
+        ls -la dist/web/build/ 2>/dev/null
+        exit 1
+      fi
+
+      echo "Uploading Chrome extension v${TAG_VERSION} to Chrome Web Store..."
+      chrome-webstore-upload upload \
+        --source "${CHROME_ZIP}" \
+        --extension-id "${CWS_EXTENSION_ID}" \
+        --client-id "${CWS_CLIENT_ID}" \
+        --client-secret "${CWS_CLIENT_SECRET}" \
+        --refresh-token "${CWS_REFRESH_TOKEN}"
+
+      echo "Publishing Chrome extension..."
+      chrome-webstore-upload publish \
+        --extension-id "${CWS_EXTENSION_ID}" \
+        --client-id "${CWS_CLIENT_ID}" \
+        --client-secret "${CWS_CLIENT_SECRET}" \
+        --refresh-token "${CWS_REFRESH_TOKEN}" || echo "WARN: Publish may require manual review"
+
+      # Mark as published
+      cp "${CHROME_ZIP}" "dist/web/build/${PROJECT_NAME}-v${TAG_VERSION}-extension-chrome-PUBLISHED.zip"
+      echo "Chrome extension uploaded and publish requested"
+  artifacts:
+    paths:
+      - dist/web/build/
+    expire_in: 2 hours
+  allow_failure: true
+  rules:
+    - if: $CI_COMMIT_TAG && $CWS_CLIENT_ID && $CWS_CLIENT_SECRET && $CWS_REFRESH_TOKEN && $CWS_EXTENSION_ID
+
+# Edge Add-ons API: access token expires every 72 days
+# Renew via: https://partner.microsoft.com/en-us/dashboard/microsoftedge/publishapi
+publish:sign:extEdge:
+  stage: publish
+  image: node:20
+  needs:
+    - job: build:extChrome
+      artifacts: true
+  script:
+    - |
+      TAG_VERSION=$(echo "${CI_COMMIT_TAG}" | sed 's/^v//')
+      # Gulp uses package.json version, not tag — find by pattern
+      CHROME_ZIP=$(find dist/web/build -name "${PROJECT_NAME}-v*-extension-chrome.zip" 2>/dev/null | head -1)
+
+      if [ -z "${CHROME_ZIP}" ]; then
+        echo "ERROR: Chrome extension zip not found (used as Edge source)"
+        ls -la dist/web/build/ 2>/dev/null
+        exit 1
+      fi
+
+      echo "=== Obtaining Edge API access token ==="
+      TOKEN_RESPONSE=$(curl -s -X POST \
+        "https://login.microsoftonline.com/consumers/oauth2/v2.0/token" \
+        -H "Content-Type: application/x-www-form-urlencoded" \
+        -d "client_id=${EDGE_CLIENT_ID}&scope=https://api.addons.microsoftedge.microsoft.com/.default&client_secret=${EDGE_API_KEY}&grant_type=client_credentials")
+
+      ACCESS_TOKEN=$(echo "${TOKEN_RESPONSE}" | grep -o '"access_token":"[^"]*"' | cut -d'"' -f4)
+      if [ -z "${ACCESS_TOKEN}" ]; then
+        echo "ERROR: Failed to obtain Edge API access token"
+        echo "Response: ${TOKEN_RESPONSE}"
+        echo "NOTE: Edge API key expires every 72 days. Check if renewal is needed."
+        exit 1
+      fi
+
+      EDGE_API="https://api.addons.microsoftedge.microsoft.com/v1/products/${EDGE_PRODUCT_ID}/submissions"
+
+      echo "=== Uploading package to Edge Add-ons ==="
+      UPLOAD_RESPONSE=$(curl -s -w "\n%{http_code}" -X POST \
+        "${EDGE_API}/draft/package" \
+        -H "Authorization: Bearer ${ACCESS_TOKEN}" \
+        -H "Content-Type: application/zip" \
+        --data-binary "@${CHROME_ZIP}")
+
+      HTTP_CODE=$(echo "${UPLOAD_RESPONSE}" | tail -1)
+      BODY=$(echo "${UPLOAD_RESPONSE}" | head -n -1)
+
+      if [ "${HTTP_CODE}" -lt 200 ] || [ "${HTTP_CODE}" -ge 300 ]; then
+        echo "ERROR: Upload failed (HTTP ${HTTP_CODE})"
+        echo "${BODY}"
+        exit 1
+      fi
+
+      OPERATION_ID=$(echo "${BODY}" | grep -o '"operationId":"[^"]*"' | cut -d'"' -f4)
+      echo "Upload started, operation: ${OPERATION_ID}"
+
+      # Poll upload status (max 5 minutes)
+      for i in $(seq 1 30); do
+        sleep 10
+        STATUS_RESPONSE=$(curl -s \
+          "${EDGE_API}/draft/package/operations/${OPERATION_ID}" \
+          -H "Authorization: Bearer ${ACCESS_TOKEN}")
+        STATUS=$(echo "${STATUS_RESPONSE}" | grep -o '"status":"[^"]*"' | cut -d'"' -f4)
+        echo "Upload status: ${STATUS} (attempt ${i}/30)"
+        if [ "${STATUS}" = "Succeeded" ]; then
+          break
+        elif [ "${STATUS}" = "Failed" ]; then
+          echo "ERROR: Upload processing failed"
+          echo "${STATUS_RESPONSE}"
+          exit 1
+        fi
+      done
+
+      echo "=== Publishing Edge extension ==="
+      PUBLISH_RESPONSE=$(curl -s -w "\n%{http_code}" -X POST \
+        "${EDGE_API}" \
+        -H "Authorization: Bearer ${ACCESS_TOKEN}" \
+        -H "Content-Type: application/json" \
+        -d '{}')
+
+      HTTP_CODE=$(echo "${PUBLISH_RESPONSE}" | tail -1)
+      if [ "${HTTP_CODE}" -ge 200 ] && [ "${HTTP_CODE}" -lt 300 ]; then
+        echo "Edge extension publish requested successfully"
+      else
+        echo "WARN: Publish request returned HTTP ${HTTP_CODE} (may require manual review)"
+      fi
+
+      # Mark as published
+      cp "${CHROME_ZIP}" "dist/web/build/${PROJECT_NAME}-v${TAG_VERSION}-extension-edge-PUBLISHED.zip"
+  artifacts:
+    paths:
+      - dist/web/build/
+    expire_in: 2 hours
+  allow_failure: true
+  rules:
+    - if: $CI_COMMIT_TAG && $EDGE_CLIENT_ID && $EDGE_API_KEY && $EDGE_PRODUCT_ID
+
+# GitLab requires this job to be named exactly "pages" for Pages
 pages:
-  stage: deploy
+  stage: publish
+  needs:
+    - job: build:web
+      artifacts: true
   variables:
     GIT_STRATEGY: none
   script:
-    - ls -la public || true
     - mv dist/web/www public
   artifacts:
-    untracked: true
     paths:
       - public
-  only:
-    - master
+  rules:
+    - if: $CI_COMMIT_BRANCH == "master"
 
-mirror:
-  stage: deploy
-  image: liaohuqiu/rsync
-  before_script:
-    - eval $(ssh-agent -s)
-    - ssh-add <(echo "$SSH_PRIVATE_KEY")
-    - mkdir -p ~/.ssh
-    - >-
-      [[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" >
-      ~/.ssh/config
-  script:
-    - mv dist/web/www public
-    - rsync -az -e ssh ./public/ gammanu@1000i100.fr:~/g1.money/dev-cesium
-  after_script:
-    - ssh gammanu@1000i100.fr "~/g1.money/update-cesium.sh"
-  only:
-    - master
-
-release:
-  stage: deploy
+publish:release:
+  stage: publish
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  needs:
+    # --- Build artifacts ---
+    - job: build:web
+      artifacts: true
+    - job: build:android
+      artifacts: true
+      optional: true
+    - job: build:extFirefox
+      artifacts: true
+      optional: true
+    - job: build:extChrome
+      artifacts: true
+      optional: true
+    - job: build:iOS
+      artifacts: true
+      optional: true
+    - job: build:x86_64:deb
+      artifacts: true
+      optional: true
+    - job: build:x86_64:windows
+      artifacts: true
+      optional: true
+    - job: build:arm64:deb
+      artifacts: true
+      optional: true
+    - job: build:macOS:x86_64
+      artifacts: true
+      optional: true
+    - job: build:macOS:arm64
+      artifacts: true
+      optional: true
+    # --- Optional signed artifacts ---
+    - job: publish:sign:extFirefox
+      artifacts: true
+      optional: true
+    - job: publish:sign:extChrome
+      artifacts: true
+      optional: true
+    - job: publish:sign:extEdge
+      artifacts: true
+      optional: true
   variables:
     GIT_STRATEGY: none
+  before_script:
+    - apk add --no-cache curl jq
   script:
-    - ls -la www || true
-    - mv dist/web/www www
-  artifacts:
-    untracked: true
-    paths:
-      - www
-  only:
-    - tags
+    - |
+      TAG_VERSION=$(echo "${CI_COMMIT_TAG}" | sed 's/^v//')
+      RELEASE_DIR="release-artifacts"
+      mkdir -p "${RELEASE_DIR}"
 
+      echo "=== Inventorying release artifacts for v${TAG_VERSION} ==="
+
+      # --- Collect file paths and compute checksums ---
+      add_to_checksums() {
+        local NAME="$1" FILEPATH="$2"
+        HASH=$(sha256sum "${FILEPATH}" | awk '{print $1}')
+        echo "${HASH}  ${NAME}" >> "${RELEASE_DIR}/SHA256SUMS"
+        echo "${HASH}  ${NAME}" > "${RELEASE_DIR}/${NAME}.sha256"
+        echo "${HASH}  ${NAME}"
+      }
+
+      # Web
+      WEB_ZIP="dist/web/build/${PROJECT_NAME}-v${TAG_VERSION}-web.zip"
+      [ -f "${WEB_ZIP}" ] && add_to_checksums "$(basename ${WEB_ZIP})" "${WEB_ZIP}"
+
+      # Extensions
+      for F in dist/web/build/${PROJECT_NAME}-v${TAG_VERSION}-extension*.zip \
+               dist/web/build/${PROJECT_NAME}-v${TAG_VERSION}-extension*.xpi; do
+        [ -f "${F}" ] && add_to_checksums "$(basename ${F})" "${F}"
+      done
+
+      # Android
+      for F in dist/android/build/${PROJECT_NAME}-v${TAG_VERSION}-android*.apk; do
+        [ -f "${F}" ] && add_to_checksums "$(basename ${F})" "${F}"
+      done
+
+      # iOS
+      for F in dist/ios/build/${PROJECT_NAME}-v${TAG_VERSION}-ios*; do
+        [ -f "${F}" ] && add_to_checksums "$(basename ${F})" "${F}"
+      done
+
+      # Desktop
+      for F in dist/desktop/build/${PROJECT_NAME}-desktop-v${TAG_VERSION}*; do
+        case "${F}" in *.sha256) continue ;; esac
+        [ -f "${F}" ] && add_to_checksums "$(basename ${F})" "${F}"
+      done
+
+      echo ""
+      echo "=== SHA256SUMS ==="
+      cat "${RELEASE_DIR}/SHA256SUMS" 2>/dev/null || echo "(no artifacts found)"
+
+      # --- Build direct download links ---
+      echo ""
+      echo "=== Resolving job artifact URLs ==="
+
+      API_BASE="${CI_API_V4_URL}/projects/${CI_PROJECT_ID}"
+      JOBS_JSON=$(curl -sf --header "JOB-TOKEN: ${CI_JOB_TOKEN}" \
+        "${API_BASE}/pipelines/${CI_PIPELINE_ID}/jobs?per_page=100" || echo "[]")
+      echo "Found $(echo ${JOBS_JSON} | jq length) jobs in pipeline"
+
+      # Helper: get job ID by name (success status only)
+      get_job_id() {
+        echo "${JOBS_JSON}" | jq -r --arg name "$1" \
+          '.[] | select(.name == $name and .status == "success") | .id' | head -1
+      }
+
+      # Helper: direct file download URL
+      file_url() {
+        echo "${CI_PROJECT_URL}/-/jobs/$1/artifacts/raw/$2"
+      }
+
+      ASSET_LINKS="[]"
+
+      add_asset_link() {
+        local NAME="$1" URL="$2" TYPE="${3:-other}"
+        [ -z "${URL}" ] && return
+        ASSET_LINKS=$(echo "${ASSET_LINKS}" | jq \
+          --arg name "${NAME}" --arg url "${URL}" --arg type "${TYPE}" \
+          '. + [{"name": $name, "url": $url, "link_type": $type}]')
+        echo "  Link: ${NAME} → ${URL}"
+      }
+
+      # SHA256SUMS (from this job)
+      add_asset_link "SHA256SUMS" \
+        "$(file_url "${CI_JOB_ID}" "release-artifacts/SHA256SUMS")" "other"
+
+      # --- Web ---
+      JOB_ID=$(get_job_id "build:web")
+      if [ -n "${JOB_ID}" ] && [ "${JOB_ID}" != "null" ]; then
+        add_asset_link "${PROJECT_NAME}-v${TAG_VERSION}-web.zip" \
+          "$(file_url "${JOB_ID}" "dist/web/build/${PROJECT_NAME}-v${TAG_VERSION}-web.zip")" "package"
+      fi
+
+      # --- Firefox extension (.xpi) ---
+      # Prefer signed version if available
+      JOB_ID=$(get_job_id "publish:sign:extFirefox")
+      if [ -n "${JOB_ID}" ] && [ "${JOB_ID}" != "null" ]; then
+        add_asset_link "${PROJECT_NAME}-v${TAG_VERSION}-extension-firefox.xpi" \
+          "$(file_url "${JOB_ID}" "dist/web/build/${PROJECT_NAME}-v${TAG_VERSION}-extension-firefox.xpi")" "package"
+      else
+        JOB_ID=$(get_job_id "build:extFirefox")
+        if [ -n "${JOB_ID}" ] && [ "${JOB_ID}" != "null" ]; then
+          add_asset_link "${PROJECT_NAME}-v${TAG_VERSION}-extension-firefox.xpi" \
+            "$(file_url "${JOB_ID}" "dist/web/build/${PROJECT_NAME}-v${TAG_VERSION}-extension-firefox.xpi")" "package"
+        fi
+      fi
+
+      # --- Chrome extension (.zip) ---
+      JOB_ID=$(get_job_id "build:extChrome")
+      if [ -n "${JOB_ID}" ] && [ "${JOB_ID}" != "null" ]; then
+        add_asset_link "${PROJECT_NAME}-v${TAG_VERSION}-extension-chrome.zip" \
+          "$(file_url "${JOB_ID}" "dist/web/build/${PROJECT_NAME}-v${TAG_VERSION}-extension-chrome.zip")" "package"
+      fi
+
+      # --- Edge extension (.zip) ---
+      JOB_ID=$(get_job_id "build:extChrome")
+      if [ -n "${JOB_ID}" ] && [ "${JOB_ID}" != "null" ]; then
+        add_asset_link "${PROJECT_NAME}-v${TAG_VERSION}-extension-edge.zip" \
+          "$(file_url "${JOB_ID}" "dist/web/build/${PROJECT_NAME}-v${TAG_VERSION}-extension-edge.zip")" "package"
+      fi
+
+      # --- Android (.apk) ---
+      JOB_ID=$(get_job_id "build:android")
+      if [ -n "${JOB_ID}" ] && [ "${JOB_ID}" != "null" ]; then
+        # Detect actual APK name (with or without -debug suffix)
+        APK_NAME=$(ls dist/android/build/${PROJECT_NAME}-v${TAG_VERSION}-android*.apk 2>/dev/null | head -1 | xargs basename 2>/dev/null || true)
+        if [ -n "${APK_NAME}" ]; then
+          add_asset_link "${APK_NAME}" \
+            "$(file_url "${JOB_ID}" "dist/android/build/${APK_NAME}")" "package"
+        fi
+      fi
+
+      # --- iOS (.ipa) ---
+      JOB_ID=$(get_job_id "build:iOS")
+      if [ -n "${JOB_ID}" ] && [ "${JOB_ID}" != "null" ]; then
+        if [ -f "dist/ios/build/${PROJECT_NAME}-v${TAG_VERSION}-ios.ipa" ]; then
+          add_asset_link "${PROJECT_NAME}-v${TAG_VERSION}-ios.ipa" \
+            "$(file_url "${JOB_ID}" "dist/ios/build/${PROJECT_NAME}-v${TAG_VERSION}-ios.ipa")" "package"
+        elif [ -f "dist/ios/build/${PROJECT_NAME}-v${TAG_VERSION}-ios.zip" ]; then
+          add_asset_link "${PROJECT_NAME}-v${TAG_VERSION}-ios.zip" \
+            "$(file_url "${JOB_ID}" "dist/ios/build/${PROJECT_NAME}-v${TAG_VERSION}-ios.zip")" "package"
+        fi
+      fi
+
+      # --- Linux x86_64 (.deb + .tar.gz) ---
+      JOB_ID=$(get_job_id "build:x86_64:deb")
+      if [ -n "${JOB_ID}" ] && [ "${JOB_ID}" != "null" ]; then
+        add_asset_link "${PROJECT_NAME}-desktop-v${TAG_VERSION}-linux-x86_64.deb" \
+          "$(file_url "${JOB_ID}" "dist/desktop/build/${PROJECT_NAME}-desktop-v${TAG_VERSION}-linux-x86_64.deb")" "package"
+        add_asset_link "${PROJECT_NAME}-desktop-v${TAG_VERSION}-linux-x86_64.tar.gz" \
+          "$(file_url "${JOB_ID}" "dist/desktop/build/${PROJECT_NAME}-desktop-v${TAG_VERSION}-linux-x86_64.tar.gz")" "package"
+      fi
+
+      # --- Windows x86_64 (.exe + .zip) ---
+      JOB_ID=$(get_job_id "build:x86_64:windows")
+      if [ -n "${JOB_ID}" ] && [ "${JOB_ID}" != "null" ]; then
+        if [ -f "dist/desktop/build/${PROJECT_NAME}-desktop-v${TAG_VERSION}-windows-x86_64.exe" ]; then
+          add_asset_link "${PROJECT_NAME}-desktop-v${TAG_VERSION}-windows-x86_64.exe" \
+            "$(file_url "${JOB_ID}" "dist/desktop/build/${PROJECT_NAME}-desktop-v${TAG_VERSION}-windows-x86_64.exe")" "package"
+        fi
+        add_asset_link "${PROJECT_NAME}-desktop-v${TAG_VERSION}-windows-x86_64.zip" \
+          "$(file_url "${JOB_ID}" "dist/desktop/build/${PROJECT_NAME}-desktop-v${TAG_VERSION}-windows-x86_64.zip")" "package"
+      fi
+
+      # --- macOS x86_64 (.zip) ---
+      JOB_ID=$(get_job_id "build:macOS:x86_64")
+      if [ -n "${JOB_ID}" ] && [ "${JOB_ID}" != "null" ]; then
+        add_asset_link "${PROJECT_NAME}-desktop-v${TAG_VERSION}-macos-x86_64.zip" \
+          "$(file_url "${JOB_ID}" "dist/desktop/build/${PROJECT_NAME}-desktop-v${TAG_VERSION}-macos-x86_64.zip")" "package"
+      fi
+
+      # --- macOS arm64 (.zip) ---
+      JOB_ID=$(get_job_id "build:macOS:arm64")
+      if [ -n "${JOB_ID}" ] && [ "${JOB_ID}" != "null" ]; then
+        add_asset_link "${PROJECT_NAME}-desktop-v${TAG_VERSION}-macos-arm64.zip" \
+          "$(file_url "${JOB_ID}" "dist/desktop/build/${PROJECT_NAME}-desktop-v${TAG_VERSION}-macos-arm64.zip")" "package"
+      fi
+
+      # --- Linux arm64 (.deb + .tar.gz) ---
+      JOB_ID=$(get_job_id "build:arm64:deb")
+      if [ -n "${JOB_ID}" ] && [ "${JOB_ID}" != "null" ]; then
+        add_asset_link "${PROJECT_NAME}-desktop-v${TAG_VERSION}-linux-arm64.deb" \
+          "$(file_url "${JOB_ID}" "dist/desktop/build/${PROJECT_NAME}-desktop-v${TAG_VERSION}-linux-arm64.deb")" "package"
+        add_asset_link "${PROJECT_NAME}-desktop-v${TAG_VERSION}-linux-arm64.tar.gz" \
+          "$(file_url "${JOB_ID}" "dist/desktop/build/${PROJECT_NAME}-desktop-v${TAG_VERSION}-linux-arm64.tar.gz")" "package"
+      fi
+
+      echo ""
+      echo "=== Asset links ==="
+      echo "${ASSET_LINKS}" | jq .
+
+      # --- Create GitLab release (delete existing if re-run) ---
+      echo ""
+      echo "=== Creating GitLab Release ==="
+
+      # Delete pre-existing release for this tag (idempotent re-runs)
+      curl -sf --request DELETE \
+        --header "JOB-TOKEN: ${CI_JOB_TOKEN}" \
+        "${API_BASE}/releases/${CI_COMMIT_TAG}" >/dev/null 2>&1 || true
+
+      RELEASE_CMD="release-cli create"
+      RELEASE_CMD="${RELEASE_CMD} --name 'Release ${CI_COMMIT_TAG}'"
+      RELEASE_CMD="${RELEASE_CMD} --tag-name '${CI_COMMIT_TAG}'"
+      RELEASE_CMD="${RELEASE_CMD} --description 'Release ${CI_COMMIT_TAG} - Built automatically by CI/CD pipeline. Download artifacts from the links below. Verify integrity with SHA256SUMS.'"
+
+      LINK_COUNT=$(echo "${ASSET_LINKS}" | jq length)
+      for i in $(seq 0 $((LINK_COUNT - 1))); do
+        LINK_JSON=$(echo "${ASSET_LINKS}" | jq -c ".[$i]")
+        RELEASE_CMD="${RELEASE_CMD} --assets-link '${LINK_JSON}'"
+      done
+
+      echo "Running: ${RELEASE_CMD}"
+      eval ${RELEASE_CMD}
+  artifacts:
+    paths:
+      - release-artifacts/
+    expire_in: 4 weeks
+  rules:
+    - if: $CI_COMMIT_TAG

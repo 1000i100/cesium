@@ -52,7 +52,7 @@ function getJSFolder(rootDir) {
     .map(file => file.substring(0, file.lastIndexOf('/')))
     // Reduce to a map of folders
     .reduce((res, folder) => {
-      if (folder.indexOf('www/dist/') !== -1 || // Exclude dist js
+      if (folder.indexOf('www/dist') !== -1 || // Exclude dist js (dist/ and dist_js/)
         folder.indexOf('/plugins/rml') !== -1 || // Exclude plugin tutorial
         folder.indexOf('www/js/vendor') !== -1 || // exclude vendor libs
         folder.indexOf('www/lib') !== -1 // exclude www/lib

@@ -11,6 +11,7 @@
 .idea/
 .vscode/
 .local/
+logs/
 .directory
 /*.iml
 /npm-debug.log
@@ -20,6 +21,7 @@
 /dist/web
 /dist/android
 /dist/*.sha256
+/dist/
 
 /hooks/uglify-config.json
 /hooks/after_prepare/uglify.js

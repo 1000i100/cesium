@@ -51,6 +51,97 @@
   opacity: 0.7;
 }
 
+/* En-tête inline : logo à gauche du texte pendant le chargement */
+#home .home-header-inline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+#home .home-header-inline .logo {
+  flex-shrink: 0;
+  margin-top: 0;
+  width: 80px !important;
+  min-width: 80px;
+  height: 80px !important;
+  background-size: 80px 80px !important;
+}
+#home .home-header-inline .home-header-text {
+  text-align: center;
+  flex-shrink: 1;
+  min-width: 0;
+}
+
+/* Fond horloge : version pâle sous 1280px, visible au-dessus */
+@media screen and (max-width: 1279px) {
+  .circle-bg-dark {
+    background-blend-mode: soft-light !important;
+  }
+}
+@media screen and (min-width: 1280px) {
+  .circle-bg-dark {
+    background-blend-mode: hard-light !important;
+  }
+}
+
+/* Feed proéminent : pleine largeur sous le header pendant le chargement */
+#home .feed-prominent-row {
+  flex-wrap: wrap;
+}
+#home .feed-prominent-row > .main-container {
+  width: 100%;
+  flex-basis: 100%;
+}
+#home .feed-prominent-col {
+  width: 100%;
+  flex-basis: 100%;
+  order: 1;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0 16px;
+  text-align: left;
+}
+/* Écrans larges : décaler le feed à droite pour ne pas chevaucher l'horloge blanche */
+@media screen and (min-width: 1280px) {
+  #home .feed-prominent-col {
+    margin-left: 320px;
+    margin-right: 0;
+    width: auto;
+  }
+}
+#home .feed-prominent-col .feed {
+  max-height: 60vh;
+  overflow-y: auto;
+}
+#home .feed-prominent-col .feed h3 {
+  font-size: 16pt;
+  color: white !important;
+}
+#home .feed-prominent-col .feed .card {
+  background-color: rgba(0, 0, 0, 0.35) !important;
+  color: lightgrey !important;
+  border-radius: 4px;
+  padding: 16px 20px;
+}
+#home .feed-prominent-col .feed .card .header {
+  color: grey !important;
+}
+#home .feed-prominent-col .feed .card .title,
+#home .feed-prominent-col .feed .card .title a {
+  font-size: 15pt;
+  color: white !important;
+  margin-bottom: 8px;
+}
+#home .feed-prominent-col .feed .card .content {
+  font-size: 12pt;
+  line-height: 1.5;
+  color: lightgrey !important;
+}
+#home .feed-prominent-col .feed .card .footer a,
+#home .feed-prominent-col .feed .card .card-footer a {
+  color: #ccc !important;
+}
+
 #modal-license {
   color:rgb(0, 0, 0);
 }
