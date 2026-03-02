@@ -291,17 +291,17 @@ angular.module('cesium.storage.services', [ 'cesium.config'])
       if (Device.isChromeExtension()) {
         return new Promise(function(resolve, reject) {
           chrome.storage.local.set(entry, resolve);
-        })
+        });
       } else if (Device.isMozillaExtension()) {
         $log.debug('[extension-storage] Add storage into Mozilla storage');
       }
       return $q.when();
-    }
+    };
 
     exports.setObject = function(key, obj) {
       var strValue = obj ? JSON.stringify(obj) : null;
       return exports.put(key, strValue);
-    }
+    };
 
     return exports;
   })

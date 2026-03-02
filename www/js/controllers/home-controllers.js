@@ -78,10 +78,8 @@ function HomeController($scope, $state, $timeout, $interval, $ionicHistory, $tra
         $scope.$broadcast('$$rebind::loading'); // force rebind loading
       }, 200);
 
-      // Charger le feed dès que les settings sont prêts (pas besoin du réseau Duniter)
-      csSettings.ready().then(function() {
-        $scope.$broadcast('$ionicParentView.enter');
-      });
+      // Charger le feed immédiatement (FeedCtrl attend csSettings.ready() en interne)
+      $scope.$broadcast('$ionicParentView.enter');
 
       var hasLoginParam = state && state.stateParams && state.stateParams.login || false;
 
@@ -98,10 +96,9 @@ function HomeController($scope, $state, $timeout, $interval, $ionicHistory, $tra
           $scope.loading = false;
           $scope.loadingMessage = '';
           $scope.loadingPct = 100;
-          // Garder le feed proéminent si erreur réseau
+          // Quitter le mode proéminent sauf si erreur réseau
           $scope.feedProminentMode = !!$scope.error;
           $scope.$broadcast('$$rebind::loading'); // force rebind loading
-          $scope.$broadcast('$$rebind::feed'); // force rebind feed
 
           // Open the login modal
           if (hasLoginParam && !csWallet.isLogin() && !$scope.error) {
@@ -146,7 +143,6 @@ function HomeController($scope, $state, $timeout, $interval, $ionicHistory, $tra
 
   $scope.toggleFeed = function(show) {
     $scope.showFeed = (show !== undefined) ? show : !$scope.showFeed;
-    $scope.$broadcast('$$rebind::feed'); // force rebind feed
   };
 
   /* -- show/hide locales popup -- */
@@ -207,7 +203,7 @@ function HomeController($scope, $state, $timeout, $interval, $ionicHistory, $tra
     $scope.loading = false;
     $scope.node =  csCurrency.data.node;
     $scope.error = true;
-    $scope.$broadcast('$$rebind::feed'); // feed reste proéminent en mode offline
+    $scope.feedProminentMode = true;
   });
   Device.api.network.on.online($scope, function() {
     if (!$scope.loading && $scope.error) {
