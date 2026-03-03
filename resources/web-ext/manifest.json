@@ -1,7 +1,7 @@
 {
   "name": "Cesium",
   "short_name": "Cesium",
-  "version": "1.7.16.2",
+  "version": "1.7.17",
   "description": "Cesium Wallet for Ğ1 libre currency",
   "background": {
     "scripts": ["background.js"]

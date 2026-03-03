@@ -51,6 +51,97 @@
   opacity: 0.7;
 }
 
+/* En-tête inline : logo à gauche du texte pendant le chargement */
+#home .home-header-inline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+#home .home-header-inline .logo {
+  flex-shrink: 0;
+  margin-top: 0;
+  width: 80px !important;
+  min-width: 80px;
+  height: 80px !important;
+  background-size: 80px 80px !important;
+}
+#home .home-header-inline .home-header-text {
+  text-align: center;
+  flex-shrink: 1;
+  min-width: 0;
+}
+
+/* Fond horloge : version pâle sous 1280px, visible au-dessus */
+@media screen and (max-width: 1279px) {
+  .circle-bg-dark {
+    background-blend-mode: soft-light !important;
+  }
+}
+@media screen and (min-width: 1280px) {
+  .circle-bg-dark {
+    background-blend-mode: hard-light !important;
+  }
+}
+
+/* Feed proéminent : pleine largeur sous le header pendant le chargement */
+#home .feed-prominent-row {
+  flex-wrap: wrap;
+}
+#home .feed-prominent-row > .main-container {
+  width: 100%;
+  flex-basis: 100%;
+}
+#home .feed-prominent-col {
+  width: 100%;
+  flex-basis: 100%;
+  order: 1;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0 16px;
+  text-align: left;
+}
+/* Écrans larges : décaler le feed à droite pour ne pas chevaucher l'horloge blanche */
+@media screen and (min-width: 1280px) {
+  #home .feed-prominent-col {
+    margin-left: 320px;
+    margin-right: 0;
+    width: auto;
+  }
+}
+#home .feed-prominent-col .feed {
+  max-height: 60vh;
+  overflow-y: auto;
+}
+#home .feed-prominent-col .feed h3 {
+  font-size: 16pt;
+  color: white !important;
+}
+#home .feed-prominent-col .feed .card {
+  background-color: rgba(0, 0, 0, 0.35) !important;
+  color: lightgrey !important;
+  border-radius: 4px;
+  padding: 16px 20px;
+}
+#home .feed-prominent-col .feed .card .header {
+  color: grey !important;
+}
+#home .feed-prominent-col .feed .card .title,
+#home .feed-prominent-col .feed .card .title a {
+  font-size: 15pt;
+  color: white !important;
+  margin-bottom: 8px;
+}
+#home .feed-prominent-col .feed .card .content {
+  font-size: 12pt;
+  line-height: 1.5;
+  color: lightgrey !important;
+}
+#home .feed-prominent-col .feed .card .footer a,
+#home .feed-prominent-col .feed .card .card-footer a {
+  color: #ccc !important;
+}
+
 #modal-license {
   color:rgb(0, 0, 0);
 }
@@ -328,4 +419,64 @@
 }
 .list .item.item-wallet {
   height: 38px;
+}
+
+/**
+ * Android 15+ edge-to-edge safe area fix
+ * https://git.duniter.org/clients/cesium-grp/cesium/-/issues/1011
+ *
+ * Android 15 (API 35) enforces edge-to-edge rendering, causing the app UI to
+ * extend behind the system status bar and navigation bar. Ionic 1 only applies
+ * safe-area-inset CSS rules for iOS — these rules add equivalent handling for
+ * Android. On older Android versions, env(safe-area-inset-*) resolves to 0,
+ * so these rules have no visible effect.
+ */
+
+/* Header bar: add status bar height */
+.platform-android.platform-cordova:not(.fullscreen) .bar-header:not(.bar-subheader) {
+  height: calc(env(safe-area-inset-top) + 44px);
+}
+.platform-android.platform-cordova:not(.fullscreen) .bar-header:not(.bar-subheader) > * {
+  margin-top: env(safe-area-inset-top);
+}
+
+/* Header horizontal safe areas (landscape/foldables) */
+.platform-android.platform-cordova:not(.fullscreen) .bar-header {
+  padding-left: calc(env(safe-area-inset-left) + 5px);
+  padding-right: calc(env(safe-area-inset-right) + 5px);
+}
+.platform-android.platform-cordova:not(.fullscreen) .bar-header .buttons:last-child {
+  right: calc(env(safe-area-inset-right) + 5px);
+}
+
+/* Content area below header */
+.platform-android.platform-cordova:not(.fullscreen) .has-header,
+.platform-android.platform-cordova:not(.fullscreen) .bar-subheader {
+  top: calc(env(safe-area-inset-top) + 44px);
+}
+.platform-android.platform-cordova:not(.fullscreen) .has-subheader {
+  top: calc(env(safe-area-inset-top) + 88px);
+}
+.platform-android.platform-cordova:not(.fullscreen) .has-header.has-tabs-top {
+  top: calc(93px + env(safe-area-inset-top));
+}
+
+/* Bottom tabs: add navigation bar height */
+.platform-android.platform-cordova:not(.fullscreen) .tabs {
+  padding-bottom: env(safe-area-inset-bottom);
+  height: calc(env(safe-area-inset-bottom) + 49px);
+}
+.platform-android.platform-cordova:not(.fullscreen) .has-tabs,
+.platform-android.platform-cordova:not(.fullscreen) .bar-footer.has-tabs {
+  bottom: calc(env(safe-area-inset-bottom) + 49px);
+}
+
+/* Side menu (small screens: hero header is 150px) */
+@media screen and (max-width: 991px) {
+  .platform-android.platform-cordova .menu.menu-left .bar-header {
+    height: calc(env(safe-area-inset-top) + 150px);
+  }
+  .platform-android.platform-cordova .menu.menu-left .has-header {
+    top: calc(env(safe-area-inset-top) + 150px);
+  }
 }

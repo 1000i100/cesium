@@ -4,7 +4,7 @@
 
 "@aashutoshrathi/word-wrap@^1.2.3":
   version "1.2.6"
-  resolved "http://nexus.e-is.pro/repository/npmjs/@aashutoshrathi/word-wrap/-/word-wrap-1.2.6.tgz#bd9154aec9983f77b3a034ecaa015c2e4201f6cf"
+  resolved "https://registry.yarnpkg.com/@aashutoshrathi/word-wrap/-/word-wrap-1.2.6.tgz#bd9154aec9983f77b3a034ecaa015c2e4201f6cf"
   integrity sha512-1Yjs2SvM8TflER/OD3cOjhWWOZb58A2t7wpE2S9XfBYTiIl+XFhQG2bjy4Pu1I+EAlCNUzRDYDdFwFYUKvXcIA==
 
 "@babel/code-frame@^7.0.0":
@@ -16,7 +16,7 @@
 
 "@babel/code-frame@^7.21.4":
   version "7.27.1"
-  resolved "http://nexus.e-is.pro/repository/npmjs/@babel/code-frame/-/code-frame-7.27.1.tgz#200f715e66d52a23b221a9435534a91cc13ad5be"
+  resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.27.1.tgz#200f715e66d52a23b221a9435534a91cc13ad5be"
   integrity sha512-cjQ7ZlQ0Mv3b47hABuTevyTuYN4i+loJKGeV9flcCgIK37cCXRh+L1bd3iBHlynerhQ7BhCkn2BPbQUL+rGqFg==
   dependencies:
     "@babel/helper-validator-identifier" "^7.27.1"
@@ -30,7 +30,7 @@
 
 "@babel/helper-validator-identifier@^7.27.1":
   version "7.27.1"
-  resolved "http://nexus.e-is.pro/repository/npmjs/@babel/helper-validator-identifier/-/helper-validator-identifier-7.27.1.tgz#a7054dcc145a967dd4dc8fee845a57c1316c9df8"
+  resolved "https://registry.yarnpkg.com/@babel/helper-validator-identifier/-/helper-validator-identifier-7.27.1.tgz#a7054dcc145a967dd4dc8fee845a57c1316c9df8"
   integrity sha512-D2hP9eA+Sqx1kBZgzxZh0y1trbuU+JoDkiEwqhQ36nodYqJwyEIhPSdMNd7lOm/4io72luTPWH20Yda0xOuUow==
 
 "@babel/highlight@^7.18.6":
@@ -44,7 +44,7 @@
 
 "@babel/runtime@7.27.6":
   version "7.27.6"
-  resolved "http://nexus.e-is.pro/repository/npmjs/@babel/runtime/-/runtime-7.27.6.tgz#ec4070a04d76bae8ddbb10770ba55714a417b7c6"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.27.6.tgz#ec4070a04d76bae8ddbb10770ba55714a417b7c6"
   integrity sha512-vbavdySgbTTrmFE+EsiqUTzlOr5bzlnJtUv9PynGCAKvfQqjIXbvFdumPM/GxMDfyuGMJaJAU6TO4zc1Jf1i8Q==
 
 "@bower_components/Leaflet.EasyButton@CliffCloud/Leaflet.EasyButton#v2.4.0":
@@ -300,12 +300,12 @@
 
 "@devicefarmer/adbkit-monkey@~1.2.1":
   version "1.2.1"
-  resolved "http://nexus.e-is.pro/repository/npmjs/@devicefarmer/adbkit-monkey/-/adbkit-monkey-1.2.1.tgz#28cd6a121c5d572588081dd1c53454c604eef241"
+  resolved "https://registry.yarnpkg.com/@devicefarmer/adbkit-monkey/-/adbkit-monkey-1.2.1.tgz#28cd6a121c5d572588081dd1c53454c604eef241"
   integrity sha512-ZzZY/b66W2Jd6NHbAhLyDWOEIBWC11VizGFk7Wx7M61JZRz7HR9Cq5P+65RKWUU7u6wgsE8Lmh9nE4Mz+U2eTg==
 
 "@devicefarmer/adbkit@3.3.8":
   version "3.3.8"
-  resolved "http://nexus.e-is.pro/repository/npmjs/@devicefarmer/adbkit/-/adbkit-3.3.8.tgz#04bc35cb3a2d7385f2e22de40f54162088083183"
+  resolved "https://registry.yarnpkg.com/@devicefarmer/adbkit/-/adbkit-3.3.8.tgz#04bc35cb3a2d7385f2e22de40f54162088083183"
   integrity sha512-7rBLLzWQnBwutH2WZ0EWUkQdihqrnLYCUMaB44hSol9e0/cdIhuNFcqZO0xNheAU6qqHVA8sMiLofkYTgb+lmw==
   dependencies:
     "@devicefarmer/adbkit-logcat" "^2.1.2"
@@ -325,12 +325,12 @@
 
 "@eslint-community/regexpp@^4.6.1":
   version "4.10.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/@eslint-community/regexpp/-/regexpp-4.10.0.tgz#548f6de556857c8bb73bbee70c35dc82a2e74d63"
+  resolved "https://registry.yarnpkg.com/@eslint-community/regexpp/-/regexpp-4.10.0.tgz#548f6de556857c8bb73bbee70c35dc82a2e74d63"
   integrity sha512-Cu96Sd2By9mCNTx2iyKOmq10v22jUVQv0lQnlGNy16oE9589yE+QADPbrMGCkA51cKZSg3Pu/aTJVTGfL/qjUA==
 
 "@eslint/eslintrc@^2.1.4":
   version "2.1.4"
-  resolved "http://nexus.e-is.pro/repository/npmjs/@eslint/eslintrc/-/eslintrc-2.1.4.tgz#388a269f0f25c1b6adc317b5a2c55714894c70ad"
+  resolved "https://registry.yarnpkg.com/@eslint/eslintrc/-/eslintrc-2.1.4.tgz#388a269f0f25c1b6adc317b5a2c55714894c70ad"
   integrity sha512-269Z39MS6wVJtsoUl10L60WdkhJVdPG24Q4eZTH3nnF6lpvSShEK3wQjDX9JRWAUPvPh7COouPpU9IrqaZFvtQ==
   dependencies:
     ajv "^6.12.4"
@@ -345,7 +345,7 @@
 
 "@eslint/js@8.57.1":
   version "8.57.1"
-  resolved "http://nexus.e-is.pro/repository/npmjs/@eslint/js/-/js-8.57.1.tgz#de633db3ec2ef6a3c89e2f19038063e8a122e2c2"
+  resolved "https://registry.yarnpkg.com/@eslint/js/-/js-8.57.1.tgz#de633db3ec2ef6a3c89e2f19038063e8a122e2c2"
   integrity sha512-d9zaMRSTIKDLhctzH12MtXvJKSSUhaHcjV+2Z+GK+EEY7XKpP5yR4x+N3TAcHTcu963nIr+TMcCb4DBCYX1z6Q==
 
 "@fluent/syntax@0.19.0":
@@ -355,7 +355,7 @@
 
 "@fregante/relaxed-json@2.0.0":
   version "2.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/@fregante/relaxed-json/-/relaxed-json-2.0.0.tgz#c0ae5103a5473fb5dd54931107e35129351e527a"
+  resolved "https://registry.yarnpkg.com/@fregante/relaxed-json/-/relaxed-json-2.0.0.tgz#c0ae5103a5473fb5dd54931107e35129351e527a"
   integrity sha512-PyUXQWB42s4jBli435TDiYuVsadwRHnMc27YaLouINktvTWsL3FcKrRMGawTayFk46X+n5bE23RjUTWQwrukWw==
 
 "@gar/promisify@^1.0.1", "@gar/promisify@^1.1.3":
@@ -384,7 +384,7 @@
 
 "@humanwhocodes/config-array@^0.13.0":
   version "0.13.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/@humanwhocodes/config-array/-/config-array-0.13.0.tgz#fb907624df3256d04b9aa2df50d7aa97ec648748"
+  resolved "https://registry.yarnpkg.com/@humanwhocodes/config-array/-/config-array-0.13.0.tgz#fb907624df3256d04b9aa2df50d7aa97ec648748"
   integrity sha512-DZLEEqFWQFiyK6h5YIeynKx7JlvCYWL0cImfSRXZ9l4Sg2efkFGTuFf6vzXjK1cq6IYkU+Eg/JizXw+TD2vRNw==
   dependencies:
     "@humanwhocodes/object-schema" "^2.0.3"
@@ -398,7 +398,7 @@
 
 "@humanwhocodes/object-schema@^2.0.3":
   version "2.0.3"
-  resolved "http://nexus.e-is.pro/repository/npmjs/@humanwhocodes/object-schema/-/object-schema-2.0.3.tgz#4a2868d75d6d6963e423bcf90b7fd1be343409d3"
+  resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-2.0.3.tgz#4a2868d75d6d6963e423bcf90b7fd1be343409d3"
   integrity sha512-93zYdMES/c1D69yZiKDBj0V24vqNzB/koF26KPaagAfd3P/4gUlh3Dys5ogAK+Exi9QyzlD8x/08Zt7wIKcDcA==
 
 "@ionic/cli-framework-output@2.2.5":
@@ -576,12 +576,12 @@
 
 "@isaacs/balanced-match@^4.0.1":
   version "4.0.1"
-  resolved "http://nexus.e-is.pro/repository/npmjs/@isaacs/balanced-match/-/balanced-match-4.0.1.tgz#3081dadbc3460661b751e7591d7faea5df39dd29"
+  resolved "https://registry.yarnpkg.com/@isaacs/balanced-match/-/balanced-match-4.0.1.tgz#3081dadbc3460661b751e7591d7faea5df39dd29"
   integrity sha512-yzMTt9lEb8Gv7zRioUilSglI0c0smZ9k5D65677DLWLtWJaXIS3CqcGyUFByYKlnUj6TkjLVs54fBl6+TiGQDQ==
 
 "@isaacs/brace-expansion@^5.0.0":
   version "5.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/@isaacs/brace-expansion/-/brace-expansion-5.0.0.tgz#4b3dabab7d8e75a429414a96bd67bf4c1d13e0f3"
+  resolved "https://registry.yarnpkg.com/@isaacs/brace-expansion/-/brace-expansion-5.0.0.tgz#4b3dabab7d8e75a429414a96bd67bf4c1d13e0f3"
   integrity sha512-ZT55BDLV0yv0RBm2czMiZ+SqCGO7AvmOM3G/w2xhVPH+te0aKgFjmBvGlL1dH+ql2tgGO3MVrbb3jCKyvpgnxA==
   dependencies:
     "@isaacs/balanced-match" "^4.0.1"
@@ -600,7 +600,7 @@
 
 "@isaacs/fs-minipass@^4.0.0":
   version "4.0.1"
-  resolved "http://nexus.e-is.pro/repository/npmjs/@isaacs/fs-minipass/-/fs-minipass-4.0.1.tgz#2d59ae3ab4b38fb4270bfa23d30f8e2e86c7fe32"
+  resolved "https://registry.yarnpkg.com/@isaacs/fs-minipass/-/fs-minipass-4.0.1.tgz#2d59ae3ab4b38fb4270bfa23d30f8e2e86c7fe32"
   integrity sha512-wgm9Ehl2jpeqP3zw/7mo3kRHFp5MEDhqAdwy1fTGkHAwnkGOVsgpvQhL8B5n1qlb01jV3n/bI0ZfZp5lWA1k4w==
   dependencies:
     minipass "^7.0.4"
@@ -612,7 +612,7 @@
 
 "@mdn/browser-compat-data@6.0.32":
   version "6.0.32"
-  resolved "http://nexus.e-is.pro/repository/npmjs/@mdn/browser-compat-data/-/browser-compat-data-6.0.32.tgz#34b85634d4c2d43cb592087547727b5ca5fc146e"
+  resolved "https://registry.yarnpkg.com/@mdn/browser-compat-data/-/browser-compat-data-6.0.32.tgz#34b85634d4c2d43cb592087547727b5ca5fc146e"
   integrity sha512-XXZ0RbkrIw8mr71WbVYmtZk+zWYutS71+/8/E+gyPE3yt/ZNiW4UU5/NcrpgLO4NfIB+VBuWhPzSN6Pb1VxAWA==
 
 "@netflix/nerror@^1.1.3":
@@ -647,7 +647,7 @@
 
 "@npmcli/agent@^3.0.0":
   version "3.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/@npmcli/agent/-/agent-3.0.0.tgz#1685b1fbd4a1b7bb4f930cbb68ce801edfe7aa44"
+  resolved "https://registry.yarnpkg.com/@npmcli/agent/-/agent-3.0.0.tgz#1685b1fbd4a1b7bb4f930cbb68ce801edfe7aa44"
   integrity sha512-S79NdEgDQd/NGCay6TCoVzXSj74skRZIKJcpJjC5lOq34SZzyI6MqtiiWoiVWoVrTcGjNeC4ipbh1VIHlpfF5Q==
   dependencies:
     agent-base "^7.1.0"
@@ -697,7 +697,7 @@
 
 "@npmcli/arborist@^9.1.3":
   version "9.1.3"
-  resolved "http://nexus.e-is.pro/repository/npmjs/@npmcli/arborist/-/arborist-9.1.3.tgz#a8dac0c357af78b9c834210c9017f41289413c19"
+  resolved "https://registry.yarnpkg.com/@npmcli/arborist/-/arborist-9.1.3.tgz#a8dac0c357af78b9c834210c9017f41289413c19"
   integrity sha512-PvwtZD1dipP5VByHyWX28tZfan1AkfBLenJTgr0rDdEbdovZc06Z5PHdGb5SEeN7EERl68wFH8lq6WvuUHmgrw==
   dependencies:
     "@isaacs/string-locale-compare" "^1.1.0"
@@ -760,7 +760,7 @@
 
 "@npmcli/fs@^4.0.0":
   version "4.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/@npmcli/fs/-/fs-4.0.0.tgz#a1eb1aeddefd2a4a347eca0fab30bc62c0e1c0f2"
+  resolved "https://registry.yarnpkg.com/@npmcli/fs/-/fs-4.0.0.tgz#a1eb1aeddefd2a4a347eca0fab30bc62c0e1c0f2"
   integrity sha512-/xGlezI6xfGO9NwuJlnwz/K14qD1kCSAGtacBHnGzeAIuJGazcp45KP5NuyARXoKb7cwulAGWVsbeSxdG/cb0Q==
   dependencies:
     semver "^7.3.5"
@@ -781,7 +781,7 @@
 
 "@npmcli/git@^5.0.0":
   version "5.0.8"
-  resolved "http://nexus.e-is.pro/repository/npmjs/@npmcli/git/-/git-5.0.8.tgz#8ba3ff8724192d9ccb2735a2aa5380a992c5d3d1"
+  resolved "https://registry.yarnpkg.com/@npmcli/git/-/git-5.0.8.tgz#8ba3ff8724192d9ccb2735a2aa5380a992c5d3d1"
   integrity sha512-liASfw5cqhjNW9UFd+ruwwdEf/lbOAQjLL2XY2dFW/bkJheXDYZgOyul/4gVvEV4BWkTXjYGmDqMw9uegdbJNQ==
   dependencies:
     "@npmcli/promise-spawn" "^7.0.0"
@@ -796,7 +796,7 @@
 
 "@npmcli/git@^6.0.0":
   version "6.0.3"
-  resolved "http://nexus.e-is.pro/repository/npmjs/@npmcli/git/-/git-6.0.3.tgz#966cbb228514372877de5244db285b199836f3aa"
+  resolved "https://registry.yarnpkg.com/@npmcli/git/-/git-6.0.3.tgz#966cbb228514372877de5244db285b199836f3aa"
   integrity sha512-GUYESQlxZRAdhs3UhbB6pVRNUELQOHXwK9ruDkwmCv2aZ5y0SApQzUJCg02p3A7Ue2J5hxvlk1YI53c00NmRyQ==
   dependencies:
     "@npmcli/promise-spawn" "^8.0.0"
@@ -818,7 +818,7 @@
 
 "@npmcli/installed-package-contents@^3.0.0":
   version "3.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/@npmcli/installed-package-contents/-/installed-package-contents-3.0.0.tgz#2c1170ff4f70f68af125e2842e1853a93223e4d1"
+  resolved "https://registry.yarnpkg.com/@npmcli/installed-package-contents/-/installed-package-contents-3.0.0.tgz#2c1170ff4f70f68af125e2842e1853a93223e4d1"
   integrity sha512-fkxoPuFGvxyrH+OQzyTkX2LUEamrF4jZSmxjAtPPHHGO0dqsQ8tTKjnIS8SAnPHdk2I03BDtSMR5K/4loKg79Q==
   dependencies:
     npm-bundled "^4.0.0"
@@ -836,7 +836,7 @@
 
 "@npmcli/map-workspaces@^4.0.1":
   version "4.0.2"
-  resolved "http://nexus.e-is.pro/repository/npmjs/@npmcli/map-workspaces/-/map-workspaces-4.0.2.tgz#d02c5508bf55624f60aaa58fe413748a5c773802"
+  resolved "https://registry.yarnpkg.com/@npmcli/map-workspaces/-/map-workspaces-4.0.2.tgz#d02c5508bf55624f60aaa58fe413748a5c773802"
   integrity sha512-mnuMuibEbkaBTYj9HQ3dMe6L0ylYW+s/gfz7tBDMFY/la0w9Kf44P9aLn4/+/t3aTR3YUHKoT6XQL9rlicIe3Q==
   dependencies:
     "@npmcli/name-from-folder" "^3.0.0"
@@ -856,7 +856,7 @@
 
 "@npmcli/metavuln-calculator@^9.0.0":
   version "9.0.1"
-  resolved "http://nexus.e-is.pro/repository/npmjs/@npmcli/metavuln-calculator/-/metavuln-calculator-9.0.1.tgz#0ce03b42318483ce9df9c03c41577f4cfa72af31"
+  resolved "https://registry.yarnpkg.com/@npmcli/metavuln-calculator/-/metavuln-calculator-9.0.1.tgz#0ce03b42318483ce9df9c03c41577f4cfa72af31"
   integrity sha512-B7ziEnkSmnauecEvFbg9h0d2CVa3uJudd9bTDc9vScfYdRETkQkCriFiYCV3PXE++igd5JRw35WJz902HnGrCg==
   dependencies:
     cacache "^19.0.0"
@@ -888,7 +888,7 @@
 
 "@npmcli/name-from-folder@^3.0.0":
   version "3.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/@npmcli/name-from-folder/-/name-from-folder-3.0.0.tgz#ed49b18d16b954149f31240e16630cfec511cd57"
+  resolved "https://registry.yarnpkg.com/@npmcli/name-from-folder/-/name-from-folder-3.0.0.tgz#ed49b18d16b954149f31240e16630cfec511cd57"
   integrity sha512-61cDL8LUc9y80fXn+lir+iVt8IS0xHqEKwPu/5jCjxQTVoSCmkXvw4vbMrzAMtmghz3/AkiBjhHkDKUH+kf7kA==
 
 "@npmcli/node-gyp@^3.0.0":
@@ -898,7 +898,7 @@
 
 "@npmcli/node-gyp@^4.0.0":
   version "4.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/@npmcli/node-gyp/-/node-gyp-4.0.0.tgz#01f900bae62f0f27f9a5a127b40d443ddfb9d4c6"
+  resolved "https://registry.yarnpkg.com/@npmcli/node-gyp/-/node-gyp-4.0.0.tgz#01f900bae62f0f27f9a5a127b40d443ddfb9d4c6"
   integrity sha512-+t5DZ6mO/QFh78PByMq1fGSAub/agLJZDRfJRMeOSNCt8s9YVlTjmGpIPwPhvXTGUIJk+WszlT0rQa1W33yzNA==
 
 "@npmcli/package-json@^3.0.0":
@@ -910,7 +910,7 @@
 
 "@npmcli/package-json@^5.0.0":
   version "5.2.1"
-  resolved "http://nexus.e-is.pro/repository/npmjs/@npmcli/package-json/-/package-json-5.2.1.tgz#df69477b1023b81ff8503f2b9db4db4faea567ed"
+  resolved "https://registry.yarnpkg.com/@npmcli/package-json/-/package-json-5.2.1.tgz#df69477b1023b81ff8503f2b9db4db4faea567ed"
   integrity sha512-f7zYC6kQautXHvNbLEWgD/uGu1+xCn9izgqBfgItWSx22U0ZDekxN08A1vM8cTxj/cRVe0Q94Ode+tdoYmIOOQ==
   dependencies:
     "@npmcli/git" "^5.0.0"
@@ -923,7 +923,7 @@
 
 "@npmcli/package-json@^6.0.0", "@npmcli/package-json@^6.0.1":
   version "6.2.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/@npmcli/package-json/-/package-json-6.2.0.tgz#7c7e61e466eefdf729cb87a34c3adc15d76e2f97"
+  resolved "https://registry.yarnpkg.com/@npmcli/package-json/-/package-json-6.2.0.tgz#7c7e61e466eefdf729cb87a34c3adc15d76e2f97"
   integrity sha512-rCNLSB/JzNvot0SEyXqWZ7tX2B5dD2a1br2Dp0vSYVo5jh8Z0EZ7lS9TsZ1UtziddB1UfNUaMCc538/HztnJGA==
   dependencies:
     "@npmcli/git" "^6.0.0"
@@ -943,14 +943,14 @@
 
 "@npmcli/promise-spawn@^7.0.0":
   version "7.0.2"
-  resolved "http://nexus.e-is.pro/repository/npmjs/@npmcli/promise-spawn/-/promise-spawn-7.0.2.tgz#1d53d34ffeb5d151bfa8ec661bcccda8bbdfd532"
+  resolved "https://registry.yarnpkg.com/@npmcli/promise-spawn/-/promise-spawn-7.0.2.tgz#1d53d34ffeb5d151bfa8ec661bcccda8bbdfd532"
   integrity sha512-xhfYPXoV5Dy4UkY0D+v2KkwvnDfiA/8Mt3sWCGI/hM03NsYIH8ZaG6QzS9x7pje5vHZBZJ2v6VRFVTWACnqcmQ==
   dependencies:
     which "^4.0.0"
 
 "@npmcli/promise-spawn@^8.0.0":
   version "8.0.3"
-  resolved "http://nexus.e-is.pro/repository/npmjs/@npmcli/promise-spawn/-/promise-spawn-8.0.3.tgz#08c5e4c1cab7ff848e442e4b19bbf0ee699d133f"
+  resolved "https://registry.yarnpkg.com/@npmcli/promise-spawn/-/promise-spawn-8.0.3.tgz#08c5e4c1cab7ff848e442e4b19bbf0ee699d133f"
   integrity sha512-Yb00SWaL4F8w+K8YGhQ55+xE4RUNdMHV43WZGsiTM92gS+lC0mGsn7I4hLug7pbao035S6bj3Y3w0cUNGLfmkg==
   dependencies:
     which "^5.0.0"
@@ -964,14 +964,14 @@
 
 "@npmcli/query@^4.0.0":
   version "4.0.1"
-  resolved "http://nexus.e-is.pro/repository/npmjs/@npmcli/query/-/query-4.0.1.tgz#f8a538807f2d0059c0bee7f4a1f712b73ae47603"
+  resolved "https://registry.yarnpkg.com/@npmcli/query/-/query-4.0.1.tgz#f8a538807f2d0059c0bee7f4a1f712b73ae47603"
   integrity sha512-4OIPFb4weUUwkDXJf4Hh1inAn8neBGq3xsH4ZsAaN6FK3ldrFkH7jSpCc7N9xesi0Sp+EBXJ9eGMDrEww2Ztqw==
   dependencies:
     postcss-selector-parser "^7.0.0"
 
 "@npmcli/redact@^3.0.0":
   version "3.2.2"
-  resolved "http://nexus.e-is.pro/repository/npmjs/@npmcli/redact/-/redact-3.2.2.tgz#4a6745e0ae269120ad223780ce374d6c59ae34cd"
+  resolved "https://registry.yarnpkg.com/@npmcli/redact/-/redact-3.2.2.tgz#4a6745e0ae269120ad223780ce374d6c59ae34cd"
   integrity sha512-7VmYAmk4csGv08QzrDKScdzn11jHPFGyqJW39FyPgPuAp3zIaUmuCo1yxw9aGs+NEJuTGQ9Gwqpt93vtJubucg==
 
 "@npmcli/run-script@^6.0.0":
@@ -987,7 +987,7 @@
 
 "@npmcli/run-script@^9.0.0", "@npmcli/run-script@^9.0.1":
   version "9.1.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/@npmcli/run-script/-/run-script-9.1.0.tgz#6168c2be4703fe5ed31acb08a2151cb620ed30a4"
+  resolved "https://registry.yarnpkg.com/@npmcli/run-script/-/run-script-9.1.0.tgz#6168c2be4703fe5ed31acb08a2151cb620ed30a4"
   integrity sha512-aoNSbxtkePXUlbZB+anS1LqsJdctG5n3UVhfU47+CDdwMi6uNTBMF9gPcQRnqghQd2FGzcwwIFBruFMxjhBewg==
   dependencies:
     "@npmcli/node-gyp" "^4.0.0"
@@ -1048,7 +1048,7 @@
 
 "@red-mobile/cordova-plugin-barcodescanner@^9.1.0":
   version "9.1.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/@red-mobile/cordova-plugin-barcodescanner/-/cordova-plugin-barcodescanner-9.1.0.tgz#e5fc105086244cf55be91f0a4c8f5defcb070197"
+  resolved "https://registry.yarnpkg.com/@red-mobile/cordova-plugin-barcodescanner/-/cordova-plugin-barcodescanner-9.1.0.tgz#e5fc105086244cf55be91f0a4c8f5defcb070197"
   integrity sha512-H0RNoqiWgGLnfdgO1CgeruJ0+eRIQnaYtdZ+gDN7xLi3CzRooJUVLAwt5rekBqI2iSLMFp9qqfGGyRKRUcC7Uw==
   dependencies:
     nopt "^7.2.0"
@@ -1056,14 +1056,14 @@
 
 "@sigstore/bundle@^3.1.0":
   version "3.1.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/@sigstore/bundle/-/bundle-3.1.0.tgz#74f8f3787148400ddd364be8a9a9212174c66646"
+  resolved "https://registry.yarnpkg.com/@sigstore/bundle/-/bundle-3.1.0.tgz#74f8f3787148400ddd364be8a9a9212174c66646"
   integrity sha512-Mm1E3/CmDDCz3nDhFKTuYdB47EdRFRQMOE/EAbiG1MJW77/w1b3P7Qx7JSrVJs8PfwOLOVcKQCHErIwCTyPbag==
   dependencies:
     "@sigstore/protobuf-specs" "^0.4.0"
 
 "@sigstore/core@^2.0.0":
   version "2.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/@sigstore/core/-/core-2.0.0.tgz#f888a8e4c8fdaa27848514a281920b6fd8eca955"
+  resolved "https://registry.yarnpkg.com/@sigstore/core/-/core-2.0.0.tgz#f888a8e4c8fdaa27848514a281920b6fd8eca955"
   integrity sha512-nYxaSb/MtlSI+JWcwTHQxyNmWeWrUXJJ/G4liLrGG7+tS4vAz6LF3xRXqLH6wPIVUoZQel2Fs4ddLx4NCpiIYg==
 
 "@sigstore/protobuf-specs@^0.1.0":
@@ -1073,12 +1073,12 @@
 
 "@sigstore/protobuf-specs@^0.4.0", "@sigstore/protobuf-specs@^0.4.1":
   version "0.4.3"
-  resolved "http://nexus.e-is.pro/repository/npmjs/@sigstore/protobuf-specs/-/protobuf-specs-0.4.3.tgz#5d974eb16c0a1d44a3f0af6e3e7219b35ac57953"
+  resolved "https://registry.yarnpkg.com/@sigstore/protobuf-specs/-/protobuf-specs-0.4.3.tgz#5d974eb16c0a1d44a3f0af6e3e7219b35ac57953"
   integrity sha512-fk2zjD9117RL9BjqEwF7fwv7Q/P9yGsMV4MUJZ/DocaQJ6+3pKr+syBq1owU5Q5qGw5CUbXzm+4yJ2JVRDQeSA==
 
 "@sigstore/sign@^3.1.0":
   version "3.1.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/@sigstore/sign/-/sign-3.1.0.tgz#5d098d4d2b59a279e9ac9b51c794104cda0c649e"
+  resolved "https://registry.yarnpkg.com/@sigstore/sign/-/sign-3.1.0.tgz#5d098d4d2b59a279e9ac9b51c794104cda0c649e"
   integrity sha512-knzjmaOHOov1Ur7N/z4B1oPqZ0QX5geUfhrVaqVlu+hl0EAoL4o+l0MSULINcD5GCWe3Z0+YJO8ues6vFlW0Yw==
   dependencies:
     "@sigstore/bundle" "^3.1.0"
@@ -1090,7 +1090,7 @@
 
 "@sigstore/tuf@^3.1.0":
   version "3.1.1"
-  resolved "http://nexus.e-is.pro/repository/npmjs/@sigstore/tuf/-/tuf-3.1.1.tgz#b01b261288f646e0da57737782893e7d2695c52e"
+  resolved "https://registry.yarnpkg.com/@sigstore/tuf/-/tuf-3.1.1.tgz#b01b261288f646e0da57737782893e7d2695c52e"
   integrity sha512-eFFvlcBIoGwVkkwmTi/vEQFSva3xs5Ot3WmBcjgjVdiaoelBLQaQ/ZBfhlG0MnG0cmTYScPpk7eDdGDWUcFUmg==
   dependencies:
     "@sigstore/protobuf-specs" "^0.4.1"
@@ -1098,7 +1098,7 @@
 
 "@sigstore/verify@^2.1.0":
   version "2.1.1"
-  resolved "http://nexus.e-is.pro/repository/npmjs/@sigstore/verify/-/verify-2.1.1.tgz#f67730012cd474f595044c3717f32ac2a1e9d2bc"
+  resolved "https://registry.yarnpkg.com/@sigstore/verify/-/verify-2.1.1.tgz#f67730012cd474f595044c3717f32ac2a1e9d2bc"
   integrity sha512-hVJD77oT67aowHxwT4+M6PGOp+E2LtLdTK3+FC0lBO9T7sYwItDMXZ7Z07IDCvR1M717a4axbIWckrW67KMP/w==
   dependencies:
     "@sigstore/bundle" "^3.1.0"
@@ -1122,7 +1122,7 @@
 
 "@tufjs/canonical-json@2.0.0":
   version "2.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/@tufjs/canonical-json/-/canonical-json-2.0.0.tgz#a52f61a3d7374833fca945b2549bc30a2dd40d0a"
+  resolved "https://registry.yarnpkg.com/@tufjs/canonical-json/-/canonical-json-2.0.0.tgz#a52f61a3d7374833fca945b2549bc30a2dd40d0a"
   integrity sha512-yVtV8zsdo8qFHe+/3kw81dSLyF7D576A5cCFCi4X7B39tWT7SekaEFUnvnWJHz+9qO7qJTah1JbrDjWKqFtdWA==
 
 "@tufjs/models@1.0.4":
@@ -1135,7 +1135,7 @@
 
 "@tufjs/models@3.0.1":
   version "3.0.1"
-  resolved "http://nexus.e-is.pro/repository/npmjs/@tufjs/models/-/models-3.0.1.tgz#5aebb782ebb9e06f071ae7831c1f35b462b0319c"
+  resolved "https://registry.yarnpkg.com/@tufjs/models/-/models-3.0.1.tgz#5aebb782ebb9e06f071ae7831c1f35b462b0319c"
   integrity sha512-UUYHISyhCU3ZgN8yaear3cGATHb3SMuKHsQ/nVbHXcmnBf+LzQ/cQfhNG+rfaSHgqGKNEm2cOCLVLELStUQ1JA==
   dependencies:
     "@tufjs/canonical-json" "2.0.0"
@@ -1206,19 +1206,19 @@
 
 "@types/yauzl@2.10.3":
   version "2.10.3"
-  resolved "http://nexus.e-is.pro/repository/npmjs/@types/yauzl/-/yauzl-2.10.3.tgz#e9b2808b4f109504a03cda958259876f61017999"
+  resolved "https://registry.yarnpkg.com/@types/yauzl/-/yauzl-2.10.3.tgz#e9b2808b4f109504a03cda958259876f61017999"
   integrity sha512-oJoftv0LSuaDZE3Le4DbKX+KS9G36NzOeSap90UIK0yMA/NhKJhqlSGtNDORNRaIbQfzjXDrQa0ytJ6mNRGz/Q==
   dependencies:
     "@types/node" "*"
 
 "@ungap/structured-clone@^1.2.0":
   version "1.2.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/@ungap/structured-clone/-/structured-clone-1.2.0.tgz#756641adb587851b5ccb3e095daf27ae581c8406"
+  resolved "https://registry.yarnpkg.com/@ungap/structured-clone/-/structured-clone-1.2.0.tgz#756641adb587851b5ccb3e095daf27ae581c8406"
   integrity sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==
 
 "@xmldom/xmldom@^0.8.8":
   version "0.8.11"
-  resolved "http://nexus.e-is.pro/repository/npmjs/@xmldom/xmldom/-/xmldom-0.8.11.tgz#b79de2d67389734c57c52595f7a7305e30c2d608"
+  resolved "https://registry.yarnpkg.com/@xmldom/xmldom/-/xmldom-0.8.11.tgz#b79de2d67389734c57c52595f7a7305e30c2d608"
   integrity sha512-cQzWCtO6C8TQiYl1ruKNn2U6Ao4o4WBBcbL61yJl84x+j5sOWWFU9X7DpND8XZG3daDppSsigMdfAIl2upQBRw==
 
 CSSselect@~0.4.0:
@@ -1246,7 +1246,7 @@ abbrev@^2.0.0:
 
 abbrev@^3.0.0:
   version "3.0.1"
-  resolved "http://nexus.e-is.pro/repository/npmjs/abbrev/-/abbrev-3.0.1.tgz#8ac8b3b5024d31464fe2a5feeea9f4536bf44025"
+  resolved "https://registry.yarnpkg.com/abbrev/-/abbrev-3.0.1.tgz#8ac8b3b5024d31464fe2a5feeea9f4536bf44025"
   integrity sha512-AO2ac6pjRB3SJmGJo+v5/aK6Omggp6fsLrs6wN9bd35ulu4cCwaAU9+7ZhXjeqHVkaHThLuzH0nZr0YpCDhygg==
 
 abort-controller@^3.0.0:
@@ -1289,7 +1289,7 @@ acorn@5.X, acorn@^5.0.3:
 
 acorn@^8.15.0:
   version "8.15.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/acorn/-/acorn-8.15.0.tgz#a360898bc415edaac46c8241f6383975b930b816"
+  resolved "https://registry.yarnpkg.com/acorn/-/acorn-8.15.0.tgz#a360898bc415edaac46c8241f6383975b930b816"
   integrity sha512-NZyJarBfL7nWwIq+FDL6Zp/yHEhePMNnnJ0y3qfieCrmNvYct8uvtiV41UvlSe6apAfk0fY1FbWx+NwfmpvtTg==
 
 acorn@^8.7.0:
@@ -1299,7 +1299,7 @@ acorn@^8.7.0:
 
 acorn@^8.9.0:
   version "8.11.3"
-  resolved "http://nexus.e-is.pro/repository/npmjs/acorn/-/acorn-8.11.3.tgz#71e0b14e13a4ec160724b38fb7b0f233b1b81d7a"
+  resolved "https://registry.yarnpkg.com/acorn/-/acorn-8.11.3.tgz#71e0b14e13a4ec160724b38fb7b0f233b1b81d7a"
   integrity sha512-Y9rRfJG5jcKOE0CLisYbojUjIrIEE7AGMzA/Sm4BslANhbS+cDMpgBdcPT91oJ7OuJ9hYJBx59RjbhxVnrF8Xg==
 
 acorn@~2.6.4:
@@ -1309,7 +1309,7 @@ acorn@~2.6.4:
 
 addons-linter@7.18.0:
   version "7.18.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/addons-linter/-/addons-linter-7.18.0.tgz#9403e93e87832c394cc79a5cd76d31888ca961cc"
+  resolved "https://registry.yarnpkg.com/addons-linter/-/addons-linter-7.18.0.tgz#9403e93e87832c394cc79a5cd76d31888ca961cc"
   integrity sha512-XJ2FiBjwuprKaFte/5KEOPgym3OuBJw1sutUipeYtQ8q2StVzXqwKY+Fwp0wciDlFkmiQmxP9AMeDiKrc0MdRw==
   dependencies:
     "@fluent/syntax" "0.19.0"
@@ -1345,7 +1345,7 @@ addons-moz-compare@1.3.0:
 
 addons-scanner-utils@9.13.0:
   version "9.13.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/addons-scanner-utils/-/addons-scanner-utils-9.13.0.tgz#bbd9a5656ac04c76dd4ccdb5a2dfbf0aa24a5a82"
+  resolved "https://registry.yarnpkg.com/addons-scanner-utils/-/addons-scanner-utils-9.13.0.tgz#bbd9a5656ac04c76dd4ccdb5a2dfbf0aa24a5a82"
   integrity sha512-8OnHK/pbvgbCejGlnEYw+V3URSTVHLkMZmV270QtNh8N9pAgK10IaiJ9DcL0FsrufZ9HxRcR8/wkavh1FgK6Kg==
   dependencies:
     "@types/yauzl" "2.10.3"
@@ -1379,7 +1379,7 @@ agent-base@6, agent-base@^6.0.0, agent-base@^6.0.2:
 
 agent-base@^7.1.0, agent-base@^7.1.2:
   version "7.1.4"
-  resolved "http://nexus.e-is.pro/repository/npmjs/agent-base/-/agent-base-7.1.4.tgz#e3cd76d4c548ee895d3c3fd8dc1f6c5b9032e7a8"
+  resolved "https://registry.yarnpkg.com/agent-base/-/agent-base-7.1.4.tgz#e3cd76d4c548ee895d3c3fd8dc1f6c5b9032e7a8"
   integrity sha512-MnA+YT8fwfJPgBx3m60MNqakm30XOkyIoH1y6huTQvC0PwZG7ki8NacLBcrPbNoo8vEZy7Jpuk7+jMO+CUovTQ==
 
 agentkeepalive@^4.1.3, agentkeepalive@^4.2.1:
@@ -1418,7 +1418,7 @@ ajv@6.12.6, ajv@^6.12.3, ajv@^6.12.4:
 
 ajv@8.17.1:
   version "8.17.1"
-  resolved "http://nexus.e-is.pro/repository/npmjs/ajv/-/ajv-8.17.1.tgz#37d9a5c776af6bc92d7f4f9510eba4c0a60d11a6"
+  resolved "https://registry.yarnpkg.com/ajv/-/ajv-8.17.1.tgz#37d9a5c776af6bc92d7f4f9510eba4c0a60d11a6"
   integrity sha512-B/gBuNg5SiMTrPkC+A2+cW0RszwxYmn6VYxB/inlBStS5nx6xHIt/ehKRhIMhqusl7a8LjQoZnjCs5vhwxOQ1g==
   dependencies:
     fast-deep-equal "^3.1.3"
@@ -1450,7 +1450,7 @@ amdefine@>=0.0.4:
 
 android-versions@^2.0.0:
   version "2.1.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/android-versions/-/android-versions-2.1.0.tgz#e6cd4db647ab777e4d3332a2ff733674194a183b"
+  resolved "https://registry.yarnpkg.com/android-versions/-/android-versions-2.1.0.tgz#e6cd4db647ab777e4d3332a2ff733674194a183b"
   integrity sha512-oCBvVs2uaL8ohQtesGs78/X7QvFDLbKgTosBRiOIBCss1a/yiakQm/ADuoG2k/AUaI0FfrsFeMl/a+GtEtjEeA==
   dependencies:
     semver "^7.5.2"
@@ -1939,7 +1939,7 @@ atomically@^1.7.0:
 
 atomically@^2.0.3:
   version "2.0.3"
-  resolved "http://nexus.e-is.pro/repository/npmjs/atomically/-/atomically-2.0.3.tgz#27e47bbe39994d324918491ba7c0edb7783e56cb"
+  resolved "https://registry.yarnpkg.com/atomically/-/atomically-2.0.3.tgz#27e47bbe39994d324918491ba7c0edb7783e56cb"
   integrity sha512-kU6FmrwZ3Lx7/7y3hPS5QnbJfaohcIul5fGqf7ok+4KklIEk9tJ0C2IQPdacSbVUWv6zVHXEBWoWd6NrVMT7Cw==
   dependencies:
     stubborn-fs "^1.2.5"
@@ -2067,7 +2067,7 @@ bin-links@^4.0.1:
 
 bin-links@^5.0.0:
   version "5.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/bin-links/-/bin-links-5.0.0.tgz#2b0605b62dd5e1ddab3b92a3c4e24221cae06cca"
+  resolved "https://registry.yarnpkg.com/bin-links/-/bin-links-5.0.0.tgz#2b0605b62dd5e1ddab3b92a3c4e24221cae06cca"
   integrity sha512-sdleLVfCjBtgO5cNjA2HVRvWBJAHs4zwenaCPMNJAJU0yNxpzj80IpjOIimkpkr+mhlA+how5poQtt53PygbHA==
   dependencies:
     cmd-shim "^7.0.0"
@@ -2185,7 +2185,7 @@ boom@2.x.x:
 
 boxen@^8.0.1:
   version "8.0.1"
-  resolved "http://nexus.e-is.pro/repository/npmjs/boxen/-/boxen-8.0.1.tgz#7e9fcbb45e11a2d7e6daa8fdcebfc3242fc19fe3"
+  resolved "https://registry.yarnpkg.com/boxen/-/boxen-8.0.1.tgz#7e9fcbb45e11a2d7e6daa8fdcebfc3242fc19fe3"
   integrity sha512-F3PH5k5juxom4xktynS7MoFY+NUWH5LC4CnH11YB8NPew+HLpmBLCybSAEyb2F+4pRXhuhWqFesoQd6DAyc2hw==
   dependencies:
     ansi-align "^3.0.1"
@@ -2263,7 +2263,7 @@ braces@^3.0.2, braces@~3.0.2:
 
 braces@^3.0.3:
   version "3.0.3"
-  resolved "http://nexus.e-is.pro/repository/npmjs/braces/-/braces-3.0.3.tgz#490332f40919452272d55a8480adc0c441358789"
+  resolved "https://registry.yarnpkg.com/braces/-/braces-3.0.3.tgz#490332f40919452272d55a8480adc0c441358789"
   integrity sha512-yQbXgO/OSZVD2IsiLlro+7Hf6Q18EJrKSEsdoMzKePKXct3gvD8oLcOQdIzGupr5Fj+EDe8gO/lxc1BzfMpxvA==
   dependencies:
     fill-range "^7.1.1"
@@ -2338,7 +2338,7 @@ bump-regex@^4.1.0:
 
 bundle-name@^4.1.0:
   version "4.1.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/bundle-name/-/bundle-name-4.1.0.tgz#f3b96b34160d6431a19d7688135af7cfb8797889"
+  resolved "https://registry.yarnpkg.com/bundle-name/-/bundle-name-4.1.0.tgz#f3b96b34160d6431a19d7688135af7cfb8797889"
   integrity sha512-tjwM5exMg6BGRI+kNmTntNsvdZS1X8BFYS6tnJ2hdH0kVxM6/eVZ2xy+FqStSWvYmtfFMDLIxurorHwDKfDz5Q==
   dependencies:
     run-applescript "^7.0.0"
@@ -2436,7 +2436,7 @@ cacache@^17.0.0, cacache@^17.0.4:
 
 cacache@^19.0.0, cacache@^19.0.1:
   version "19.0.1"
-  resolved "http://nexus.e-is.pro/repository/npmjs/cacache/-/cacache-19.0.1.tgz#3370cc28a758434c85c2585008bd5bdcff17d6cd"
+  resolved "https://registry.yarnpkg.com/cacache/-/cacache-19.0.1.tgz#3370cc28a758434c85c2585008bd5bdcff17d6cd"
   integrity sha512-hdsUxulXCi5STId78vRVYEtDAjq99ICAUktLTeTYsLoTE6Z8dS0c8pWNCxwdrk9YfJeobDZc2Y186hD/5ZQgFQ==
   dependencies:
     "@npmcli/fs" "^4.0.0"
@@ -2520,7 +2520,7 @@ camelcase-keys@^6.2.2:
 
 camelcase@8.0.0, camelcase@^8.0.0:
   version "8.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/camelcase/-/camelcase-8.0.0.tgz#c0d36d418753fb6ad9c5e0437579745c1c14a534"
+  resolved "https://registry.yarnpkg.com/camelcase/-/camelcase-8.0.0.tgz#c0d36d418753fb6ad9c5e0437579745c1c14a534"
   integrity sha512-8WB3Jcas3swSvjIeA2yvCJ+Miyz5l1ZmB6HFb9R1317dt9LCQoswg/BGrmAmkWVEszSrrg4RwmO46qIm2OEnSA==
 
 camelcase@^1.0.1, camelcase@^1.0.2:
@@ -2609,7 +2609,7 @@ chalk@^3.0.0:
 
 chalk@^5.3.0:
   version "5.6.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/chalk/-/chalk-5.6.0.tgz#a1a8d294ea3526dbb77660f12649a08490e33ab8"
+  resolved "https://registry.yarnpkg.com/chalk/-/chalk-5.6.0.tgz#a1a8d294ea3526dbb77660f12649a08490e33ab8"
   integrity sha512-46QrSQFyVSEyYAgQ22hQ+zDa60YHA4fBstHmtSApj1Y5vKtG27fWowW03jCk5KcbXEWPZUIR894aARCA/G1kfQ==
 
 chardet@^0.7.0:
@@ -2717,12 +2717,12 @@ chownr@^2.0.0:
 
 chownr@^3.0.0:
   version "3.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/chownr/-/chownr-3.0.0.tgz#9855e64ecd240a9cc4267ce8a4aa5d24a1da15e4"
+  resolved "https://registry.yarnpkg.com/chownr/-/chownr-3.0.0.tgz#9855e64ecd240a9cc4267ce8a4aa5d24a1da15e4"
   integrity sha512-+IxzY9BZOQd/XuYPRmrvEVjF/nqj5kgT4kEq7VofrDoM1MxoRjEWkrCC3EtLi59TVawxTAn+orJwFQcrqEN1+g==
 
 chrome-launcher@1.2.0:
   version "1.2.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/chrome-launcher/-/chrome-launcher-1.2.0.tgz#bba61f558f450aef70bbda1f011c83c31c129302"
+  resolved "https://registry.yarnpkg.com/chrome-launcher/-/chrome-launcher-1.2.0.tgz#bba61f558f450aef70bbda1f011c83c31c129302"
   integrity sha512-JbuGuBNss258bvGil7FT4HKdC3SC2K7UAEUqiPy3ACS3Yxo3hAW6bvFpCu2HsIJLgTqxgEX6BkujvzZfLpUD0Q==
   dependencies:
     "@types/node" "*"
@@ -2868,7 +2868,7 @@ cmd-shim@^6.0.0:
 
 cmd-shim@^7.0.0:
   version "7.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/cmd-shim/-/cmd-shim-7.0.0.tgz#23bcbf69fff52172f7e7c02374e18fb215826d95"
+  resolved "https://registry.yarnpkg.com/cmd-shim/-/cmd-shim-7.0.0.tgz#23bcbf69fff52172f7e7c02374e18fb215826d95"
   integrity sha512-rtpaCbr164TPPh+zFdkWpCyZuKkjpAzODfaZCf/SVJZzJN+4bHQb/LP3Jzq5/+84um3XXY8r548XiWKSborwVw==
 
 code-point-at@^1.0.0:
@@ -3098,7 +3098,7 @@ configstore@^5.0.1:
 
 configstore@^7.0.0:
   version "7.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/configstore/-/configstore-7.0.0.tgz#4461561fc51cb40e5ee1161230bc0337e069cc6b"
+  resolved "https://registry.yarnpkg.com/configstore/-/configstore-7.0.0.tgz#4461561fc51cb40e5ee1161230bc0337e069cc6b"
   integrity sha512-yk7/5PN5im4qwz0WFZW3PXnzHgPu9mX29Y8uZ3aefe2lBPC1FYttWZRcaW9fKkT0pBCJyuQ2HfbmPVaODi9jcQ==
   dependencies:
     atomically "^2.0.3"
@@ -3188,7 +3188,7 @@ copy-props@^2.0.1:
 
 cordova-android@^13.0.0:
   version "13.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/cordova-android/-/cordova-android-13.0.0.tgz#6ca1f062927da6ef6c6ded819cf8a26020c2416c"
+  resolved "https://registry.yarnpkg.com/cordova-android/-/cordova-android-13.0.0.tgz#6ca1f062927da6ef6c6ded819cf8a26020c2416c"
   integrity sha512-uQG+cSyrB1NMi2aIzihldIupHB9WGpZVvrMMMAAtnyc6tDlEk7gweSSaFsEONyGAnteRYpIvrzg/YwDW08PcUg==
   dependencies:
     android-versions "^2.0.0"
@@ -3240,7 +3240,7 @@ cordova-common@^5.0.0:
 
 cordova-common@^6.0.0:
   version "6.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/cordova-common/-/cordova-common-6.0.0.tgz#e88e7be140e313e13ab1b8e95464d9adea10ad07"
+  resolved "https://registry.yarnpkg.com/cordova-common/-/cordova-common-6.0.0.tgz#e88e7be140e313e13ab1b8e95464d9adea10ad07"
   integrity sha512-16WPC1DuxVdshV3RoQUXqhcJVdhxWGwiFysA4TkYuboqoev6mgt0JuIJFxmQbzR/DuyuONaVe0L0O0Hf1C08Mg==
   dependencies:
     "@netflix/nerror" "^1.1.3"
@@ -3253,7 +3253,7 @@ cordova-common@^6.0.0:
 
 cordova-create@^5.0.0:
   version "5.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/cordova-create/-/cordova-create-5.0.0.tgz#88fe33058cf2d46d86efbe936a4ba2c4d6db8a05"
+  resolved "https://registry.yarnpkg.com/cordova-create/-/cordova-create-5.0.0.tgz#88fe33058cf2d46d86efbe936a4ba2c4d6db8a05"
   integrity sha512-jFc+vbh6Xx2DciI0/RFzLOB0X7YOiiDv9kjDfoq+jqh+TRZDYOuES19F1ZkwgDTJGnwUO0HoMIswiiTy45Royw==
   dependencies:
     cordova-app-hello-world "^6.0.0"
@@ -3286,7 +3286,7 @@ cordova-fetch@^4.0.0:
 
 cordova-fetch@^5.0.0:
   version "5.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/cordova-fetch/-/cordova-fetch-5.0.0.tgz#ba620eae9a1f52766631a51e7521be1aa60e8b49"
+  resolved "https://registry.yarnpkg.com/cordova-fetch/-/cordova-fetch-5.0.0.tgz#ba620eae9a1f52766631a51e7521be1aa60e8b49"
   integrity sha512-fsYnVfx32AOrFO6tw4EkzSig7WjNhze35dKIzdw20zTQetDKEfWA79PpCaoiSeahGi6O2MdnOFabLhEa8se6jg==
   dependencies:
     "@npmcli/arborist" "^9.1.3"
@@ -3300,7 +3300,7 @@ cordova-fetch@^5.0.0:
 
 cordova-ios@^7.1.1:
   version "7.1.1"
-  resolved "http://nexus.e-is.pro/repository/npmjs/cordova-ios/-/cordova-ios-7.1.1.tgz#31b2339a63ebca8d1a5846d4a8a61ca30f70856c"
+  resolved "https://registry.yarnpkg.com/cordova-ios/-/cordova-ios-7.1.1.tgz#31b2339a63ebca8d1a5846d4a8a61ca30f70856c"
   integrity sha512-JwTyPxWcAZlbIOR5QO6TaJzkoSzfrp7jrlX01bWZ7Sxp0PYXejAJbA6J0W4u11M+atrQRNimNltZDyAlSBW2tw==
   dependencies:
     cordova-common "^5.0.0"
@@ -3315,7 +3315,7 @@ cordova-ios@^7.1.1:
 
 cordova-lib@^12.0.0:
   version "12.0.2"
-  resolved "http://nexus.e-is.pro/repository/npmjs/cordova-lib/-/cordova-lib-12.0.2.tgz#fc52eb1886f17ae219c3e88129460eb1f34ee26d"
+  resolved "https://registry.yarnpkg.com/cordova-lib/-/cordova-lib-12.0.2.tgz#fc52eb1886f17ae219c3e88129460eb1f34ee26d"
   integrity sha512-ewel8gaeJNwDr10QPL45tYrG6QPIiNZ25KLU6lb2IfaLeCPtwFTaPq0AvBN5uFpkGr0vRqYRcMX4+RSJ5iqmiw==
   dependencies:
     cordova-common "^5.0.0"
@@ -3343,7 +3343,7 @@ cordova-plugin-androidx-adapter@^1.1.3:
 
 cordova-plugin-camera@^8.0.0:
   version "8.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/cordova-plugin-camera/-/cordova-plugin-camera-8.0.0.tgz#317d4887f6b84e9f35d366002d9f01cbe78a5659"
+  resolved "https://registry.yarnpkg.com/cordova-plugin-camera/-/cordova-plugin-camera-8.0.0.tgz#317d4887f6b84e9f35d366002d9f01cbe78a5659"
   integrity sha512-8HgUd9AQTmLBdSgBS/sbPWaroVPjFmce2Rglwt9CTSpniFFGSOqGRx5URUdJ3tQiREisgy0R/4Zl+BfVv/gT2w==
 
 cordova-plugin-customurlscheme@^5.0.2:
@@ -3353,7 +3353,7 @@ cordova-plugin-customurlscheme@^5.0.2:
 
 cordova-plugin-device@^3.0.0:
   version "3.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/cordova-plugin-device/-/cordova-plugin-device-3.0.0.tgz#e70d6def715629f62b96c1e0ee5a1299e96b1341"
+  resolved "https://registry.yarnpkg.com/cordova-plugin-device/-/cordova-plugin-device-3.0.0.tgz#e70d6def715629f62b96c1e0ee5a1299e96b1341"
   integrity sha512-g8fFYOvleeYpklWvHwZ/T8/IzJe/3O0MGVDIUoqBru4v8SNDAbNVD3oOqoOQANBWGFQMg7GIkAAl8errCHZ7zQ==
 
 cordova-plugin-dialogs@^2.0.2:
@@ -3363,12 +3363,12 @@ cordova-plugin-dialogs@^2.0.2:
 
 cordova-plugin-file@^8.1.3:
   version "8.1.3"
-  resolved "http://nexus.e-is.pro/repository/npmjs/cordova-plugin-file/-/cordova-plugin-file-8.1.3.tgz#2fe4405a7dfdab1bfc2ccc882c37b1e8029f81b6"
+  resolved "https://registry.yarnpkg.com/cordova-plugin-file/-/cordova-plugin-file-8.1.3.tgz#2fe4405a7dfdab1bfc2ccc882c37b1e8029f81b6"
   integrity sha512-KlnP3CapNIsKncoWV5lYcIFYDPl0aZ1J3AH3QESlQX1Cb6Ct0p6GrAUvINyrFsjPbWHj8i0b6la6udVsghbATg==
 
 cordova-plugin-inappbrowser@^6.0.0:
   version "6.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/cordova-plugin-inappbrowser/-/cordova-plugin-inappbrowser-6.0.0.tgz#d236ebef23543d128b0f5613d8b8fd3bbcb0dafc"
+  resolved "https://registry.yarnpkg.com/cordova-plugin-inappbrowser/-/cordova-plugin-inappbrowser-6.0.0.tgz#d236ebef23543d128b0f5613d8b8fd3bbcb0dafc"
   integrity sha512-nMJ67YQZwkx1WMfA4tKFdVdTg6FNkh/nQflP1uMw0RVe/cP2kfDrO3SbpUr8yKahpWdSQl1Lmd8D3KKzuAjucA==
 
 cordova-plugin-ionic-keyboard@^2.2.0:
@@ -3378,7 +3378,7 @@ cordova-plugin-ionic-keyboard@^2.2.0:
 
 cordova-plugin-ionic-webview@^5.0.1:
   version "5.0.1"
-  resolved "http://nexus.e-is.pro/repository/npmjs/cordova-plugin-ionic-webview/-/cordova-plugin-ionic-webview-5.0.1.tgz#01c4f2c820509c4869cff0a80ba8577c09615bdf"
+  resolved "https://registry.yarnpkg.com/cordova-plugin-ionic-webview/-/cordova-plugin-ionic-webview-5.0.1.tgz#01c4f2c820509c4869cff0a80ba8577c09615bdf"
   integrity sha512-dF3x7ee8s7ITPImz8WG5HFMnzMW1LaCve+Pdm5WzonKxcwkmMsPrW2zoWuIFBTWjXvFyNoxprzRn6aq/WotvKg==
 
 cordova-plugin-network-information@~3.0.0:
@@ -3398,7 +3398,7 @@ cordova-plugin-splashscreen@^6.0.2:
 
 cordova-plugin-statusbar@^4.0.0:
   version "4.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/cordova-plugin-statusbar/-/cordova-plugin-statusbar-4.0.0.tgz#c628a6ad2dc1e9da71721092a1221d640e1807b7"
+  resolved "https://registry.yarnpkg.com/cordova-plugin-statusbar/-/cordova-plugin-statusbar-4.0.0.tgz#c628a6ad2dc1e9da71721092a1221d640e1807b7"
   integrity sha512-NTVdQhj9msydnarCH8ijOhASx+6fO16hg17AilAjfzWRvcBoF+4kKkPhTkZM7D2bOBePhfHEaMhEnxnA3M4Dlg==
 
 cordova-plugin-vibration@^3.1.1:
@@ -3418,7 +3418,7 @@ cordova-plugin-x-toast@^2.7.3:
 
 cordova-serve@^4.0.1:
   version "4.0.1"
-  resolved "http://nexus.e-is.pro/repository/npmjs/cordova-serve/-/cordova-serve-4.0.1.tgz#8405ef74514aa06d706d6cf1d43c6357efbe0af5"
+  resolved "https://registry.yarnpkg.com/cordova-serve/-/cordova-serve-4.0.1.tgz#8405ef74514aa06d706d6cf1d43c6357efbe0af5"
   integrity sha512-YbfXaZ60yr5dkqmDFQgrU7TSKnzCqYsxHgIUzDeX8RggZb6mz1F9jMfUBbaYyaU7JjcuJ0aoRPYLvwSGQVhGkw==
   dependencies:
     chalk "^3.0.0"
@@ -3429,7 +3429,7 @@ cordova-serve@^4.0.1:
 
 cordova@^12.0.0:
   version "12.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/cordova/-/cordova-12.0.0.tgz#f42af1fb378f8a707cb403cb9a53628e48dbea42"
+  resolved "https://registry.yarnpkg.com/cordova/-/cordova-12.0.0.tgz#f42af1fb378f8a707cb403cb9a53628e48dbea42"
   integrity sha512-D0gGDsaXlmafWxVZExJo6jO8AEVLYBe12Qghjx4zz8XfNhSUe3cInm4TyDZoxB2hFom73eLxIbomYOb0J6tutw==
   dependencies:
     configstore "^5.0.1"
@@ -3641,7 +3641,7 @@ debug@4, debug@^4.0.0, debug@^4.1.0, debug@^4.1.1, debug@^4.3.2, debug@^4.3.3, d
 
 debug@^4.3.1, debug@^4.4.1:
   version "4.4.1"
-  resolved "http://nexus.e-is.pro/repository/npmjs/debug/-/debug-4.4.1.tgz#e5a8bc6cbc4c6cd3e64308b0693a3d4fa550189b"
+  resolved "https://registry.yarnpkg.com/debug/-/debug-4.4.1.tgz#e5a8bc6cbc4c6cd3e64308b0693a3d4fa550189b"
   integrity sha512-KcKCqiftBJcZr++7ykoDIEwSa3XWowTfNPo92BYxjXiyYEVrUQh2aLyhxBCwww+heortUFxEJYcRzosstTEBYQ==
   dependencies:
     ms "^2.1.3"
@@ -3681,7 +3681,7 @@ dedent@^0.7.0:
 
 dedent@^1.5.3:
   version "1.6.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/dedent/-/dedent-1.6.0.tgz#79d52d6389b1ffa67d2bcef59ba51847a9d503b2"
+  resolved "https://registry.yarnpkg.com/dedent/-/dedent-1.6.0.tgz#79d52d6389b1ffa67d2bcef59ba51847a9d503b2"
   integrity sha512-F1Z+5UCFpmQUzJa11agbyPVMbpgT/qA3/SKyJ1jyBgm7dUcUEa8v9JwDkerSQXfakBwFljIxhOJqGkjUwZ9FSA==
 
 deep-extend@^0.6.0:
@@ -3706,12 +3706,12 @@ deepmerge@~0.2.7:
 
 default-browser-id@^5.0.0:
   version "5.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/default-browser-id/-/default-browser-id-5.0.0.tgz#a1d98bf960c15082d8a3fa69e83150ccccc3af26"
+  resolved "https://registry.yarnpkg.com/default-browser-id/-/default-browser-id-5.0.0.tgz#a1d98bf960c15082d8a3fa69e83150ccccc3af26"
   integrity sha512-A6p/pu/6fyBcA1TRz/GqWYPViplrftcW2gZC9q79ngNCKAeR/X3gcEdXQHl4KNXV+3wgIJ1CPkJQ3IHM6lcsyA==
 
 default-browser@^5.2.1:
   version "5.2.1"
-  resolved "http://nexus.e-is.pro/repository/npmjs/default-browser/-/default-browser-5.2.1.tgz#7b7ba61204ff3e425b556869ae6d3e9d9f1712cf"
+  resolved "https://registry.yarnpkg.com/default-browser/-/default-browser-5.2.1.tgz#7b7ba61204ff3e425b556869ae6d3e9d9f1712cf"
   integrity sha512-WY/3TUME0x3KPYdRRxEJJvXRHV4PyPoUsxtZa78lwItwRQRHhd2U9xOscaT/YTf8uCXIAjeJOFBVEh/7FtD8Xg==
   dependencies:
     bundle-name "^4.1.0"
@@ -3738,7 +3738,7 @@ defaults@^1.0.3:
 
 define-lazy-prop@^3.0.0:
   version "3.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/define-lazy-prop/-/define-lazy-prop-3.0.0.tgz#dbb19adfb746d7fc6d734a06b72f4a00d021255f"
+  resolved "https://registry.yarnpkg.com/define-lazy-prop/-/define-lazy-prop-3.0.0.tgz#dbb19adfb746d7fc6d734a06b72f4a00d021255f"
   integrity sha512-N+MeXYoqr3pOgn8xfyRPREN7gHakLYjhsHhWGT3fWAiL4IkAt0iDw14QiiEm2bE30c5XX5q0FtAA3CK5f9/BUg==
 
 define-properties@^1.1.3, define-properties@^1.1.4, define-properties@^1.2.0:
@@ -3987,7 +3987,7 @@ dot-prop@^6.0.1:
 
 dot-prop@^9.0.0:
   version "9.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/dot-prop/-/dot-prop-9.0.0.tgz#bae5982fe6dc6b8fddb92efef4f2ddff26779e92"
+  resolved "https://registry.yarnpkg.com/dot-prop/-/dot-prop-9.0.0.tgz#bae5982fe6dc6b8fddb92efef4f2ddff26779e92"
   integrity sha512-1gxPBJpI/pcjQhKgIU91II6Wkay+dLcN3M6rf2uwP8hRur3HtQXjVrdAK3sjC0piaEuxzMwjXChcETiJl47lAQ==
   dependencies:
     type-fest "^4.18.2"
@@ -4078,7 +4078,7 @@ elementtree@^0.1.7:
 
 emoji-regex@^10.3.0:
   version "10.4.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/emoji-regex/-/emoji-regex-10.4.0.tgz#03553afea80b3975749cfcb36f776ca268e413d4"
+  resolved "https://registry.yarnpkg.com/emoji-regex/-/emoji-regex-10.4.0.tgz#03553afea80b3975749cfcb36f776ca268e413d4"
   integrity sha512-EC+0oUMY1Rqm4O6LLrgjtYDvcVYTy7chDnM4Q7030tP4Kwj3u/pR6gP9ygnp2CJMK5Gq+9Q2oqmrFJAz01DXjw==
 
 emoji-regex@^8.0.0:
@@ -4343,12 +4343,12 @@ escodegen@^1.8.1:
 
 eslint-plugin-no-unsanitized@4.1.2:
   version "4.1.2"
-  resolved "http://nexus.e-is.pro/repository/npmjs/eslint-plugin-no-unsanitized/-/eslint-plugin-no-unsanitized-4.1.2.tgz#a994d7633a9ed168e33a82b377ae3b9f79d16734"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-no-unsanitized/-/eslint-plugin-no-unsanitized-4.1.2.tgz#a994d7633a9ed168e33a82b377ae3b9f79d16734"
   integrity sha512-ydF3PMFKEIkP71ZbLHFvu6/FW8SvRv6VV/gECfrQkqyD5+5oCAtPz8ZHy0GRuMDtNe2jsNdPCQXX4LSbkapAVQ==
 
 eslint-scope@^7.2.2:
   version "7.2.2"
-  resolved "http://nexus.e-is.pro/repository/npmjs/eslint-scope/-/eslint-scope-7.2.2.tgz#deb4f92563390f32006894af62a22dba1c46423f"
+  resolved "https://registry.yarnpkg.com/eslint-scope/-/eslint-scope-7.2.2.tgz#deb4f92563390f32006894af62a22dba1c46423f"
   integrity sha512-dOt21O7lTMhDM+X9mB4GX+DZrZtCUJPL/wlcTqxyrx5IvO0IYtILdtrQGQp+8n5S0gwSVmOf9NQrjMOgfQZlIg==
   dependencies:
     esrecurse "^4.3.0"
@@ -4356,7 +4356,7 @@ eslint-scope@^7.2.2:
 
 eslint-visitor-keys@4.2.1, eslint-visitor-keys@^4.2.1:
   version "4.2.1"
-  resolved "http://nexus.e-is.pro/repository/npmjs/eslint-visitor-keys/-/eslint-visitor-keys-4.2.1.tgz#4cfea60fe7dd0ad8e816e1ed026c1d5251b512c1"
+  resolved "https://registry.yarnpkg.com/eslint-visitor-keys/-/eslint-visitor-keys-4.2.1.tgz#4cfea60fe7dd0ad8e816e1ed026c1d5251b512c1"
   integrity sha512-Uhdk5sfqcee/9H/rCOJikYz67o0a2Tw2hGRPOG2Y1R2dg7brRe1uG0yaNQDHu+TO/uQPF/5eCapvYSmHUjt7JQ==
 
 eslint-visitor-keys@^3.3.0, eslint-visitor-keys@^3.4.1:
@@ -4366,12 +4366,12 @@ eslint-visitor-keys@^3.3.0, eslint-visitor-keys@^3.4.1:
 
 eslint-visitor-keys@^3.4.3:
   version "3.4.3"
-  resolved "http://nexus.e-is.pro/repository/npmjs/eslint-visitor-keys/-/eslint-visitor-keys-3.4.3.tgz#0cd72fe8550e3c2eae156a96a4dddcd1c8ac5800"
+  resolved "https://registry.yarnpkg.com/eslint-visitor-keys/-/eslint-visitor-keys-3.4.3.tgz#0cd72fe8550e3c2eae156a96a4dddcd1c8ac5800"
   integrity sha512-wpc+LXeiyiisxPlEkUzU6svyS1frIO3Mgxj1fdy7Pm8Ygzguax2N3Fa/D/ag1WqbOprdI+uY6wMUl8/a2G+iag==
 
 eslint@8.57.1:
   version "8.57.1"
-  resolved "http://nexus.e-is.pro/repository/npmjs/eslint/-/eslint-8.57.1.tgz#7df109654aba7e3bbe5c8eae533c5e461d3c6ca9"
+  resolved "https://registry.yarnpkg.com/eslint/-/eslint-8.57.1.tgz#7df109654aba7e3bbe5c8eae533c5e461d3c6ca9"
   integrity sha512-ypowyDxpVSYpkXr9WPv2PAZCtNip1Mv5KTW0SCurXv/9iOpcrH9PaqUElksqEB6pChqHGDRCFTyrZlGhnLNGiA==
   dependencies:
     "@eslint-community/eslint-utils" "^4.2.0"
@@ -4415,7 +4415,7 @@ eslint@8.57.1:
 
 espree@10.4.0:
   version "10.4.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/espree/-/espree-10.4.0.tgz#d54f4949d4629005a1fa168d937c3ff1f7e2a837"
+  resolved "https://registry.yarnpkg.com/espree/-/espree-10.4.0.tgz#d54f4949d4629005a1fa168d937c3ff1f7e2a837"
   integrity sha512-j6PAQ2uUr79PZhBjP5C5fhl8e39FmRnOjsD5lGnWrFU8i2G776tBK7+nP8KuQUTTyAZUwfQqXAgrVH5MbH9CYQ==
   dependencies:
     acorn "^8.15.0"
@@ -4424,7 +4424,7 @@ espree@10.4.0:
 
 espree@^9.6.0, espree@^9.6.1:
   version "9.6.1"
-  resolved "http://nexus.e-is.pro/repository/npmjs/espree/-/espree-9.6.1.tgz#a2a17b8e434690a5432f2f8018ce71d331a48c6f"
+  resolved "https://registry.yarnpkg.com/espree/-/espree-9.6.1.tgz#a2a17b8e434690a5432f2f8018ce71d331a48c6f"
   integrity sha512-oruZaFkjorTpF32kDSI5/75ViwGeZginGGy2NoOSg3Q9bnwlnmDm4HLnkl0RE3n+njDXR037aY1+x58Z/zFdwQ==
   dependencies:
     acorn "^8.9.0"
@@ -4622,7 +4622,7 @@ expand-tilde@^2.0.0, expand-tilde@^2.0.2:
 
 exponential-backoff@^3.1.1:
   version "3.1.2"
-  resolved "http://nexus.e-is.pro/repository/npmjs/exponential-backoff/-/exponential-backoff-3.1.2.tgz#a8f26adb96bf78e8cd8ad1037928d5e5c0679d91"
+  resolved "https://registry.yarnpkg.com/exponential-backoff/-/exponential-backoff-3.1.2.tgz#a8f26adb96bf78e8cd8ad1037928d5e5c0679d91"
   integrity sha512-8QxYTVXUkuy7fIIoitQkPwGonB8F3Zj8eEO8Sqg9Zv/bkI7RJAzowee4gr81Hak/dUTpA2Z7VfQgoijjPNlUZA==
 
 express@^4.16.2, express@^4.17.1:
@@ -4775,7 +4775,7 @@ fast-glob@^3.0.3, fast-glob@^3.2.12, fast-glob@^3.2.9:
 
 fast-glob@^3.3.2, fast-glob@^3.3.3:
   version "3.3.3"
-  resolved "http://nexus.e-is.pro/repository/npmjs/fast-glob/-/fast-glob-3.3.3.tgz#d06d585ce8dba90a16b0505c543c3ccfb3aeb818"
+  resolved "https://registry.yarnpkg.com/fast-glob/-/fast-glob-3.3.3.tgz#d06d585ce8dba90a16b0505c543c3ccfb3aeb818"
   integrity sha512-7MptL8U0cqcFdzIzwOTHoilX9x5BrNqye7Z/LuC7kCMRio1EMSyqRK3BEAUD7sXRq4iT4AzTVuZdhgQ2TCvYLg==
   dependencies:
     "@nodelib/fs.stat" "^2.0.2"
@@ -4821,7 +4821,7 @@ fast-safe-stringify@^2.0.7:
 
 fast-uri@^3.0.1:
   version "3.1.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/fast-uri/-/fast-uri-3.1.0.tgz#66eecff6c764c0df9b762e62ca7edcfb53b4edfa"
+  resolved "https://registry.yarnpkg.com/fast-uri/-/fast-uri-3.1.0.tgz#66eecff6c764c0df9b762e62ca7edcfb53b4edfa"
   integrity sha512-iPeeDKJSWf4IEOasVVrknXpaBV0IApz/gp7S2bb7Z4Lljbl2MGJRqInZiUrQwV16cpzw/D3S5j5Julj/gT52AA==
 
 fastq@^1.6.0:
@@ -4854,7 +4854,7 @@ fd-slicer@~1.1.0:
 
 fdir@^6.4.4:
   version "6.5.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/fdir/-/fdir-6.5.0.tgz#ed2ab967a331ade62f18d077dae192684d50d350"
+  resolved "https://registry.yarnpkg.com/fdir/-/fdir-6.5.0.tgz#ed2ab967a331ade62f18d077dae192684d50d350"
   integrity sha512-tIbYtZbucOs0BRGqPJkshJUYdL+SDH7dVM8gjy+ERp3WAUjLEFJE+02kanyHtwjWOnwrKYBiwAmM0p4kLJAnXg==
 
 figures@^2.0.0:
@@ -4912,7 +4912,7 @@ fill-range@^7.0.1:
 
 fill-range@^7.1.1:
   version "7.1.1"
-  resolved "http://nexus.e-is.pro/repository/npmjs/fill-range/-/fill-range-7.1.1.tgz#44265d3cac07e3ea7dc247516380643754a05292"
+  resolved "https://registry.yarnpkg.com/fill-range/-/fill-range-7.1.1.tgz#44265d3cac07e3ea7dc247516380643754a05292"
   integrity sha512-YsGpe3WHLK8ZYi4tWDg2Jy3ebRz2rXowDxnld4bkQB00cc/1Zw9AWnC0i9ztDJitivtQvaI9KaLyKrc+hBW0yg==
   dependencies:
     to-regex-range "^5.0.1"
@@ -4994,7 +4994,7 @@ fined@^1.0.1:
 
 firefox-profile@4.7.0:
   version "4.7.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/firefox-profile/-/firefox-profile-4.7.0.tgz#97087b17a9a38fea58ec0acf2bca19a5cc121cb7"
+  resolved "https://registry.yarnpkg.com/firefox-profile/-/firefox-profile-4.7.0.tgz#97087b17a9a38fea58ec0acf2bca19a5cc121cb7"
   integrity sha512-aGApEu5bfCNbA4PGUZiRJAIU6jKmghV2UVdklXAofnNtiDjqYw0czLS46W7IfFqVKgKhFB8Ao2YoNGHY4BoIMQ==
   dependencies:
     adm-zip "~0.5.x"
@@ -5146,7 +5146,7 @@ fs-extra@^11.1.0, fs-extra@^11.1.1:
 
 fs-extra@^11.2.0:
   version "11.3.1"
-  resolved "http://nexus.e-is.pro/repository/npmjs/fs-extra/-/fs-extra-11.3.1.tgz#ba7a1f97a85f94c6db2e52ff69570db3671d5a74"
+  resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-11.3.1.tgz#ba7a1f97a85f94c6db2e52ff69570db3671d5a74"
   integrity sha512-eXvGGwZ5CL17ZSwHWd3bbgk7UUpF6IFHtP57NYYakPvHOs8GDgDe5KJI36jIJzDkJ6eJjuzRA8eBQb6SkKue0g==
   dependencies:
     graceful-fs "^4.2.0"
@@ -5232,7 +5232,7 @@ function-bind@^1.1.1:
 
 function-bind@^1.1.2:
   version "1.1.2"
-  resolved "http://nexus.e-is.pro/repository/npmjs/function-bind/-/function-bind-1.1.2.tgz#2c02d864d97f3ea6c8830c464cbd11ab6eab7a1c"
+  resolved "https://registry.yarnpkg.com/function-bind/-/function-bind-1.1.2.tgz#2c02d864d97f3ea6c8830c464cbd11ab6eab7a1c"
   integrity sha512-7XHNxH7qX9xG5mIwxkhumTox/MIRNcOgDrxWsMt2pAr23WHp6MrRlN7FBSFpCpr+oVO0F744iUgR82nJMfG2SA==
 
 function.prototype.name@^1.1.5:
@@ -5252,7 +5252,7 @@ functions-have-names@^1.2.2, functions-have-names@^1.2.3:
 
 fx-runner@1.4.0:
   version "1.4.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/fx-runner/-/fx-runner-1.4.0.tgz#7a3f0374cc78c6c689ef75937b7b0cd75428c509"
+  resolved "https://registry.yarnpkg.com/fx-runner/-/fx-runner-1.4.0.tgz#7a3f0374cc78c6c689ef75937b7b0cd75428c509"
   integrity sha512-rci1g6U0rdTg6bAaBboP7XdRu01dzTAaKXxFf+PUqGuCv6Xu7o8NZdY1D5MvKGIjb6EdS1g3VlXOgksir1uGkg==
   dependencies:
     commander "2.9.0"
@@ -5331,7 +5331,7 @@ get-caller-file@^2.0.5:
 
 get-east-asian-width@^1.0.0:
   version "1.3.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/get-east-asian-width/-/get-east-asian-width-1.3.0.tgz#21b4071ee58ed04ee0db653371b55b4299875389"
+  resolved "https://registry.yarnpkg.com/get-east-asian-width/-/get-east-asian-width-1.3.0.tgz#21b4071ee58ed04ee0db653371b55b4299875389"
   integrity sha512-vpeMIQKxczTD/0s2CdEWHcb0eeJe6TFjxb+J5xgX7hScxqrGuyjmv4c1D4A/gelKfyox0gJJwIHF+fLjeaM8kQ==
 
 get-intrinsic@^1.0.2, get-intrinsic@^1.1.1, get-intrinsic@^1.1.3, get-intrinsic@^1.2.0:
@@ -5523,7 +5523,7 @@ glob@~7.1.1:
 
 global-directory@^4.0.1:
   version "4.0.1"
-  resolved "http://nexus.e-is.pro/repository/npmjs/global-directory/-/global-directory-4.0.1.tgz#4d7ac7cfd2cb73f304c53b8810891748df5e361e"
+  resolved "https://registry.yarnpkg.com/global-directory/-/global-directory-4.0.1.tgz#4d7ac7cfd2cb73f304c53b8810891748df5e361e"
   integrity sha512-wHTUcDUoZ1H5/0iVqEudYW4/kAlN5cZ3j/bXn0Dpbizl9iaUVeWSHqiOjsgk6OW2bkLclbBjzewBz6weQ1zA2Q==
   dependencies:
     ini "4.1.1"
@@ -5666,7 +5666,7 @@ graceful-fs@4.2.10, graceful-fs@4.2.4, graceful-fs@4.X, graceful-fs@^4.0.0, grac
 
 graceful-fs@^4.2.3:
   version "4.2.11"
-  resolved "http://nexus.e-is.pro/repository/npmjs/graceful-fs/-/graceful-fs-4.2.11.tgz#4183e4e8bf08bb6e05bbb2f7d2e0c8f712ca40e3"
+  resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.11.tgz#4183e4e8bf08bb6e05bbb2f7d2e0c8f712ca40e3"
   integrity sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==
 
 "graceful-readlink@>= 1.0.0":
@@ -5676,7 +5676,7 @@ graceful-fs@^4.2.3:
 
 graphemer@^1.4.0:
   version "1.4.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/graphemer/-/graphemer-1.4.0.tgz#fb2f1d55e0e3a1849aeffc90c4fa0dd53a0e66c6"
+  resolved "https://registry.yarnpkg.com/graphemer/-/graphemer-1.4.0.tgz#fb2f1d55e0e3a1849aeffc90c4fa0dd53a0e66c6"
   integrity sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag==
 
 growly@^1.3.0:
@@ -6355,7 +6355,7 @@ has@^1.0.3:
 
 hasown@^2.0.2:
   version "2.0.2"
-  resolved "http://nexus.e-is.pro/repository/npmjs/hasown/-/hasown-2.0.2.tgz#003eaf91be7adc372e84ec59dc37252cedb80003"
+  resolved "https://registry.yarnpkg.com/hasown/-/hasown-2.0.2.tgz#003eaf91be7adc372e84ec59dc37252cedb80003"
   integrity sha512-0hJU9SCPvmMzIBdZFqNPXWa6dqh7WdH0cII9y+CyS8rG3nL48Bclra9HmKhVVUHyPWNH5Y7xDwAB7bfgSjkUMQ==
   dependencies:
     function-bind "^1.1.2"
@@ -6408,21 +6408,21 @@ hosted-git-info@^6.0.0, hosted-git-info@^6.1.1:
 
 hosted-git-info@^7.0.0:
   version "7.0.2"
-  resolved "http://nexus.e-is.pro/repository/npmjs/hosted-git-info/-/hosted-git-info-7.0.2.tgz#9b751acac097757667f30114607ef7b661ff4f17"
+  resolved "https://registry.yarnpkg.com/hosted-git-info/-/hosted-git-info-7.0.2.tgz#9b751acac097757667f30114607ef7b661ff4f17"
   integrity sha512-puUZAUKT5m8Zzvs72XWy3HtvVbTWljRE66cP60bxJzAqf2DgICo7lYTY2IHUmLnNpjYvw5bvmoHvPc0QO2a62w==
   dependencies:
     lru-cache "^10.0.1"
 
 hosted-git-info@^8.0.0:
   version "8.1.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/hosted-git-info/-/hosted-git-info-8.1.0.tgz#153cd84c03c6721481e16a5709eb74b1a0ab2ed0"
+  resolved "https://registry.yarnpkg.com/hosted-git-info/-/hosted-git-info-8.1.0.tgz#153cd84c03c6721481e16a5709eb74b1a0ab2ed0"
   integrity sha512-Rw/B2DNQaPBICNXEm8balFz9a6WpZrkCGpcWFpy7nCj+NyhSdqXipmfvtmWt9xGfp0wZnBxB+iVpLmQMYt47Tw==
   dependencies:
     lru-cache "^10.0.1"
 
 hosted-git-info@^9.0.0:
   version "9.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/hosted-git-info/-/hosted-git-info-9.0.0.tgz#032951596126ef746eccc3e438bbaeb132619859"
+  resolved "https://registry.yarnpkg.com/hosted-git-info/-/hosted-git-info-9.0.0.tgz#032951596126ef746eccc3e438bbaeb132619859"
   integrity sha512-gEf705MZLrDPkbbhi8PnoO4ZwYgKoNL+ISZ3AjZMht2r3N5tuTwncyDi6Fv2/qDnMmZxgs0yI8WDOyR8q3G+SQ==
   dependencies:
     lru-cache "^11.1.0"
@@ -6510,7 +6510,7 @@ http-proxy-agent@^5.0.0:
 
 http-proxy-agent@^7.0.0:
   version "7.0.2"
-  resolved "http://nexus.e-is.pro/repository/npmjs/http-proxy-agent/-/http-proxy-agent-7.0.2.tgz#9a8b1f246866c028509486585f62b8f2c18c270e"
+  resolved "https://registry.yarnpkg.com/http-proxy-agent/-/http-proxy-agent-7.0.2.tgz#9a8b1f246866c028509486585f62b8f2c18c270e"
   integrity sha512-T1gkAiYYDWYx3V5Bmyu7HcfcvL7mUrTWiM6yOfa3PIphViJ/gFPbvidQ+veqSOHci/PxBcDabeUNCzpOODJZig==
   dependencies:
     agent-base "^7.1.0"
@@ -6572,7 +6572,7 @@ https-proxy-agent@5, https-proxy-agent@^5.0.0:
 
 https-proxy-agent@^7.0.0, https-proxy-agent@^7.0.1:
   version "7.0.6"
-  resolved "http://nexus.e-is.pro/repository/npmjs/https-proxy-agent/-/https-proxy-agent-7.0.6.tgz#da8dfeac7da130b05c2ba4b59c9b6cd66611a6b9"
+  resolved "https://registry.yarnpkg.com/https-proxy-agent/-/https-proxy-agent-7.0.6.tgz#da8dfeac7da130b05c2ba4b59c9b6cd66611a6b9"
   integrity sha512-vK9P5/iUfdl95AI+JVyUuIcVtd4ofvtrOr3HNtM2yxC9bnMbEdp3x01OhQNnjb8IJYi38VlTE3mBXwcfvywuSw==
   dependencies:
     agent-base "^7.1.2"
@@ -6628,7 +6628,7 @@ ignore-walk@^6.0.0:
 
 ignore-walk@^8.0.0:
   version "8.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/ignore-walk/-/ignore-walk-8.0.0.tgz#380c173badc3a18c57ff33440753f0052f572b14"
+  resolved "https://registry.yarnpkg.com/ignore-walk/-/ignore-walk-8.0.0.tgz#380c173badc3a18c57ff33440753f0052f572b14"
   integrity sha512-FCeMZT4NiRQGh+YkeKMtWrOmBgWjHjMJ26WQWrRQyoyzqevdaGSakUaJW5xQYmjLlUVk2qUnCjYVBax9EKKg8A==
   dependencies:
     minimatch "^10.0.3"
@@ -6640,7 +6640,7 @@ ignore@^5.1.1, ignore@^5.2.0:
 
 image-size@2.0.2:
   version "2.0.2"
-  resolved "http://nexus.e-is.pro/repository/npmjs/image-size/-/image-size-2.0.2.tgz#84a7b43704db5736f364bf0d1b029821299b4bdc"
+  resolved "https://registry.yarnpkg.com/image-size/-/image-size-2.0.2.tgz#84a7b43704db5736f364bf0d1b029821299b4bdc"
   integrity sha512-IRqXKlaXwgSMAMtpNzZa1ZAe8m+Sa1770Dhk8VkSsP9LS+iHD62Zd8FQKs8fbPiagBE7BzoFX23cxFnwshpV6w==
 
 immediate@~3.0.5:
@@ -6707,7 +6707,7 @@ inherits@2, inherits@2.0.4, inherits@^2.0.1, inherits@^2.0.3, inherits@^2.0.4, i
 
 ini@4.1.1:
   version "4.1.1"
-  resolved "http://nexus.e-is.pro/repository/npmjs/ini/-/ini-4.1.1.tgz#d95b3d843b1e906e56d6747d5447904ff50ce7a1"
+  resolved "https://registry.yarnpkg.com/ini/-/ini-4.1.1.tgz#d95b3d843b1e906e56d6747d5447904ff50ce7a1"
   integrity sha512-QQnnxNyfvmHFIsj7gkPcYymR8Jdw/o7mp5ZFihxn6h8Ci6fh3Dx4E1gPjpQEpIuPo9XVNY/ZUwh4BPMjGyL01g==
 
 ini@^1.3.4, ini@~1.3.0:
@@ -6717,17 +6717,17 @@ ini@^1.3.4, ini@~1.3.0:
 
 ini@^4.1.3:
   version "4.1.3"
-  resolved "http://nexus.e-is.pro/repository/npmjs/ini/-/ini-4.1.3.tgz#4c359675a6071a46985eb39b14e4a2c0ec98a795"
+  resolved "https://registry.yarnpkg.com/ini/-/ini-4.1.3.tgz#4c359675a6071a46985eb39b14e4a2c0ec98a795"
   integrity sha512-X7rqawQBvfdjS10YU1y1YVreA3SsLrW9dX2CewP2EbBJM4ypVNLDkO5y04gejPwKIY9lR+7r9gn3rFPt/kmWFg==
 
 ini@^5.0.0:
   version "5.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/ini/-/ini-5.0.0.tgz#a7a4615339843d9a8ccc2d85c9d81cf93ffbc638"
+  resolved "https://registry.yarnpkg.com/ini/-/ini-5.0.0.tgz#a7a4615339843d9a8ccc2d85c9d81cf93ffbc638"
   integrity sha512-+N0ngpO3e7cRUWOJAS7qw0IZIVc6XPrW4MlFBdD066F2L4k1L6ker3hLqSq7iXxU5tgS4WGkIUElWn5vogAEnw==
 
 init-package-json@^6.0.0:
   version "6.0.3"
-  resolved "http://nexus.e-is.pro/repository/npmjs/init-package-json/-/init-package-json-6.0.3.tgz#2552fba75b6eed2495dc97f44183e2e5a5bcf8b0"
+  resolved "https://registry.yarnpkg.com/init-package-json/-/init-package-json-6.0.3.tgz#2552fba75b6eed2495dc97f44183e2e5a5bcf8b0"
   integrity sha512-Zfeb5ol+H+eqJWHTaGca9BovufyGeIfr4zaaBorPmJBMrJ+KBnN+kQx2ZtXdsotUTgldHmHQV44xvUWOUA7E2w==
   dependencies:
     "@npmcli/package-json" "^5.0.0"
@@ -6827,7 +6827,7 @@ ios-sim@^8.0.2:
 
 ip-address@^10.0.1:
   version "10.0.1"
-  resolved "http://nexus.e-is.pro/repository/npmjs/ip-address/-/ip-address-10.0.1.tgz#a8180b783ce7788777d796286d61bce4276818ed"
+  resolved "https://registry.yarnpkg.com/ip-address/-/ip-address-10.0.1.tgz#a8180b783ce7788777d796286d61bce4276818ed"
   integrity sha512-NWv9YLW4PoW2B7xtzaS3NCot75m6nK7Icdv0o3lfMceJVRfSoQwqD4wEH5rLwoKJwUiZ/rfpiVBhnaF0FK4HoA==
 
 ip@^1.1.5:
@@ -6946,7 +6946,7 @@ is-core-module@^2.11.0, is-core-module@^2.5.0, is-core-module@^2.8.1:
 
 is-core-module@^2.16.0:
   version "2.16.1"
-  resolved "http://nexus.e-is.pro/repository/npmjs/is-core-module/-/is-core-module-2.16.1.tgz#2a98801a849f43e2add644fbb6bc6229b19a4ef4"
+  resolved "https://registry.yarnpkg.com/is-core-module/-/is-core-module-2.16.1.tgz#2a98801a849f43e2add644fbb6bc6229b19a4ef4"
   integrity sha512-UfoeMA6fIJ8wTYFEUjelnaGI67v6+N7qXJEvQuIGa99l4xsCruSYOVSQ0uPANn4dAzm8lkYPaKLrrijLq7x23w==
   dependencies:
     hasown "^2.0.2"
@@ -6997,7 +6997,7 @@ is-docker@^2.0.0:
 
 is-docker@^3.0.0:
   version "3.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/is-docker/-/is-docker-3.0.0.tgz#90093aa3106277d8a77a5910dbae71747e15a200"
+  resolved "https://registry.yarnpkg.com/is-docker/-/is-docker-3.0.0.tgz#90093aa3106277d8a77a5910dbae71747e15a200"
   integrity sha512-eljcgEDlEns/7AXFosB5K/2nCM4P7FQPkGc/DWLy5rmFEWvZayGrik1d9/QIY5nJ4f9YsVvBkA6kJpHn9rISdQ==
 
 is-extendable@^0.1.0, is-extendable@^0.1.1:
@@ -7067,19 +7067,19 @@ is-glob@^4.0.0, is-glob@^4.0.1, is-glob@^4.0.3, is-glob@~4.0.1:
 
 is-in-ci@^1.0.0:
   version "1.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/is-in-ci/-/is-in-ci-1.0.0.tgz#9a86bbda7e42c6129902e0574c54b018fbb6ab88"
+  resolved "https://registry.yarnpkg.com/is-in-ci/-/is-in-ci-1.0.0.tgz#9a86bbda7e42c6129902e0574c54b018fbb6ab88"
   integrity sha512-eUuAjybVTHMYWm/U+vBO1sY/JOCgoPCXRxzdju0K+K0BiGW0SChEL1MLC0PoCIR1OlPo5YAp8HuQoUlsWEICwg==
 
 is-inside-container@^1.0.0:
   version "1.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/is-inside-container/-/is-inside-container-1.0.0.tgz#e81fba699662eb31dbdaf26766a61d4814717ea4"
+  resolved "https://registry.yarnpkg.com/is-inside-container/-/is-inside-container-1.0.0.tgz#e81fba699662eb31dbdaf26766a61d4814717ea4"
   integrity sha512-KIYLCCJghfHZxqjYBE7rEy0OBuTd5xCHS7tHVgvCLkx7StIoaxwNW3hCALgEUjFfeRk+MG/Qxmp/vtETEF3tRA==
   dependencies:
     is-docker "^3.0.0"
 
 is-installed-globally@^1.0.0:
   version "1.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/is-installed-globally/-/is-installed-globally-1.0.0.tgz#08952c43758c33d815692392f7f8437b9e436d5a"
+  resolved "https://registry.yarnpkg.com/is-installed-globally/-/is-installed-globally-1.0.0.tgz#08952c43758c33d815692392f7f8437b9e436d5a"
   integrity sha512-K55T22lfpQ63N4KEN57jZUAaAYqYHEe8veb/TycJRk9DdSCLLcovXz/mL6mOnhQaZsQGwPhuFopdQIlqGSEjiQ==
   dependencies:
     global-directory "^4.0.1"
@@ -7167,7 +7167,7 @@ is-path-inside@^3.0.1, is-path-inside@^3.0.3:
 
 is-path-inside@^4.0.0:
   version "4.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/is-path-inside/-/is-path-inside-4.0.0.tgz#805aeb62c47c1b12fc3fd13bfb3ed1e7430071db"
+  resolved "https://registry.yarnpkg.com/is-path-inside/-/is-path-inside-4.0.0.tgz#805aeb62c47c1b12fc3fd13bfb3ed1e7430071db"
   integrity sha512-lJJV/5dYS+RcL8uQdBDW9c9uWFLLBNRyFhnAKXw5tVqLlKZ4RMGZKv+YQ/IA3OhD+RpbJa1LLFM1FQPGyIXvOA==
 
 is-plain-obj@^1.1.0:
@@ -7317,7 +7317,7 @@ is-wsl@^2.1.1, is-wsl@^2.2.0:
 
 is-wsl@^3.1.0:
   version "3.1.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/is-wsl/-/is-wsl-3.1.0.tgz#e1c657e39c10090afcbedec61720f6b924c3cbd2"
+  resolved "https://registry.yarnpkg.com/is-wsl/-/is-wsl-3.1.0.tgz#e1c657e39c10090afcbedec61720f6b924c3cbd2"
   integrity sha512-UcVfVfaK4Sc4m7X3dUSoHoozQGBEFeDC+zVo06t98xe8CzHSZZBekNXH+tu0NalHolcJ/QAGqS46Hef7QXBIMw==
   dependencies:
     is-inside-container "^1.0.0"
@@ -7344,7 +7344,7 @@ isexe@^2.0.0:
 
 isexe@^3.1.1:
   version "3.1.1"
-  resolved "http://nexus.e-is.pro/repository/npmjs/isexe/-/isexe-3.1.1.tgz#4a407e2bd78ddfb14bea0c27c6f7072dde775f0d"
+  resolved "https://registry.yarnpkg.com/isexe/-/isexe-3.1.1.tgz#4a407e2bd78ddfb14bea0c27c6f7072dde775f0d"
   integrity sha512-LpB/54B+/2J5hqQ7imZHfdU31OlgQqx7ZicVlkm9kzg9/w8GKLEcFfJl/t7DCEDueOyBAD6zCCwTO6Fzs0NoEQ==
 
 isobject@^2.0.0:
@@ -7388,7 +7388,7 @@ jackspeak@^2.0.3:
 
 jose@5.9.6:
   version "5.9.6"
-  resolved "http://nexus.e-is.pro/repository/npmjs/jose/-/jose-5.9.6.tgz#77f1f901d88ebdc405e57cce08d2a91f47521883"
+  resolved "https://registry.yarnpkg.com/jose/-/jose-5.9.6.tgz#77f1f901d88ebdc405e57cce08d2a91f47521883"
   integrity sha512-AMlnetc9+CV9asI19zHmrgS/WYsWUwCn2R7RzlbJWD7F9eWYUTGyBmU9o6PxngtLGOiDGPRu+Uc4fhKzbpteZQ==
 
 js-base64@^2.4.9:
@@ -7470,7 +7470,7 @@ json-parse-even-better-errors@^3.0.0:
 
 json-parse-even-better-errors@^4.0.0:
   version "4.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/json-parse-even-better-errors/-/json-parse-even-better-errors-4.0.0.tgz#d3f67bd5925e81d3e31aa466acc821c8375cec43"
+  resolved "https://registry.yarnpkg.com/json-parse-even-better-errors/-/json-parse-even-better-errors-4.0.0.tgz#d3f67bd5925e81d3e31aa466acc821c8375cec43"
   integrity sha512-lR4MXjGNgkJc7tkQ97kb2nuEMnNCyU//XYVH0MKTGcXEiSudQ5MKGKen3C5QubYy0vmq+JGitUg92uuywGEwIA==
 
 json-schema-traverse@^0.4.1:
@@ -7639,7 +7639,7 @@ kind-of@^6.0.0, kind-of@^6.0.2, kind-of@^6.0.3:
 
 ky@^1.2.0:
   version "1.9.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/ky/-/ky-1.9.0.tgz#338e29a39c550ad4d9c17252d489d1aca09d0b52"
+  resolved "https://registry.yarnpkg.com/ky/-/ky-1.9.0.tgz#338e29a39c550ad4d9c17252d489d1aca09d0b52"
   integrity sha512-NgBeR/cu7kuC4BAeF1rnXhfoI2uQ9RBe8zl5vo87ASsf1iIQoCeOxyt6Io6K4Ki++5ItCavXAtbEWWCGFciQ6g==
 
 last-run@^1.1.0:
@@ -7652,7 +7652,7 @@ last-run@^1.1.0:
 
 latest-version@^9.0.0:
   version "9.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/latest-version/-/latest-version-9.0.0.tgz#e91ed216e7a4badc6f73b66c65adb46c58ec6ba1"
+  resolved "https://registry.yarnpkg.com/latest-version/-/latest-version-9.0.0.tgz#e91ed216e7a4badc6f73b66c65adb46c58ec6ba1"
   integrity sha512-7W0vV3rqv5tokqkBAFV1LbR7HPOWzXQDpDgEuib/aJ1jsZZx6x3c2mBI+TJhJzOhkGeaLbCKEHXEXLfirtG2JA==
   dependencies:
     package-json "^10.0.0"
@@ -7755,7 +7755,7 @@ liftoff@^3.1.0:
 
 lighthouse-logger@^2.0.1:
   version "2.0.2"
-  resolved "http://nexus.e-is.pro/repository/npmjs/lighthouse-logger/-/lighthouse-logger-2.0.2.tgz#c0b39daee22035ce28551f3503c5935d0b5e1bf3"
+  resolved "https://registry.yarnpkg.com/lighthouse-logger/-/lighthouse-logger-2.0.2.tgz#c0b39daee22035ce28551f3503c5935d0b5e1bf3"
   integrity sha512-vWl2+u5jgOQuZR55Z1WM0XDdrJT6mzMP8zHUct7xTlWhuQs+eV0g+QL0RQdFjT54zVmbhLCP8vIVpy1wGn/gCg==
   dependencies:
     debug "^4.4.1"
@@ -7768,7 +7768,7 @@ lines-and-columns@^1.1.6:
 
 lines-and-columns@^2.0.3:
   version "2.0.4"
-  resolved "http://nexus.e-is.pro/repository/npmjs/lines-and-columns/-/lines-and-columns-2.0.4.tgz#d00318855905d2660d8c0822e3f5a4715855fc42"
+  resolved "https://registry.yarnpkg.com/lines-and-columns/-/lines-and-columns-2.0.4.tgz#d00318855905d2660d8c0822e3f5a4715855fc42"
   integrity sha512-wM1+Z03eypVAVUCE7QdSqpVIvelbOakn1M0bPDoA4SGWPx3sNDVUiMo3L6To6WWGClB7VyXnhQ4Sn7gxiJbE6A==
 
 livereload-js@^2.2.0, livereload-js@^2.3.0:
@@ -8274,12 +8274,12 @@ lower-case@^1.1.1:
 
 lru-cache@^10.0.1, lru-cache@^10.2.2:
   version "10.4.3"
-  resolved "http://nexus.e-is.pro/repository/npmjs/lru-cache/-/lru-cache-10.4.3.tgz#410fc8a17b70e598013df257c2446b7f3383f119"
+  resolved "https://registry.yarnpkg.com/lru-cache/-/lru-cache-10.4.3.tgz#410fc8a17b70e598013df257c2446b7f3383f119"
   integrity sha512-JNAzZcXrCt42VGLuYz0zfAzDfAvJWW6AfYlDBQyDV5DClI2m5sAmK+OIO7s59XfsRsWHp02jAJrRadPRGTt6SQ==
 
 lru-cache@^11.1.0:
   version "11.1.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/lru-cache/-/lru-cache-11.1.0.tgz#afafb060607108132dbc1cf8ae661afb69486117"
+  resolved "https://registry.yarnpkg.com/lru-cache/-/lru-cache-11.1.0.tgz#afafb060607108132dbc1cf8ae661afb69486117"
   integrity sha512-QIXZUBJUx+2zHUdQujWejBkcD9+cs94tLn0+YL8UrCh+D5sCXZ4c7LaEH48pNwRY3MLDgqUFyhlCyjJPf1WP0A==
 
 lru-cache@^5.1.1:
@@ -8375,7 +8375,7 @@ make-fetch-happen@^11.0.0, make-fetch-happen@^11.0.1, make-fetch-happen@^11.1.0:
 
 make-fetch-happen@^14.0.0, make-fetch-happen@^14.0.2, make-fetch-happen@^14.0.3:
   version "14.0.3"
-  resolved "http://nexus.e-is.pro/repository/npmjs/make-fetch-happen/-/make-fetch-happen-14.0.3.tgz#d74c3ecb0028f08ab604011e0bc6baed483fcdcd"
+  resolved "https://registry.yarnpkg.com/make-fetch-happen/-/make-fetch-happen-14.0.3.tgz#d74c3ecb0028f08ab604011e0bc6baed483fcdcd"
   integrity sha512-QMjGbFTP0blj97EeidG5hk/QhKQ3T4ICckQGLgz38QF7Vgbk6e6FTARN8KhKxyBbWn8R0HU+bnw8aSoFPD4qtQ==
   dependencies:
     "@npmcli/agent" "^3.0.0"
@@ -8618,7 +8618,7 @@ micromatch@^4.0.2, micromatch@^4.0.4:
 
 micromatch@^4.0.8:
   version "4.0.8"
-  resolved "http://nexus.e-is.pro/repository/npmjs/micromatch/-/micromatch-4.0.8.tgz#d66fa18f3a47076789320b9b1af32bd86d9fa202"
+  resolved "https://registry.yarnpkg.com/micromatch/-/micromatch-4.0.8.tgz#d66fa18f3a47076789320b9b1af32bd86d9fa202"
   integrity sha512-PXwfBhYu0hBCPw8Dn0E+WDYb7af3dSLVWKi3HGv84IdF4TyFoC0ysxFd0Goxw7nSv4T/PzEJQxsYsEiFCKo2BA==
   dependencies:
     braces "^3.0.3"
@@ -8692,7 +8692,7 @@ mini-lr@^0.1.8:
 
 minimatch@^10.0.3:
   version "10.0.3"
-  resolved "http://nexus.e-is.pro/repository/npmjs/minimatch/-/minimatch-10.0.3.tgz#cf7a0314a16c4d9ab73a7730a0e8e3c3502d47aa"
+  resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-10.0.3.tgz#cf7a0314a16c4d9ab73a7730a0e8e3c3502d47aa"
   integrity sha512-IPZ167aShDZZUMdRk66cyQAW3qr0WzbHkPdMYa8bzZhlHhO3jALbKdxcaak7W9FfT2rZNpQuUu4Od7ILEpXSaw==
   dependencies:
     "@isaacs/brace-expansion" "^5.0.0"
@@ -8713,7 +8713,7 @@ minimatch@^9.0.0:
 
 minimatch@^9.0.4, minimatch@^9.0.5:
   version "9.0.5"
-  resolved "http://nexus.e-is.pro/repository/npmjs/minimatch/-/minimatch-9.0.5.tgz#d74f9dd6b57d83d8e98cfb82133b03978bc929e5"
+  resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-9.0.5.tgz#d74f9dd6b57d83d8e98cfb82133b03978bc929e5"
   integrity sha512-G6T0ZX48xgozx7587koeX9Ys2NYy6Gmv//P89sEte9V9whIapMNF4idKxnW2QtCcLiTWlb/wfCabAtAFWhhBow==
   dependencies:
     brace-expansion "^2.0.1"
@@ -8758,7 +8758,7 @@ minipass-collect@^1.0.2:
 
 minipass-collect@^2.0.1:
   version "2.0.1"
-  resolved "http://nexus.e-is.pro/repository/npmjs/minipass-collect/-/minipass-collect-2.0.1.tgz#1621bc77e12258a12c60d34e2276ec5c20680863"
+  resolved "https://registry.yarnpkg.com/minipass-collect/-/minipass-collect-2.0.1.tgz#1621bc77e12258a12c60d34e2276ec5c20680863"
   integrity sha512-D7V8PO9oaz7PWGLbCACuI1qEOsq7UKfLotx/C0Aet43fCUB/wfQ7DYeq2oR/svFJGYDHPr38SHATeaj/ZoKHKw==
   dependencies:
     minipass "^7.0.3"
@@ -8798,7 +8798,7 @@ minipass-fetch@^3.0.0:
 
 minipass-fetch@^4.0.0:
   version "4.0.1"
-  resolved "http://nexus.e-is.pro/repository/npmjs/minipass-fetch/-/minipass-fetch-4.0.1.tgz#f2d717d5a418ad0b1a7274f9b913515d3e78f9e5"
+  resolved "https://registry.yarnpkg.com/minipass-fetch/-/minipass-fetch-4.0.1.tgz#f2d717d5a418ad0b1a7274f9b913515d3e78f9e5"
   integrity sha512-j7U11C5HXigVuutxebFadoYBbd7VSdZWggSe64NVdvWNBqGAiXPL2QVCehjmw7lY1oF9gOllYbORh+hiNgfPgQ==
   dependencies:
     minipass "^7.0.3"
@@ -8855,7 +8855,7 @@ minipass@^5.0.0:
 
 minipass@^7.0.2, minipass@^7.0.3, minipass@^7.0.4, minipass@^7.1.2:
   version "7.1.2"
-  resolved "http://nexus.e-is.pro/repository/npmjs/minipass/-/minipass-7.1.2.tgz#93a9626ce5e5e66bd4db86849e7515e92340a707"
+  resolved "https://registry.yarnpkg.com/minipass/-/minipass-7.1.2.tgz#93a9626ce5e5e66bd4db86849e7515e92340a707"
   integrity sha512-qOOzS1cBTWYF4BH8fVePDBOO9iptMnGUEZwNc/cMWnTV2nVLZ7VoNWEPHkYczZA0pdoA7dl6e7FL659nX9S2aw==
 
 minizlib@^2.0.0, minizlib@^2.1.1, minizlib@^2.1.2:
@@ -8868,7 +8868,7 @@ minizlib@^2.0.0, minizlib@^2.1.1, minizlib@^2.1.2:
 
 minizlib@^3.0.1:
   version "3.0.2"
-  resolved "http://nexus.e-is.pro/repository/npmjs/minizlib/-/minizlib-3.0.2.tgz#f33d638eb279f664439aa38dc5f91607468cb574"
+  resolved "https://registry.yarnpkg.com/minizlib/-/minizlib-3.0.2.tgz#f33d638eb279f664439aa38dc5f91607468cb574"
   integrity sha512-oG62iEk+CYt5Xj2YqI5Xi9xWUeZhDI8jjQmC5oThVH5JGCTgIjr7ciJDzC7MBzYd//WvR1OTmP5Q38Q8ShQtVA==
   dependencies:
     minipass "^7.1.2"
@@ -8888,7 +8888,7 @@ mkdirp@^1.0.3, mkdirp@^1.0.4:
 
 mkdirp@^3.0.1:
   version "3.0.1"
-  resolved "http://nexus.e-is.pro/repository/npmjs/mkdirp/-/mkdirp-3.0.1.tgz#e44e4c5607fb279c168241713cc6e0fea9adcb50"
+  resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-3.0.1.tgz#e44e4c5607fb279c168241713cc6e0fea9adcb50"
   integrity sha512-+NsyUUAZDmo6YVHzL/stxSu3t9YS1iljliy3BSDrXJ/dkn1KYdmtZODGGjLcc9XLgVVpH4KshHB8XmZgMhaBXg==
 
 mkdirp@~0.5.1:
@@ -8973,7 +8973,7 @@ mute-stream@0.0.8:
 
 mute-stream@^1.0.0:
   version "1.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/mute-stream/-/mute-stream-1.0.0.tgz#e31bd9fe62f0aed23520aa4324ea6671531e013e"
+  resolved "https://registry.yarnpkg.com/mute-stream/-/mute-stream-1.0.0.tgz#e31bd9fe62f0aed23520aa4324ea6671531e013e"
   integrity sha512-avsJQhyd+680gKXyG/sQc0nXaC6rBkPOfyHYcFb9+hdkqQkR9bdnkJ0AMZhke0oesPqIO+mFFJ+IdBc7mst4IA==
 
 mv@^2.1.1:
@@ -9029,7 +9029,7 @@ negotiator@0.6.3, negotiator@^0.6.2, negotiator@^0.6.3:
 
 negotiator@^1.0.0:
   version "1.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/negotiator/-/negotiator-1.0.0.tgz#b6c91bb47172d69f93cfd7c357bbb529019b5f6a"
+  resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-1.0.0.tgz#b6c91bb47172d69f93cfd7c357bbb529019b5f6a"
   integrity sha512-8Ofs/AUQh8MaEcrlq5xOX0CQ9ypTF5dl78mjlMNfOK08fzpgTHQRQPBxcPlEtIw0yRpws+Zo/3r+5WRby7u3Gg==
 
 netmask@^2.0.2:
@@ -9087,7 +9087,7 @@ node-forge@^1.3.1:
 
 node-gyp@^11.0.0:
   version "11.4.2"
-  resolved "http://nexus.e-is.pro/repository/npmjs/node-gyp/-/node-gyp-11.4.2.tgz#bb74cc6a80a0cc301811c8efd755fac39efc7cd0"
+  resolved "https://registry.yarnpkg.com/node-gyp/-/node-gyp-11.4.2.tgz#bb74cc6a80a0cc301811c8efd755fac39efc7cd0"
   integrity sha512-3gD+6zsrLQH7DyYOUIutaauuXrcyxeTPyQuZQCQoNPZMHMMS5m4y0xclNpvYzoK3VNzuyxT6eF4mkIL4WSZ1eQ==
   dependencies:
     env-paths "^2.2.0"
@@ -9208,14 +9208,14 @@ nopt@^7.0.0:
 
 nopt@^7.1.0, nopt@^7.2.0, nopt@^7.2.1:
   version "7.2.1"
-  resolved "http://nexus.e-is.pro/repository/npmjs/nopt/-/nopt-7.2.1.tgz#1cac0eab9b8e97c9093338446eddd40b2c8ca1e7"
+  resolved "https://registry.yarnpkg.com/nopt/-/nopt-7.2.1.tgz#1cac0eab9b8e97c9093338446eddd40b2c8ca1e7"
   integrity sha512-taM24ViiimT/XntxbPyJQzCG+p4EKOpgD3mxFwW38mGjVUrfERQOeY4EDHjdnptttfHuHQXFx+lTP08Q+mLa/w==
   dependencies:
     abbrev "^2.0.0"
 
 nopt@^8.0.0:
   version "8.1.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/nopt/-/nopt-8.1.0.tgz#b11d38caf0f8643ce885818518064127f602eae3"
+  resolved "https://registry.yarnpkg.com/nopt/-/nopt-8.1.0.tgz#b11d38caf0f8643ce885818518064127f602eae3"
   integrity sha512-ieGu42u/Qsa4TFktmaKEwM6MQH0pOWnaB3htzh0JRtx84+Mebc0cbZYN5bC+6WTZ4+77xrL9Pn5m7CV6VIkV7A==
   dependencies:
     abbrev "^3.0.0"
@@ -9252,7 +9252,7 @@ normalize-package-data@^5.0.0:
 
 normalize-package-data@^6.0.0:
   version "6.0.2"
-  resolved "http://nexus.e-is.pro/repository/npmjs/normalize-package-data/-/normalize-package-data-6.0.2.tgz#a7bc22167fe24025412bcff0a9651eb768b03506"
+  resolved "https://registry.yarnpkg.com/normalize-package-data/-/normalize-package-data-6.0.2.tgz#a7bc22167fe24025412bcff0a9651eb768b03506"
   integrity sha512-V6gygoYb/5EmNI+MEGrWkC+e6+Rr7mTmfHrxDbLzxQogBkgzo76rkok0Am6thgSF7Mv2nLOajAJj5vDJZEFn7g==
   dependencies:
     hosted-git-info "^7.0.0"
@@ -9287,7 +9287,7 @@ npm-bundled@^3.0.0:
 
 npm-bundled@^4.0.0:
   version "4.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/npm-bundled/-/npm-bundled-4.0.0.tgz#f5b983f053fe7c61566cf07241fab2d4e9d513d3"
+  resolved "https://registry.yarnpkg.com/npm-bundled/-/npm-bundled-4.0.0.tgz#f5b983f053fe7c61566cf07241fab2d4e9d513d3"
   integrity sha512-IxaQZDMsqfQ2Lz37VvyyEtKLe8FsRZuysmedy/N06TU1RyVppYKXrO4xIhR0F+7ubIBox6Q7nir6fQI3ej39iA==
   dependencies:
     npm-normalize-package-bin "^4.0.0"
@@ -9301,7 +9301,7 @@ npm-install-checks@^6.0.0:
 
 npm-install-checks@^7.1.0:
   version "7.1.2"
-  resolved "http://nexus.e-is.pro/repository/npmjs/npm-install-checks/-/npm-install-checks-7.1.2.tgz#e338d333930ee18e0fb0be6bd8b67af98be3d2fa"
+  resolved "https://registry.yarnpkg.com/npm-install-checks/-/npm-install-checks-7.1.2.tgz#e338d333930ee18e0fb0be6bd8b67af98be3d2fa"
   integrity sha512-z9HJBCYw9Zr8BqXcllKIs5nI+QggAImbBdHphOzVYrz2CB4iQ6FzWyKmlqDZua+51nAu7FcemlbTc9VgQN5XDQ==
   dependencies:
     semver "^7.1.1"
@@ -9313,7 +9313,7 @@ npm-normalize-package-bin@^3.0.0:
 
 npm-normalize-package-bin@^4.0.0:
   version "4.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/npm-normalize-package-bin/-/npm-normalize-package-bin-4.0.0.tgz#df79e70cd0a113b77c02d1fe243c96b8e618acb1"
+  resolved "https://registry.yarnpkg.com/npm-normalize-package-bin/-/npm-normalize-package-bin-4.0.0.tgz#df79e70cd0a113b77c02d1fe243c96b8e618acb1"
   integrity sha512-TZKxPvItzai9kN9H/TkmCtx/ZN/hvr3vUycjlfmH0ootY9yFBzNOpiXAdIn1Iteqsvk4lQn6B5PTrt+n6h8k/w==
 
 npm-package-arg@^10.0.0, npm-package-arg@^10.1.0:
@@ -9328,7 +9328,7 @@ npm-package-arg@^10.0.0, npm-package-arg@^10.1.0:
 
 npm-package-arg@^11.0.0:
   version "11.0.3"
-  resolved "http://nexus.e-is.pro/repository/npmjs/npm-package-arg/-/npm-package-arg-11.0.3.tgz#dae0c21199a99feca39ee4bfb074df3adac87e2d"
+  resolved "https://registry.yarnpkg.com/npm-package-arg/-/npm-package-arg-11.0.3.tgz#dae0c21199a99feca39ee4bfb074df3adac87e2d"
   integrity sha512-sHGJy8sOC1YraBywpzQlIKBE4pBbGbiF95U6Auspzyem956E0+FtDtsx1ZxlOJkQCZ1AFXAY/yuvtFYrOxF+Bw==
   dependencies:
     hosted-git-info "^7.0.0"
@@ -9338,7 +9338,7 @@ npm-package-arg@^11.0.0:
 
 npm-package-arg@^12.0.0:
   version "12.0.2"
-  resolved "http://nexus.e-is.pro/repository/npmjs/npm-package-arg/-/npm-package-arg-12.0.2.tgz#3b1e04ebe651cc45028e298664e8c15ce9c0ca40"
+  resolved "https://registry.yarnpkg.com/npm-package-arg/-/npm-package-arg-12.0.2.tgz#3b1e04ebe651cc45028e298664e8c15ce9c0ca40"
   integrity sha512-f1NpFjNI9O4VbKMOlA5QoBq/vSQPORHcTZ2feJpFkTHJ9eQkdlmZEKSjcAhxTGInC7RlEyScT9ui67NaOsjFWA==
   dependencies:
     hosted-git-info "^8.0.0"
@@ -9348,7 +9348,7 @@ npm-package-arg@^12.0.0:
 
 npm-package-arg@^13.0.0:
   version "13.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/npm-package-arg/-/npm-package-arg-13.0.0.tgz#be6fd7e60c6fd605b85f570e88cace45e2416c8b"
+  resolved "https://registry.yarnpkg.com/npm-package-arg/-/npm-package-arg-13.0.0.tgz#be6fd7e60c6fd605b85f570e88cace45e2416c8b"
   integrity sha512-+t2etZAGcB7TbbLHfDwooV9ppB2LhhcT6A+L9cahsf9mEUAoQ6CktLEVvEnpD0N5CkX7zJqnPGaFtoQDy9EkHQ==
   dependencies:
     hosted-git-info "^9.0.0"
@@ -9358,7 +9358,7 @@ npm-package-arg@^13.0.0:
 
 npm-packlist@^10.0.0:
   version "10.0.1"
-  resolved "http://nexus.e-is.pro/repository/npmjs/npm-packlist/-/npm-packlist-10.0.1.tgz#236853e6ebff06e70fedd7a6a054f553afe19023"
+  resolved "https://registry.yarnpkg.com/npm-packlist/-/npm-packlist-10.0.1.tgz#236853e6ebff06e70fedd7a6a054f553afe19023"
   integrity sha512-vaC03b2PqJA6QqmwHi1jNU8fAPXEnnyv4j/W4PVfgm24C4/zZGSVut3z0YUeN0WIFCo1oGOL02+6LbvFK7JL4Q==
   dependencies:
     ignore-walk "^8.0.0"
@@ -9372,7 +9372,7 @@ npm-packlist@^7.0.0:
 
 npm-pick-manifest@^10.0.0:
   version "10.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/npm-pick-manifest/-/npm-pick-manifest-10.0.0.tgz#6cc120c6473ceea56dfead500f00735b2b892851"
+  resolved "https://registry.yarnpkg.com/npm-pick-manifest/-/npm-pick-manifest-10.0.0.tgz#6cc120c6473ceea56dfead500f00735b2b892851"
   integrity sha512-r4fFa4FqYY8xaM7fHecQ9Z2nE9hgNfJR+EmoKv0+chvzWkBcORX3r0FpTByP+CbOVJDladMXnPQGVN8PBLGuTQ==
   dependencies:
     npm-install-checks "^7.1.0"
@@ -9392,7 +9392,7 @@ npm-pick-manifest@^8.0.0, npm-pick-manifest@^8.0.1:
 
 npm-pick-manifest@^9.0.0:
   version "9.1.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/npm-pick-manifest/-/npm-pick-manifest-9.1.0.tgz#83562afde52b0b07cb6244361788d319ce7e8636"
+  resolved "https://registry.yarnpkg.com/npm-pick-manifest/-/npm-pick-manifest-9.1.0.tgz#83562afde52b0b07cb6244361788d319ce7e8636"
   integrity sha512-nkc+3pIIhqHVQr085X9d2JzPzLyjzQS96zbruppqC9aZRm/x8xx6xhI98gHtsfELP2bE+loHq8ZaHFHhe+NauA==
   dependencies:
     npm-install-checks "^6.0.0"
@@ -9415,7 +9415,7 @@ npm-registry-fetch@^14.0.0, npm-registry-fetch@^14.0.3:
 
 npm-registry-fetch@^18.0.0, npm-registry-fetch@^18.0.1:
   version "18.0.2"
-  resolved "http://nexus.e-is.pro/repository/npmjs/npm-registry-fetch/-/npm-registry-fetch-18.0.2.tgz#340432f56b5a8b1af068df91aae0435d2de646b5"
+  resolved "https://registry.yarnpkg.com/npm-registry-fetch/-/npm-registry-fetch-18.0.2.tgz#340432f56b5a8b1af068df91aae0435d2de646b5"
   integrity sha512-LeVMZBBVy+oQb5R6FDV9OlJCcWDU+al10oKpe+nsvcHnG24Z3uM3SvJYKfGJlfGjVU8v9liejCrUR/M5HO5NEQ==
   dependencies:
     "@npmcli/redact" "^3.0.0"
@@ -9646,7 +9646,7 @@ onetime@^5.1.0, onetime@^5.1.2:
 
 open@10.2.0:
   version "10.2.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/open/-/open-10.2.0.tgz#b9d855be007620e80b6fb05fac98141fe62db73c"
+  resolved "https://registry.yarnpkg.com/open/-/open-10.2.0.tgz#b9d855be007620e80b6fb05fac98141fe62db73c"
   integrity sha512-YgBpdJHPyQ2UE5x+hlSXcnejzAvD0b22U2OuAP+8OnlJT+PjWPxtgmGqKKc+RgTM63U9gN0YzrYc71R2WT/hTA==
   dependencies:
     default-browser "^5.2.1"
@@ -9684,7 +9684,7 @@ optionator@^0.8.1:
 
 optionator@^0.9.3:
   version "0.9.3"
-  resolved "http://nexus.e-is.pro/repository/npmjs/optionator/-/optionator-0.9.3.tgz#007397d44ed1872fdc6ed31360190f81814e2c64"
+  resolved "https://registry.yarnpkg.com/optionator/-/optionator-0.9.3.tgz#007397d44ed1872fdc6ed31360190f81814e2c64"
   integrity sha512-JjCoypp+jKn1ttEFExxhetCKeJt9zhAgAve5FXHixTvFDW/5aEktX9bufBKLRRMdU7bNtpLfcGu94B3cdEJgjg==
   dependencies:
     "@aashutoshrathi/word-wrap" "^1.2.3"
@@ -9804,7 +9804,7 @@ p-map@^4.0.0:
 
 p-map@^7.0.2:
   version "7.0.3"
-  resolved "http://nexus.e-is.pro/repository/npmjs/p-map/-/p-map-7.0.3.tgz#7ac210a2d36f81ec28b736134810f7ba4418cdb6"
+  resolved "https://registry.yarnpkg.com/p-map/-/p-map-7.0.3.tgz#7ac210a2d36f81ec28b736134810f7ba4418cdb6"
   integrity sha512-VkndIv2fIB99swvQoA65bm+fsmt6UNdGeIB0oxBs+WhAhdh08QA04JXpI7rbB9r08/nkbysKoya9rtDERYOYMA==
 
 p-try@^2.0.0, p-try@^2.1.0:
@@ -9838,7 +9838,7 @@ pac-resolver@^5.0.0:
 
 package-json@^10.0.0:
   version "10.0.1"
-  resolved "http://nexus.e-is.pro/repository/npmjs/package-json/-/package-json-10.0.1.tgz#e49ee07b8de63b638e7f1b5bb353733e428fe7d7"
+  resolved "https://registry.yarnpkg.com/package-json/-/package-json-10.0.1.tgz#e49ee07b8de63b638e7f1b5bb353733e428fe7d7"
   integrity sha512-ua1L4OgXSBdsu1FPb7F3tYH0F48a6kxvod4pLUlGY9COeJAJQNX/sNH2IiEmsxw7lqYiAwrdHMjz1FctOsyDQg==
   dependencies:
     ky "^1.2.0"
@@ -9872,7 +9872,7 @@ pacote@^15.0.0, pacote@^15.0.8, pacote@^15.1.1:
 
 pacote@^21.0.0:
   version "21.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/pacote/-/pacote-21.0.0.tgz#5fe3878a9f808ca5c455c4c1d8ca46eb13351f7b"
+  resolved "https://registry.yarnpkg.com/pacote/-/pacote-21.0.0.tgz#5fe3878a9f808ca5c455c4c1d8ca46eb13351f7b"
   integrity sha512-lcqexq73AMv6QNLo7SOpz0JJoaGdS3rBFgF122NZVl1bApo2mfu+XzUBU/X/XsiJu+iUmKpekRayqQYAs+PhkA==
   dependencies:
     "@npmcli/git" "^6.0.0"
@@ -9923,7 +9923,7 @@ parse-conflict-json@^3.0.0:
 
 parse-conflict-json@^4.0.0:
   version "4.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/parse-conflict-json/-/parse-conflict-json-4.0.0.tgz#996b1edfc0c727583b56c7644dbb3258fc9e9e4b"
+  resolved "https://registry.yarnpkg.com/parse-conflict-json/-/parse-conflict-json-4.0.0.tgz#996b1edfc0c727583b56c7644dbb3258fc9e9e4b"
   integrity sha512-37CN2VtcuvKgHUs8+0b1uJeEsbGn61GRHz469C94P5xiOoqpDYJYwjg4RY9Vmz39WyZAVkR5++nbJwLMIgOCnQ==
   dependencies:
     json-parse-even-better-errors "^4.0.0"
@@ -9941,7 +9941,7 @@ parse-filepath@^1.0.1:
 
 parse-json@7.1.1:
   version "7.1.1"
-  resolved "http://nexus.e-is.pro/repository/npmjs/parse-json/-/parse-json-7.1.1.tgz#68f7e6f0edf88c54ab14c00eb700b753b14e2120"
+  resolved "https://registry.yarnpkg.com/parse-json/-/parse-json-7.1.1.tgz#68f7e6f0edf88c54ab14c00eb700b753b14e2120"
   integrity sha512-SgOTCX/EZXtZxBE5eJ97P4yGM5n37BwRU+YMsH4vNzFqJV/oWFXXCmwFlgWUM4PrakybVOueJJ6pwHqSVhTFDw==
   dependencies:
     "@babel/code-frame" "^7.21.4"
@@ -10128,7 +10128,7 @@ picocolors@^1.0.0:
 
 picocolors@^1.1.1:
   version "1.1.1"
-  resolved "http://nexus.e-is.pro/repository/npmjs/picocolors/-/picocolors-1.1.1.tgz#3d321af3eab939b083c8f929a1d12cda81c26b6b"
+  resolved "https://registry.yarnpkg.com/picocolors/-/picocolors-1.1.1.tgz#3d321af3eab939b083c8f929a1d12cda81c26b6b"
   integrity sha512-xceH2snhtb5M9liqDsmEw56le376mTZkEX/jEb/RxNFyegNul7eNslCXP9FDj/Lcu0X8KEyMceP2ntpaHrDEVA==
 
 picomatch@^2.0.4, picomatch@^2.2.1, picomatch@^2.3.1:
@@ -10138,7 +10138,7 @@ picomatch@^2.0.4, picomatch@^2.2.1, picomatch@^2.3.1:
 
 picomatch@^4.0.2:
   version "4.0.3"
-  resolved "http://nexus.e-is.pro/repository/npmjs/picomatch/-/picomatch-4.0.3.tgz#796c76136d1eead715db1e7bad785dedd695a042"
+  resolved "https://registry.yarnpkg.com/picomatch/-/picomatch-4.0.3.tgz#796c76136d1eead715db1e7bad785dedd695a042"
   integrity sha512-5gTmgEY/sqK6gFXLIsQNH19lWb4ebPDLA4SdLP7dsWkIXHWlG66oPuVvXSGFPppYZz8ZDZq0dYYrbHfBCVUb1Q==
 
 pify@^2.0.0:
@@ -10170,19 +10170,19 @@ pinkie@^2.0.0:
 
 pino-abstract-transport@^2.0.0:
   version "2.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/pino-abstract-transport/-/pino-abstract-transport-2.0.0.tgz#de241578406ac7b8a33ce0d77ae6e8a0b3b68a60"
+  resolved "https://registry.yarnpkg.com/pino-abstract-transport/-/pino-abstract-transport-2.0.0.tgz#de241578406ac7b8a33ce0d77ae6e8a0b3b68a60"
   integrity sha512-F63x5tizV6WCh4R6RHyi2Ml+M70DNRXt/+HANowMflpgGFMAym/VKm6G7ZOQRjqN7XbGxK1Lg9t6ZrtzOaivMw==
   dependencies:
     split2 "^4.0.0"
 
 pino-std-serializers@^7.0.0:
   version "7.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/pino-std-serializers/-/pino-std-serializers-7.0.0.tgz#7c625038b13718dbbd84ab446bd673dc52259e3b"
+  resolved "https://registry.yarnpkg.com/pino-std-serializers/-/pino-std-serializers-7.0.0.tgz#7c625038b13718dbbd84ab446bd673dc52259e3b"
   integrity sha512-e906FRY0+tV27iq4juKzSYPbUj2do2X2JX4EzSca1631EB2QJQUqGbDuERal7LCtOpxl6x3+nvo9NPZcmjkiFA==
 
 pino@9.7.0:
   version "9.7.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/pino/-/pino-9.7.0.tgz#ff7cd86eb3103ee620204dbd5ca6ffda8b53f645"
+  resolved "https://registry.yarnpkg.com/pino/-/pino-9.7.0.tgz#ff7cd86eb3103ee620204dbd5ca6ffda8b53f645"
   integrity sha512-vnMCM6xZTb1WDmLvtG2lE/2p+t9hDEIvTWJsu6FejkE62vB7gDhvzrpFR4Cw2to+9JNQxVnkAKVPA1KPB98vWg==
   dependencies:
     atomic-sleep "^1.0.0"
@@ -10225,7 +10225,7 @@ plist@^3.0.1, plist@^3.0.5, plist@^3.0.6:
 
 plist@^3.1.0:
   version "3.1.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/plist/-/plist-3.1.0.tgz#797a516a93e62f5bde55e0b9cc9c967f860893c9"
+  resolved "https://registry.yarnpkg.com/plist/-/plist-3.1.0.tgz#797a516a93e62f5bde55e0b9cc9c967f860893c9"
   integrity sha512-uysumyrvkUX0rX/dEVqt8gC3sTBzd4zoWfLeS29nb53imdaXVvLINYXTI2GNqzaMuvacNx4uJQ8+b3zXR0pkgQ==
   dependencies:
     "@xmldom/xmldom" "^0.8.8"
@@ -10290,7 +10290,7 @@ postcss-selector-parser@^6.0.10:
 
 postcss-selector-parser@^7.0.0:
   version "7.1.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/postcss-selector-parser/-/postcss-selector-parser-7.1.0.tgz#4d6af97eba65d73bc4d84bcb343e865d7dd16262"
+  resolved "https://registry.yarnpkg.com/postcss-selector-parser/-/postcss-selector-parser-7.1.0.tgz#4d6af97eba65d73bc4d84bcb343e865d7dd16262"
   integrity sha512-8sLjZwK0R+JlxlYcTuVnyT2v+htpdrjDOKuMcOVdYjt52Lh8hWRYpxBPoKx/Zg+bcjc3wx6fmQevMmUztS/ccA==
   dependencies:
     cssesc "^3.0.0"
@@ -10318,12 +10318,12 @@ proc-log@^3.0.0:
 
 proc-log@^4.0.0:
   version "4.2.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/proc-log/-/proc-log-4.2.0.tgz#b6f461e4026e75fdfe228b265e9f7a00779d7034"
+  resolved "https://registry.yarnpkg.com/proc-log/-/proc-log-4.2.0.tgz#b6f461e4026e75fdfe228b265e9f7a00779d7034"
   integrity sha512-g8+OnU/L2v+wyiVK+D5fA34J7EH8jZ8DDlvwhRCMxmMj7UCBvxiO1mGeN+36JXIKF4zevU4kRBd8lVgG9vLelA==
 
 proc-log@^5.0.0:
   version "5.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/proc-log/-/proc-log-5.0.0.tgz#e6c93cf37aef33f835c53485f314f50ea906a9d8"
+  resolved "https://registry.yarnpkg.com/proc-log/-/proc-log-5.0.0.tgz#e6c93cf37aef33f835c53485f314f50ea906a9d8"
   integrity sha512-Azwzvl90HaF0aCz1JrDdXQykFakSSNPaPoiZ9fm5qJIMHioDZEi7OAdRwSm6rSoPtY3Qutnm3L7ogmg3dc+wbQ==
 
 process-nextick-args@^2.0.0, process-nextick-args@~2.0.0:
@@ -10338,7 +10338,7 @@ process-nextick-args@~1.0.6:
 
 process-warning@^5.0.0:
   version "5.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/process-warning/-/process-warning-5.0.0.tgz#566e0bf79d1dff30a72d8bbbe9e8ecefe8d378d7"
+  resolved "https://registry.yarnpkg.com/process-warning/-/process-warning-5.0.0.tgz#566e0bf79d1dff30a72d8bbbe9e8ecefe8d378d7"
   integrity sha512-a39t9ApHNx2L4+HBnQKqxxHNs1r7KF+Intd8Q/g1bUh6q0WIp9voPXJ/x0j+ZL45KF1pJd9+q2jLIRMfvEshkA==
 
 process@^0.11.10:
@@ -10348,7 +10348,7 @@ process@^0.11.10:
 
 proggy@^3.0.0:
   version "3.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/proggy/-/proggy-3.0.0.tgz#874e91fed27fe00a511758e83216a6b65148bd6c"
+  resolved "https://registry.yarnpkg.com/proggy/-/proggy-3.0.0.tgz#874e91fed27fe00a511758e83216a6b65148bd6c"
   integrity sha512-QE8RApCM3IaRRxVzxrjbgNMpQEX6Wu0p0KBeoSiSEw5/bsGwZHsshF4LCxH2jp/r6BU+bqA3LrMDEYNfJnpD8Q==
 
 promise-all-reject-late@^1.0.0:
@@ -10363,7 +10363,7 @@ promise-call-limit@^1.0.2:
 
 promise-call-limit@^3.0.1:
   version "3.0.2"
-  resolved "http://nexus.e-is.pro/repository/npmjs/promise-call-limit/-/promise-call-limit-3.0.2.tgz#524b7f4b97729ff70417d93d24f46f0265efa4f9"
+  resolved "https://registry.yarnpkg.com/promise-call-limit/-/promise-call-limit-3.0.2.tgz#524b7f4b97729ff70417d93d24f46f0265efa4f9"
   integrity sha512-mRPQO2T1QQVw11E7+UdCJu7S61eJVWknzml9sC1heAdj1jxl0fWMBypIt9ZOcLFf8FkG995ZD7RnVk7HH72fZw==
 
 promise-inflight@^1.0.1:
@@ -10395,14 +10395,14 @@ promise@~1.3.0:
 
 promzard@^1.0.0:
   version "1.0.2"
-  resolved "http://nexus.e-is.pro/repository/npmjs/promzard/-/promzard-1.0.2.tgz#2226e7c6508b1da3471008ae17066a7c3251e660"
+  resolved "https://registry.yarnpkg.com/promzard/-/promzard-1.0.2.tgz#2226e7c6508b1da3471008ae17066a7c3251e660"
   integrity sha512-2FPputGL+mP3jJ3UZg/Dl9YOkovB7DX0oOr+ck5QbZ5MtORtds8k/BZdn+02peDLI8/YWbmzx34k5fA+fHvCVQ==
   dependencies:
     read "^3.0.1"
 
 properties-parser@^0.6.0:
   version "0.6.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/properties-parser/-/properties-parser-0.6.0.tgz#0cd36c26e76c9a75222e258e89ee0c663cd3658c"
+  resolved "https://registry.yarnpkg.com/properties-parser/-/properties-parser-0.6.0.tgz#0cd36c26e76c9a75222e258e89ee0c663cd3658c"
   integrity sha512-qvr2cSmoA0dln0MARAKwBzPkkXn7FqwX+RVVNpMdMJc7rt9mqO2cXwluxtux9fHrLhjnPFaQkS8BM0kFrTCnSw==
 
 proto-list@~1.2.1:
@@ -10632,7 +10632,7 @@ read-cmd-shim@^4.0.0:
 
 read-cmd-shim@^5.0.0:
   version "5.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/read-cmd-shim/-/read-cmd-shim-5.0.0.tgz#6e5450492187a0749f6c80dcbef0debc1117acca"
+  resolved "https://registry.yarnpkg.com/read-cmd-shim/-/read-cmd-shim-5.0.0.tgz#6e5450492187a0749f6c80dcbef0debc1117acca"
   integrity sha512-SEbJV7tohp3DAAILbEMPXavBjAnMN0tVnh4+9G8ihV4Pq3HYF9h8QNez9zkJ1ILkv9G2BjdzwctznGZXgu/HGw==
 
 read-package-json-fast@^3.0.0, read-package-json-fast@^3.0.2:
@@ -10645,7 +10645,7 @@ read-package-json-fast@^3.0.0, read-package-json-fast@^3.0.2:
 
 read-package-json-fast@^4.0.0:
   version "4.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/read-package-json-fast/-/read-package-json-fast-4.0.0.tgz#8ccbc05740bb9f58264f400acc0b4b4eee8d1b39"
+  resolved "https://registry.yarnpkg.com/read-package-json-fast/-/read-package-json-fast-4.0.0.tgz#8ccbc05740bb9f58264f400acc0b4b4eee8d1b39"
   integrity sha512-qpt8EwugBWDw2cgE2W+/3oxC+KTez2uSVR8JU9Q36TXPAGCaozfQUs59v4j4GFpWTaw0i6hAZSvOmu1J0uOEUg==
   dependencies:
     json-parse-even-better-errors "^4.0.0"
@@ -10699,7 +10699,7 @@ read-pkg@^5.2.0:
 
 read@^3.0.1:
   version "3.0.1"
-  resolved "http://nexus.e-is.pro/repository/npmjs/read/-/read-3.0.1.tgz#926808f0f7c83fa95f1ef33c0e2c09dbb28fd192"
+  resolved "https://registry.yarnpkg.com/read/-/read-3.0.1.tgz#926808f0f7c83fa95f1ef33c0e2c09dbb28fd192"
   integrity sha512-SLBrDU/Srs/9EoWhU5GdbAoxG1GzpQHo/6qiGItaoLJ1thmYpcNIM1qISEUvyHBzfGlWIyd6p2DNi1oV1VmAuw==
   dependencies:
     mute-stream "^1.0.0"
@@ -10848,14 +10848,14 @@ regexp.prototype.flags@^1.4.3:
 
 registry-auth-token@^5.0.2:
   version "5.1.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/registry-auth-token/-/registry-auth-token-5.1.0.tgz#3c659047ecd4caebd25bc1570a3aa979ae490eca"
+  resolved "https://registry.yarnpkg.com/registry-auth-token/-/registry-auth-token-5.1.0.tgz#3c659047ecd4caebd25bc1570a3aa979ae490eca"
   integrity sha512-GdekYuwLXLxMuFTwAPg5UKGLW/UXzQrZvH/Zj791BQif5T05T0RsaLfHc9q3ZOKi7n+BoprPD9mJ0O0k4xzUlw==
   dependencies:
     "@pnpm/npm-conf" "^2.1.0"
 
 registry-url@^6.0.1:
   version "6.0.1"
-  resolved "http://nexus.e-is.pro/repository/npmjs/registry-url/-/registry-url-6.0.1.tgz#056d9343680f2f64400032b1e199faa692286c58"
+  resolved "https://registry.yarnpkg.com/registry-url/-/registry-url-6.0.1.tgz#056d9343680f2f64400032b1e199faa692286c58"
   integrity sha512-+crtS5QjFRqFCoQmvGduwYWEBng99ZvmFvF+cUJkGYF1L1BfU8C6Zp9T7f5vPAwyLkUExpvK+ANVZmGU49qi4Q==
   dependencies:
     rc "1.2.8"
@@ -11117,7 +11117,7 @@ resolve@^1.1.6, resolve@^1.1.7, resolve@^1.10.0, resolve@^1.22.1, resolve@^1.4.0
 
 resolve@^1.22.10:
   version "1.22.10"
-  resolved "http://nexus.e-is.pro/repository/npmjs/resolve/-/resolve-1.22.10.tgz#b663e83ffb09bbf2386944736baae803029b8b39"
+  resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.22.10.tgz#b663e83ffb09bbf2386944736baae803029b8b39"
   integrity sha512-NPRy+/ncIMeDlTAsuqwKIiferiawhefFJtkNSW0qZJEqMEb+qBt/77B/jGeeek+F0uOeN05CDa6HXbbIgtVX4w==
   dependencies:
     is-core-module "^2.16.0"
@@ -11183,7 +11183,7 @@ rsvp@^3.0.21:
 
 run-applescript@^7.0.0:
   version "7.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/run-applescript/-/run-applescript-7.0.0.tgz#e5a553c2bffd620e169d276c1cd8f1b64778fbeb"
+  resolved "https://registry.yarnpkg.com/run-applescript/-/run-applescript-7.0.0.tgz#e5a553c2bffd620e169d276c1cd8f1b64778fbeb"
   integrity sha512-9by4Ij99JUr/MCFBUkDKLWK3G9HVXmabKz9U5MlIAIuvuzkiOicRYs8XJLxX+xahD+mLiiCYDqF9dKAgtzKP1A==
 
 run-async@^2.2.0, run-async@^2.4.0:
@@ -11288,7 +11288,7 @@ semver-greatest-satisfied-range@^1.1.0:
 
 semver@7.7.2, semver@^7.4.0, semver@^7.5.0, semver@^7.5.2, semver@^7.5.3, semver@^7.6.0, semver@^7.6.2, semver@^7.6.3, semver@^7.7.2:
   version "7.7.2"
-  resolved "http://nexus.e-is.pro/repository/npmjs/semver/-/semver-7.7.2.tgz#67d99fdcd35cec21e6f8b87a7fd515a33f982b58"
+  resolved "https://registry.yarnpkg.com/semver/-/semver-7.7.2.tgz#67d99fdcd35cec21e6f8b87a7fd515a33f982b58"
   integrity sha512-RF0Fw+rO5AMf9MAyaRXI4AV0Ulj5lMHqVxxdSgiVbixSCXoEmmX/jk0CuJw4+3SqroYO9VoUh+HcuJivvtJemA==
 
 semver@^6.0.0:
@@ -11432,7 +11432,7 @@ sigstore@^1.3.0:
 
 sigstore@^3.0.0:
   version "3.1.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/sigstore/-/sigstore-3.1.0.tgz#08dc6c0c425263e9fdab85ffdb6477550e2c511d"
+  resolved "https://registry.yarnpkg.com/sigstore/-/sigstore-3.1.0.tgz#08dc6c0c425263e9fdab85ffdb6477550e2c511d"
   integrity sha512-ZpzWAFHIFqyFE56dXqgX/DkDRZdz+rRcjoIk/RQU4IX0wiCv1l8S7ZrXDHcCc+uaf+6o7w3h2l3g6GYG5TKN9Q==
   dependencies:
     "@sigstore/bundle" "^3.1.0"
@@ -11589,7 +11589,7 @@ socks-proxy-agent@^7.0.0:
 
 socks-proxy-agent@^8.0.3:
   version "8.0.5"
-  resolved "http://nexus.e-is.pro/repository/npmjs/socks-proxy-agent/-/socks-proxy-agent-8.0.5.tgz#b9cdb4e7e998509d7659d689ce7697ac21645bee"
+  resolved "https://registry.yarnpkg.com/socks-proxy-agent/-/socks-proxy-agent-8.0.5.tgz#b9cdb4e7e998509d7659d689ce7697ac21645bee"
   integrity sha512-HehCEsotFqbPW9sJ8WVYB6UbmIMv7kUUORIF2Nncq4VQvBfNBLibW9YZR5dlYCSUhwcD628pRllm7n+E+YTzJw==
   dependencies:
     agent-base "^7.1.2"
@@ -11606,7 +11606,7 @@ socks@^2.3.3, socks@^2.6.2:
 
 socks@^2.8.3:
   version "2.8.7"
-  resolved "http://nexus.e-is.pro/repository/npmjs/socks/-/socks-2.8.7.tgz#e2fb1d9a603add75050a2067db8c381a0b5669ea"
+  resolved "https://registry.yarnpkg.com/socks/-/socks-2.8.7.tgz#e2fb1d9a603add75050a2067db8c381a0b5669ea"
   integrity sha512-HLpt+uLy/pxB+bum/9DzAgiKS8CX1EvbWxI4zlmgGCExImLdiad2iCwXT5Z4c9c3Eq8rP2318mPW2c+QbtjK8A==
   dependencies:
     ip-address "^10.0.1"
@@ -11614,7 +11614,7 @@ socks@^2.8.3:
 
 sonic-boom@^4.0.1:
   version "4.2.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/sonic-boom/-/sonic-boom-4.2.0.tgz#e59a525f831210fa4ef1896428338641ac1c124d"
+  resolved "https://registry.yarnpkg.com/sonic-boom/-/sonic-boom-4.2.0.tgz#e59a525f831210fa4ef1896428338641ac1c124d"
   integrity sha512-INb7TM37/mAcsGmc9hyyI6+QR3rR1zVRu36B0NeGXKnOOLiZOfER5SA+N7X7k3yUYRzLWafduTDvJAfDswwEww==
   dependencies:
     atomic-sleep "^1.0.0"
@@ -11785,7 +11785,7 @@ ssri@^10.0.0, ssri@^10.0.1:
 
 ssri@^12.0.0:
   version "12.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/ssri/-/ssri-12.0.0.tgz#bcb4258417c702472f8191981d3c8a771fee6832"
+  resolved "https://registry.yarnpkg.com/ssri/-/ssri-12.0.0.tgz#bcb4258417c702472f8191981d3c8a771fee6832"
   integrity sha512-S7iGNosepx9RadX82oimUkvr0Ct7IjJbEbs4mJcTxst8um95J3sDYU1RBEOvdu6oL1Wek2ODI5i4MAw+dZ6cAQ==
   dependencies:
     minipass "^7.0.3"
@@ -11886,7 +11886,7 @@ streamfilter@^3.0.0:
 
 string-argv@^0.3.1:
   version "0.3.2"
-  resolved "http://nexus.e-is.pro/repository/npmjs/string-argv/-/string-argv-0.3.2.tgz#2b6d0ef24b656274d957d54e0a4bbf6153dc02b6"
+  resolved "https://registry.yarnpkg.com/string-argv/-/string-argv-0.3.2.tgz#2b6d0ef24b656274d957d54e0a4bbf6153dc02b6"
   integrity sha512-aqD2Q0144Z+/RqG52NeHEkZauTAUWJO8c6yTftGJKO3Tja5tUgIfmIl6kExvhtxSDP7fXB6DvzkfMpCd/F3G+Q==
 
 string-length@^1.0.0:
@@ -11947,7 +11947,7 @@ string-width@^5.0.1, string-width@^5.1.2:
 
 string-width@^7.0.0, string-width@^7.2.0:
   version "7.2.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/string-width/-/string-width-7.2.0.tgz#b5bb8e2165ce275d4d43476dd2700ad9091db6dc"
+  resolved "https://registry.yarnpkg.com/string-width/-/string-width-7.2.0.tgz#b5bb8e2165ce275d4d43476dd2700ad9091db6dc"
   integrity sha512-tsaTIkKW9b4N+AEj+SVA+WhJzV7/zMhcSu78mLKWSk7cXMOSHsBKFWUs0fWwq8QyK3MgJBQRX6Gbi4kYbdvGkQ==
   dependencies:
     emoji-regex "^10.3.0"
@@ -12080,7 +12080,7 @@ strip-ansi@^7.0.1:
 
 strip-ansi@^7.1.0:
   version "7.1.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/strip-ansi/-/strip-ansi-7.1.0.tgz#d5b6568ca689d8561370b0707685d22434faff45"
+  resolved "https://registry.yarnpkg.com/strip-ansi/-/strip-ansi-7.1.0.tgz#d5b6568ca689d8561370b0707685d22434faff45"
   integrity sha512-iq6eVVI64nQQTRYq2KtEg2d2uU7LElhTJwsH4YzIHZshxlgZms/wIc4VoDQTlG/IvVIrBKG06CrZnp0qv7hkcQ==
   dependencies:
     ansi-regex "^6.0.1"
@@ -12148,7 +12148,7 @@ strip-json-comments@1.0.x:
 
 strip-json-comments@5.0.2:
   version "5.0.2"
-  resolved "http://nexus.e-is.pro/repository/npmjs/strip-json-comments/-/strip-json-comments-5.0.2.tgz#14a76abd63b84a6d2419d14f26a0281d0cf6ea46"
+  resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-5.0.2.tgz#14a76abd63b84a6d2419d14f26a0281d0cf6ea46"
   integrity sha512-4X2FR3UwhNUE9G49aIsJW5hRRR3GXGTBTZRMfv568O60ojM8HcWjV/VxAxCDW3SUND33O6ZY66ZuRcdkj73q2g==
 
 strip-json-comments@^3.1.1:
@@ -12163,7 +12163,7 @@ strip-json-comments@~2.0.1:
 
 stubborn-fs@^1.2.5:
   version "1.2.5"
-  resolved "http://nexus.e-is.pro/repository/npmjs/stubborn-fs/-/stubborn-fs-1.2.5.tgz#e5e244223166921ddf66ed5e062b6b3bf285bfd2"
+  resolved "https://registry.yarnpkg.com/stubborn-fs/-/stubborn-fs-1.2.5.tgz#e5e244223166921ddf66ed5e062b6b3bf285bfd2"
   integrity sha512-H2N9c26eXjzL/S/K+i/RHHcFanE74dptvvjM8iwzwbVcWY/zjBbgRqF3K0DY4+OD+uTTASTBvDoxPDaPN02D7g==
 
 superagent-proxy@^3.0.0:
@@ -12230,7 +12230,7 @@ sver-compat@^1.5.0:
 
 systeminformation@^5.17.12:
   version "5.27.8"
-  resolved "http://nexus.e-is.pro/repository/npmjs/systeminformation/-/systeminformation-5.27.8.tgz#f13d180104a0df2e7222c5d4aa85aea147428de5"
+  resolved "https://registry.yarnpkg.com/systeminformation/-/systeminformation-5.27.8.tgz#f13d180104a0df2e7222c5d4aa85aea147428de5"
   integrity sha512-d3Z0gaQO1MlUxzDUKsmXz5y4TOBCMZ8IyijzaYOykV3AcNOTQ7mT+tpndUOXYNSxzLK3la8G32xiUFvZ0/s6PA==
 
 tail@^0.4.0:
@@ -12252,7 +12252,7 @@ tar@^6.0.1, tar@^6.0.2, tar@^6.1.11, tar@^6.1.2:
 
 tar@^7.4.3:
   version "7.4.3"
-  resolved "http://nexus.e-is.pro/repository/npmjs/tar/-/tar-7.4.3.tgz#88bbe9286a3fcd900e94592cda7a22b192e80571"
+  resolved "https://registry.yarnpkg.com/tar/-/tar-7.4.3.tgz#88bbe9286a3fcd900e94592cda7a22b192e80571"
   integrity sha512-5S7Va8hKfV7W5U6g3aYxXmlPoZVAwUMy9AOKyF2fVuZa2UD3qZjg578OrLRt8PcNN1PleVaL/5/yYATNL0ICUw==
   dependencies:
     "@isaacs/fs-minipass" "^4.0.0"
@@ -12293,7 +12293,7 @@ textextensions@^3.2.0:
 
 thread-stream@^3.0.0:
   version "3.1.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/thread-stream/-/thread-stream-3.1.0.tgz#4b2ef252a7c215064507d4ef70c05a5e2d34c4f1"
+  resolved "https://registry.yarnpkg.com/thread-stream/-/thread-stream-3.1.0.tgz#4b2ef252a7c215064507d4ef70c05a5e2d34c4f1"
   integrity sha512-OqyPZ9u96VohAyMfJykzmivOrY2wfMSf3C5TtFJVgN+Hm6aj+voFhlK+kZEIv2FBh1X6Xp3DlnCOfEQ3B2J86A==
   dependencies:
     real-require "^0.2.0"
@@ -12407,7 +12407,7 @@ tiny-lr@^1.1.0:
 
 tinyglobby@^0.2.12:
   version "0.2.14"
-  resolved "http://nexus.e-is.pro/repository/npmjs/tinyglobby/-/tinyglobby-0.2.14.tgz#5280b0cf3f972b050e74ae88406c0a6a58f4079d"
+  resolved "https://registry.yarnpkg.com/tinyglobby/-/tinyglobby-0.2.14.tgz#5280b0cf3f972b050e74ae88406c0a6a58f4079d"
   integrity sha512-tX5e7OM1HnYr2+a2C/4V0htOcSQcoSTH9KgJnVvNm5zm/cyEWKJ7j7YutsH9CxMdtOkkLFy2AHrMci9IM8IPZQ==
   dependencies:
     fdir "^6.4.4"
@@ -12415,7 +12415,7 @@ tinyglobby@^0.2.12:
 
 tmp@0.2.3:
   version "0.2.3"
-  resolved "http://nexus.e-is.pro/repository/npmjs/tmp/-/tmp-0.2.3.tgz#eb783cc22bc1e8bebd0671476d46ea4eb32a79ae"
+  resolved "https://registry.yarnpkg.com/tmp/-/tmp-0.2.3.tgz#eb783cc22bc1e8bebd0671476d46ea4eb32a79ae"
   integrity sha512-nZD7m9iCPC5g0pYmcaxogYKggSfLsdxl8of3Q/oIbqCqLLIO9IAF0GWjX1z9NZRHPiXv8Wex4yDCaZsgEw0Y8w==
 
 tmp@^0.0.33:
@@ -12578,7 +12578,7 @@ tuf-js@^1.1.3:
 
 tuf-js@^3.0.1:
   version "3.1.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/tuf-js/-/tuf-js-3.1.0.tgz#61b847fe9aa86a7d5bda655a4647e026aa73a1be"
+  resolved "https://registry.yarnpkg.com/tuf-js/-/tuf-js-3.1.0.tgz#61b847fe9aa86a7d5bda655a4647e026aa73a1be"
   integrity sha512-3T3T04WzowbwV2FDiGXBbr81t64g1MUGGJRgT4x5o97N+8ArdhVCAF9IxFrxuSJmM3E5Asn7nKHkao0ibcZXAg==
   dependencies:
     "@tufjs/models" "3.0.1"
@@ -12643,12 +12643,12 @@ type-fest@^0.8.1:
 
 type-fest@^3.8.0:
   version "3.13.1"
-  resolved "http://nexus.e-is.pro/repository/npmjs/type-fest/-/type-fest-3.13.1.tgz#bb744c1f0678bea7543a2d1ec24e83e68e8c8706"
+  resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-3.13.1.tgz#bb744c1f0678bea7543a2d1ec24e83e68e8c8706"
   integrity sha512-tLq3bSNx+xSpwvAJnzrK0Ep5CLNWjvFTOp71URMaAEWBfRb9nnJiBoUe0tF8bI4ZFO3omgBR6NvnbzVUT3Ly4g==
 
 type-fest@^4.18.2, type-fest@^4.21.0:
   version "4.41.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/type-fest/-/type-fest-4.41.0.tgz#6ae1c8e5731273c2bf1f58ad39cbae2c91a46c58"
+  resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-4.41.0.tgz#6ae1c8e5731273c2bf1f58ad39cbae2c91a46c58"
   integrity sha512-TeTSQ6H5YHvpqVwBRcnLDCBnDOHWYu7IvGbHT6N8AOymcr9PJGjc1GTtiWZTYg0NCgYwvnYWEkVChQAr9bjfwA==
 
 type-is@~1.6.10, type-is@~1.6.18:
@@ -12797,7 +12797,7 @@ unique-filename@^3.0.0:
 
 unique-filename@^4.0.0:
   version "4.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/unique-filename/-/unique-filename-4.0.0.tgz#a06534d370e7c977a939cd1d11f7f0ab8f1fed13"
+  resolved "https://registry.yarnpkg.com/unique-filename/-/unique-filename-4.0.0.tgz#a06534d370e7c977a939cd1d11f7f0ab8f1fed13"
   integrity sha512-XSnEewXmQ+veP7xX2dS5Q4yZAvO40cBN2MWkJ7D/6sW4Dg6wYBNwM1Vrnz1FhH5AdeLIlUXRI9e28z1YZi71NQ==
   dependencies:
     unique-slug "^5.0.0"
@@ -12825,7 +12825,7 @@ unique-slug@^4.0.0:
 
 unique-slug@^5.0.0:
   version "5.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/unique-slug/-/unique-slug-5.0.0.tgz#ca72af03ad0dbab4dad8aa683f633878b1accda8"
+  resolved "https://registry.yarnpkg.com/unique-slug/-/unique-slug-5.0.0.tgz#ca72af03ad0dbab4dad8aa683f633878b1accda8"
   integrity sha512-9OdaqO5kwqR+1kVgHAhsp5vPNU0hnxRa26rBFNfNgM7M6pNtgzeBn3s/xbyCQL3dcjzOatcef6UUHpB/6MaETg==
   dependencies:
     imurmurhash "^0.1.4"
@@ -12890,7 +12890,7 @@ upath@^1.1.1:
 
 update-notifier@7.3.1:
   version "7.3.1"
-  resolved "http://nexus.e-is.pro/repository/npmjs/update-notifier/-/update-notifier-7.3.1.tgz#49af1ad6acfa0ea01c0d0f3c04047c154ead7096"
+  resolved "https://registry.yarnpkg.com/update-notifier/-/update-notifier-7.3.1.tgz#49af1ad6acfa0ea01c0d0f3c04047c154ead7096"
   integrity sha512-+dwUY4L35XFYEzE+OAL3sarJdUioVovq+8f7lcIJ7wnmnYQV5UD1Y/lcwaMSyaQ6Bj3JMj1XSTjZbNLHn/19yA==
   dependencies:
     boxen "^8.0.1"
@@ -12998,7 +12998,7 @@ validate-npm-package-name@^5.0.0:
 
 validate-npm-package-name@^6.0.0:
   version "6.0.2"
-  resolved "http://nexus.e-is.pro/repository/npmjs/validate-npm-package-name/-/validate-npm-package-name-6.0.2.tgz#4e8d2c4d939975a73dd1b7a65e8f08d44c85df96"
+  resolved "https://registry.yarnpkg.com/validate-npm-package-name/-/validate-npm-package-name-6.0.2.tgz#4e8d2c4d939975a73dd1b7a65e8f08d44c85df96"
   integrity sha512-IUoow1YUtvoBBC06dXs8bR8B9vuA3aJfmQNKMoaPG/OFsPmoQvw8xh+6Ye25Gx9DQhoEom3Pcu9MKHerm/NpUQ==
 
 value-or-function@^3.0.0:
@@ -13121,12 +13121,12 @@ walk-up-path@^3.0.1:
 
 walk-up-path@^4.0.0:
   version "4.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/walk-up-path/-/walk-up-path-4.0.0.tgz#590666dcf8146e2d72318164f1f2ac6ef51d4198"
+  resolved "https://registry.yarnpkg.com/walk-up-path/-/walk-up-path-4.0.0.tgz#590666dcf8146e2d72318164f1f2ac6ef51d4198"
   integrity sha512-3hu+tD8YzSLGuFYtPRb48vdhKMi0KQV5sn+uWr8+7dMEq/2G/dtLrdDinkLjqq5TIbIBjYJ4Ax/n3YiaW7QM8A==
 
 watchpack@2.4.4:
   version "2.4.4"
-  resolved "http://nexus.e-is.pro/repository/npmjs/watchpack/-/watchpack-2.4.4.tgz#473bda72f0850453da6425081ea46fc0d7602947"
+  resolved "https://registry.yarnpkg.com/watchpack/-/watchpack-2.4.4.tgz#473bda72f0850453da6425081ea46fc0d7602947"
   integrity sha512-c5EGNOiyxxV5qmTtAB7rbiXxi1ooX1pQKMLX/MIabJjRA0SJBQOjKF+KSVfHkr9U1cADPon0mRiVe/riyaiDUA==
   dependencies:
     glob-to-regexp "^0.4.1"
@@ -13141,7 +13141,7 @@ wcwidth@^1.0.0:
 
 web-ext@^8.9.0:
   version "8.9.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/web-ext/-/web-ext-8.9.0.tgz#86e93efd011141b79b5f1bbb11e14515545f1992"
+  resolved "https://registry.yarnpkg.com/web-ext/-/web-ext-8.9.0.tgz#86e93efd011141b79b5f1bbb11e14515545f1992"
   integrity sha512-X2IeYfWSf7c/Tireuv48FRfgHougaINBWwwMoYOd9xcXbQGrYXK3IALZZf0cbPpq4AidNxNO8HTKw3SUeWvJgw==
   dependencies:
     "@babel/runtime" "7.27.6"
@@ -13188,7 +13188,7 @@ websocket-extensions@>=0.1.1:
 
 when-exit@^2.1.1:
   version "2.1.4"
-  resolved "http://nexus.e-is.pro/repository/npmjs/when-exit/-/when-exit-2.1.4.tgz#e2a0e998f7ad67eb0d2ce37e9794386663cc96f7"
+  resolved "https://registry.yarnpkg.com/when-exit/-/when-exit-2.1.4.tgz#e2a0e998f7ad67eb0d2ce37e9794386663cc96f7"
   integrity sha512-4rnvd3A1t16PWzrBUcSDZqcAmsUIy4minDXT/CZ8F2mVDgd65i4Aalimgz1aQkRGU0iH5eT5+6Rx2TK8o443Pg==
 
 when@3.7.7:
@@ -13255,14 +13255,14 @@ which@^3.0.0:
 
 which@^4.0.0:
   version "4.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/which/-/which-4.0.0.tgz#cd60b5e74503a3fbcfbf6cd6b4138a8bae644c1a"
+  resolved "https://registry.yarnpkg.com/which/-/which-4.0.0.tgz#cd60b5e74503a3fbcfbf6cd6b4138a8bae644c1a"
   integrity sha512-GlaYyEb07DPxYCKhKzplCWBJtvxZcZMrL+4UkrTSJHHPyZU4mYYTv3qaOe77H7EODLSSopAUFAc6W8U4yqvscg==
   dependencies:
     isexe "^3.1.1"
 
 which@^5.0.0:
   version "5.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/which/-/which-5.0.0.tgz#d93f2d93f79834d4363c7d0c23e00d07c466c8d6"
+  resolved "https://registry.yarnpkg.com/which/-/which-5.0.0.tgz#d93f2d93f79834d4363c7d0c23e00d07c466c8d6"
   integrity sha512-JEdGzHwwkrbWoGOlIHqQ5gtprKGOenpDHpxE9zVR1bWbOtYRyPPHMe9FaP6x61CmNaTThSkb0DAJte5jD+DmzQ==
   dependencies:
     isexe "^3.1.1"
@@ -13276,7 +13276,7 @@ wide-align@^1.1.5:
 
 widest-line@^5.0.0:
   version "5.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/widest-line/-/widest-line-5.0.0.tgz#b74826a1e480783345f0cd9061b49753c9da70d0"
+  resolved "https://registry.yarnpkg.com/widest-line/-/widest-line-5.0.0.tgz#b74826a1e480783345f0cd9061b49753c9da70d0"
   integrity sha512-c9bZp7b5YtRj2wOe6dlj32MK+Bx/M/d+9VB2SHM1OtsUHR0aV0tdP6DWh/iMt0kWi1t5g1Iudu6hQRNd1A4PVA==
   dependencies:
     string-width "^7.0.0"
@@ -13369,7 +13369,7 @@ wrap-ansi@^8.1.0:
 
 wrap-ansi@^9.0.0:
   version "9.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/wrap-ansi/-/wrap-ansi-9.0.0.tgz#1a3dc8b70d85eeb8398ddfb1e4a02cd186e58b3e"
+  resolved "https://registry.yarnpkg.com/wrap-ansi/-/wrap-ansi-9.0.0.tgz#1a3dc8b70d85eeb8398ddfb1e4a02cd186e58b3e"
   integrity sha512-G8ura3S+3Z2G+mkgNRq8dqaFZAuxfsxpBB8OCTGRTCtp+l/v9nbFNmCUP1BZMts3G1142MsZfn6eeUKrr4PD1Q==
   dependencies:
     ansi-styles "^6.2.1"
@@ -13401,7 +13401,7 @@ write-file-atomic@^5.0.0:
 
 write-file-atomic@^6.0.0:
   version "6.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/write-file-atomic/-/write-file-atomic-6.0.0.tgz#e9c89c8191b3ef0606bc79fb92681aa1aa16fa93"
+  resolved "https://registry.yarnpkg.com/write-file-atomic/-/write-file-atomic-6.0.0.tgz#e9c89c8191b3ef0606bc79fb92681aa1aa16fa93"
   integrity sha512-GmqrO8WJ1NuzJ2DrziEI2o57jKAVIQNf8a18W3nCYU3H7PNWqCCVTeH6/NQE93CIllIgQS98rrmVkYgTX9fFJQ==
   dependencies:
     imurmurhash "^0.1.4"
@@ -13422,7 +13422,7 @@ ws@~1.1.5:
 
 wsl-utils@^0.1.0:
   version "0.1.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/wsl-utils/-/wsl-utils-0.1.0.tgz#8783d4df671d4d50365be2ee4c71917a0557baab"
+  resolved "https://registry.yarnpkg.com/wsl-utils/-/wsl-utils-0.1.0.tgz#8783d4df671d4d50365be2ee4c71917a0557baab"
   integrity sha512-h3Fbisa2nKGPxCpm89Hk33lBLsnaGBvctQopaBSOW/uIs6FTe1ATyAnKFJrzVs9vpGdsTe73WF3V4lIsk4Gacw==
   dependencies:
     is-wsl "^3.1.0"
@@ -13457,7 +13457,7 @@ xml-escape@^1.1.0:
 
 xml2js@^0.6.2:
   version "0.6.2"
-  resolved "http://nexus.e-is.pro/repository/npmjs/xml2js/-/xml2js-0.6.2.tgz#dd0b630083aa09c161e25a4d0901e2b2a929b499"
+  resolved "https://registry.yarnpkg.com/xml2js/-/xml2js-0.6.2.tgz#dd0b630083aa09c161e25a4d0901e2b2a929b499"
   integrity sha512-T4rieHaC1EXcES0Kxxj4JWgaUQHDk+qwHcYOCFHfiwKz7tOVPLq7Hjq9dM1WCMhylqMEfP7hMcOIChvotiZegA==
   dependencies:
     sax ">=0.6.0"
@@ -13522,7 +13522,7 @@ yallist@^4.0.0:
 
 yallist@^5.0.0:
   version "5.0.0"
-  resolved "http://nexus.e-is.pro/repository/npmjs/yallist/-/yallist-5.0.0.tgz#00e2de443639ed0d78fd87de0d27469fbcffb533"
+  resolved "https://registry.yarnpkg.com/yallist/-/yallist-5.0.0.tgz#00e2de443639ed0d78fd87de0d27469fbcffb533"
   integrity sha512-YgvUTfwqyc7UXVMrB+SImsVYSmTS8X/tSrtdNZMImM+n7+QTriRXyXim0mBrTXNeqzVF0KWGgHPeiyViFFrNDw==
 
 yaml@^1.10.0:
