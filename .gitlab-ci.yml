@@ -765,12 +765,12 @@ build:macOS:universal:
       echo "=== Extracting x86_64 app ==="
       mkdir -p "${WORK_DIR}/x86_64"
       cd "${WORK_DIR}/x86_64"
-      unzip -q "${CI_PROJECT_DIR}/${X86_ZIP}"
+      unzip -qo "${CI_PROJECT_DIR}/${X86_ZIP}"
 
       echo "=== Extracting arm64 app ==="
       mkdir -p "${WORK_DIR}/arm64"
       cd "${WORK_DIR}/arm64"
-      unzip -q "${CI_PROJECT_DIR}/${ARM_ZIP}"
+      unzip -qo "${CI_PROJECT_DIR}/${ARM_ZIP}"
 
       echo "=== Creating universal binary app ==="
       # Use arm64 as base (newer Macs)
@@ -823,7 +823,7 @@ build:macOS:universal:
       ls -la "${CI_PROJECT_DIR}/${BUILD_DIR}/"
   artifacts:
     paths:
-      - dist/desktop/build/
+      - dist/desktop/build/*universal*
     expire_in: 2 hours
   rules:
     - if: $CI_COMMIT_TAG
