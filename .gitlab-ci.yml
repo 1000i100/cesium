@@ -302,7 +302,7 @@ build:x86_64:deb:
     - .desktop_base
   image: debian:bookworm
   before_script:
-    - apt-get update && apt-get install -y curl wget xz-utils zip unzip fakeroot dpkg-dev imagemagick desktop-file-utils git npm
+    - apt-get update && apt-get install -y curl wget xz-utils zip unzip fakeroot dpkg-dev imagemagick desktop-file-utils file git npm
     # Init desktop submodule
     # Force HTTPS for submodules (SSH keys not available in CI)
     - git config --global url."https://git.duniter.org/".insteadOf "git@git.duniter.org:"
