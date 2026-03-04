@@ -11,9 +11,8 @@
 #               ├── build:iOS ───────────────────────────────────┤
 #               ├── build:x86_64:deb ────────────────────────────┤
 #               ├── build:x86_64:windows ────────────────────────┤
-#               ├── build:arm64:deb ─────────────────────────────┤
-#               ├── build:macOS:x86_64 ───────────────────────────┤
-#               └── build:macOS:arm64 ───────────────────────────┤
+#               ├── build:macOS:x86_64 ──┬── build:macOS:universal ┤
+#               └── build:macOS:arm64 ───┘                        │
 #                                                                │
 #                            pages (master) ─────────────────────┤
 #                            publish:sign:extFirefox ─────────────┤
@@ -251,16 +250,29 @@ build:iOS:
     - job: build:web
       artifacts: true
   before_script:
-    # Load nvm if available (shell runner on macOS may not have node in PATH)
-    - 'export NVM_DIR="$HOME/.nvm" && [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" || true'
-    - 'command -v node >/dev/null || (echo "ERROR: node not found. Install Node.js or nvm on this runner." && exit 1)'
+    # Load nvm, install it if missing (shell runner on macOS)
+    - 'export NVM_DIR="$HOME/.nvm"'
+    - '[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" || true'
+    - |
+      if ! command -v nvm >/dev/null 2>&1; then
+        echo "=== Installing nvm ==="
+        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+        export NVM_DIR="$HOME/.nvm"
+        . "$NVM_DIR/nvm.sh"
+      fi
+    - |
+      if ! command -v node >/dev/null 2>&1; then
+        echo "=== Installing Node 18 via nvm ==="
+        nvm install 18
+      fi
+      nvm use 18
     - npm install -g yarn gulp cordova
     - yarn install --ignore-engines
     # Copy web build into www
     - cp -r dist/web/www/* www/ || true
     - cordova platform add ios --confirm || true
   script:
-    - 'export NVM_DIR="$HOME/.nvm" && [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" || true'
+    - 'export NVM_DIR="$HOME/.nvm" && . "$NVM_DIR/nvm.sh" && nvm use 18'
     - cordova build ios --release || cordova build ios
     - |
       CURRENT_VERSION=$(echo "${CI_COMMIT_TAG}" | sed 's/^v//')
@@ -404,21 +416,58 @@ build:x86_64:deb:
       fakeroot dpkg-deb --build "${DEB_ROOT}" "${CI_PROJECT_DIR}/${BUILD_DIR}/${DEB_FILE}"
       echo "Created: ${DEB_FILE}"
 
-      echo "=== Attempting .AppImage (best-effort) ==="
-      # AppImage requires FUSE which may not be available in Docker
-      if command -v pkg2appimage >/dev/null 2>&1; then
-        APPIMAGE_YML="${CI_PROJECT_DIR}/dist/desktop/arch/linux/appimage.yml"
-        if [ -f "${APPIMAGE_YML}" ]; then
-          pkg2appimage "${APPIMAGE_YML}" || echo "WARN: AppImage build failed (FUSE likely unavailable in container)"
-          APPIMAGE_FILE=$(find . -name "*.AppImage" 2>/dev/null | head -1)
-          if [ -n "${APPIMAGE_FILE}" ]; then
-            cp "${APPIMAGE_FILE}" "${CI_PROJECT_DIR}/${BUILD_DIR}/${PROJECT_NAME}-desktop-v${CURRENT_VERSION}-linux-x86_64.AppImage"
-            echo "Created: AppImage"
-          fi
-        fi
-      else
-        echo "WARN: pkg2appimage not found, skipping AppImage build"
-      fi
+      echo "=== Creating .AppImage ==="
+      APPIMAGE_DIR="${WORK_DIR}/AppDir"
+      APPIMAGE_FILE="${PROJECT_NAME}-desktop-v${CURRENT_VERSION}-linux-x86_64.AppImage"
+
+      # Populate AppDir from the already-prepared APP_DIR
+      mkdir -p "${APPIMAGE_DIR}/usr/lib/cesium"
+      cp -r "${APP_DIR}/"* "${APPIMAGE_DIR}/usr/lib/cesium/"
+      chmod a+x "${APPIMAGE_DIR}/usr/lib/cesium/nw"
+
+      # Symlink /usr/bin/cesium -> ../lib/cesium/nw
+      mkdir -p "${APPIMAGE_DIR}/usr/bin"
+      ln -sf ../lib/cesium/nw "${APPIMAGE_DIR}/usr/bin/cesium"
+
+      # Icon in hicolor theme
+      mkdir -p "${APPIMAGE_DIR}/usr/share/icons/hicolor/256x256/apps"
+      cp "${APPIMAGE_DIR}/usr/lib/cesium/cesium/img/logo_256px.png" \
+        "${APPIMAGE_DIR}/usr/share/icons/hicolor/256x256/apps/cesium.png"
+
+      # Root icon (required by appimagetool)
+      cp "${APPIMAGE_DIR}/usr/share/icons/hicolor/256x256/apps/cesium.png" \
+        "${APPIMAGE_DIR}/cesium.png"
+
+      # Desktop entry
+      cat > "${APPIMAGE_DIR}/cesium.desktop" <<'DESKTOP'
+      [Desktop Entry]
+      Type=Application
+      Name=Cesium
+      Comment=Wallet for G1 libre currency
+      Exec=cesium
+      Icon=cesium
+      Categories=Finance;Network;
+      Terminal=false
+      DESKTOP
+      # Remove leading whitespace added by YAML indentation
+      sed -i 's/^      //' "${APPIMAGE_DIR}/cesium.desktop"
+
+      # AppRun launcher
+      cat > "${APPIMAGE_DIR}/AppRun" <<'APPRUN'
+      #!/bin/bash
+      APPDIR="$(dirname "$(readlink -f "$0")")"
+      exec "$APPDIR/usr/lib/cesium/nw" "$@"
+      APPRUN
+      sed -i 's/^      //' "${APPIMAGE_DIR}/AppRun"
+      chmod a+x "${APPIMAGE_DIR}/AppRun"
+
+      # Download appimagetool and build the AppImage (no FUSE needed)
+      wget -q "https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage" \
+        -O "${WORK_DIR}/appimagetool"
+      chmod +x "${WORK_DIR}/appimagetool"
+      APPIMAGE_EXTRACT_AND_RUN=1 "${WORK_DIR}/appimagetool" "${APPIMAGE_DIR}" \
+        "${CI_PROJECT_DIR}/${BUILD_DIR}/${APPIMAGE_FILE}"
+      echo "Created: ${APPIMAGE_FILE}"
 
       echo "=== Generating SHA256 checksums ==="
       cd "${CI_PROJECT_DIR}/${BUILD_DIR}"
@@ -439,7 +488,7 @@ build:x86_64:windows:
     - .desktop_base
   image: debian:bookworm
   before_script:
-    - apt-get update && apt-get install -y curl wget xz-utils zip unzip p7zip-full wine64 git npm
+    - apt-get update && apt-get install -y curl wget xz-utils zip unzip p7zip-full nsis git npm
     # Init desktop submodule
     # Force HTTPS for submodules (SSH keys not available in CI)
     - git config --global url."https://git.duniter.org/".insteadOf "git@git.duniter.org:"
@@ -487,202 +536,22 @@ build:x86_64:windows:
       npm install --production 2>/dev/null || true
       cd "${WORK_DIR}"
 
-      echo "=== Attempting Inno Setup via Wine (best-effort) ==="
-      INNO_SETUP_OK=false
+      echo "=== Building Windows installer with NSIS ==="
+      # Copy LICENSE file for the installer license page
+      cp "${CI_PROJECT_DIR}/LICENSE" "${APP_DIR}/LICENSE.txt"
 
-      # Try to install Inno Setup 5 under Wine
-      if command -v wine64 >/dev/null 2>&1; then
-        export WINEDEBUG=-all
-        export WINEPREFIX="${WORK_DIR}/.wine"
-        mkdir -p "${WINEPREFIX}"
+      CURRENT_VERSION=$(echo "${CI_COMMIT_TAG}" | sed 's/^v//')
+      NSI_FILE="${CI_PROJECT_DIR}/resources/windows/cesium.nsi"
+      EXE_NAME="${PROJECT_NAME}-desktop-v${CURRENT_VERSION}-windows-x86_64.exe"
 
-        # Download Inno Setup 5
-        INNO_URL="https://files.jrsoftware.org/is/5/innosetup-5.5.9-unicode.exe"
-        wget -q "${INNO_URL}" -O innosetup.exe 2>/dev/null || true
+      makensis -DAPP_VERSION="v${CURRENT_VERSION}" \
+               -DAPP_SRC_DIR="${APP_DIR}" \
+               "${NSI_FILE}"
 
-        if [ -f "innosetup.exe" ]; then
-          # Silent install
-          wine64 innosetup.exe /VERYSILENT /DIR="C:\\InnoSetup" 2>/dev/null || true
-          ISCC="${WINEPREFIX}/drive_c/InnoSetup/ISCC.exe"
-
-          if [ -f "${ISCC}" ]; then
-            # Prepare Inno Setup script
-            ISS_FILE="${CI_PROJECT_DIR}/dist/desktop/arch/windows/cesium.iss"
-            if [ -f "${ISS_FILE}" ]; then
-              # Update version in .iss file
-              cp "${ISS_FILE}" "${WORK_DIR}/cesium.iss"
-              sed -i "s/#define MyAppVersion.*/#define MyAppVersion \"v${CURRENT_VERSION}\"/" "${WORK_DIR}/cesium.iss"
-
-              # Run Inno Setup compiler
-              cd "${WORK_DIR}"
-              wine64 "${ISCC}" "cesium.iss" "/DROOT_PATH=$(winepath -w "${APP_DIR}")" 2>/dev/null && INNO_SETUP_OK=true || true
-            fi
-          fi
-        fi
-      fi
-
-      if [ "${INNO_SETUP_OK}" = true ]; then
-        # Find the generated .exe
-        EXE_FILE=$(find "${WORK_DIR}" -name "*.exe" -not -name "innosetup.exe" -not -name "ISCC.exe" 2>/dev/null | head -1)
-        if [ -n "${EXE_FILE}" ]; then
-          cp "${EXE_FILE}" "${CI_PROJECT_DIR}/${BUILD_DIR}/${PROJECT_NAME}-desktop-v${CURRENT_VERSION}-windows-x86_64.exe"
-          echo "Created installer: ${PROJECT_NAME}-desktop-v${CURRENT_VERSION}-windows-x86_64.exe"
-        fi
-      fi
-
-      # Always create a .zip fallback
-      echo "=== Creating .zip fallback ==="
-      cd "${WORK_DIR}"
-      ZIP_FILE="${PROJECT_NAME}-desktop-v${CURRENT_VERSION}-windows-x86_64.zip"
-      zip -qr "${CI_PROJECT_DIR}/${BUILD_DIR}/${ZIP_FILE}" "${NWJS_DIR}"
-      echo "Created: ${ZIP_FILE}"
-
-      echo "=== Generating SHA256 checksums ==="
-      cd "${CI_PROJECT_DIR}/${BUILD_DIR}"
-      for f in *; do
-        case "$f" in *.sha256) continue ;; esac
-        [ -f "$f" ] && sha256sum "$f" > "$f.sha256"
-      done
-
-      echo "=== Build complete ==="
-      ls -la "${CI_PROJECT_DIR}/${BUILD_DIR}/"
-  artifacts:
-    paths:
-      - dist/desktop/build/
-    expire_in: 2 hours
-
-build:arm64:deb:
-  extends:
-    - .desktop_base
-  allow_failure: true
-  image: debian:bookworm
-  tags:
-    - dockerARM
-  before_script:
-    - apt-get update && apt-get install -y curl wget xz-utils zip unzip fakeroot dpkg-dev git npm
-    # Init desktop submodule
-    # Force HTTPS for submodules (SSH keys not available in CI)
-    - git config --global url."https://git.duniter.org/".insteadOf "git@git.duniter.org:"
-    - git submodule init || true
-    - git submodule sync || true
-    # Clean submodule dirs (gitlink from checkout blocks clone)
-    - rm -rf dist/desktop dist/android/sources
-    - git submodule update --remote --merge || true
-    - CURRENT_VERSION=$(echo "${CI_COMMIT_TAG}" | sed 's/^v//')
-    - echo "VERSION=${CURRENT_VERSION}"
-  script:
-    - |
-      set -e
-      # WARNING: NW.js does NOT have official ARM64 builds.
-      # This job is experimental and will likely fail at the download step.
-      ARCH="arm64"
-      NWJS_DIR="nwjs-v${NWJS_VERSION}-linux-${ARCH}"
-      BUILD_DIR="dist/desktop/build"
-      WORK_DIR="$(pwd)/desktop-work"
-      mkdir -p "${BUILD_DIR}" "${WORK_DIR}"
-
-      echo "=== Downloading NW.js v${NWJS_VERSION} linux-${ARCH} (experimental) ==="
-      cd "${WORK_DIR}"
-
-      # Try official download first, then community builds
-      wget -q "https://dl.nwjs.io/v${NWJS_VERSION}/${NWJS_DIR}.tar.gz" || {
-        echo "WARN: No official NW.js ARM64 build available"
-        echo "Trying unofficial/community builds..."
-        wget -q "https://github.com/nicedoc/nwjs-arm64/releases/download/v${NWJS_VERSION}/${NWJS_DIR}.tar.gz" || {
-          echo "ERROR: No NW.js ARM64 build found. This job is experimental."
-          exit 1
-        }
-      }
-
-      tar xzf "${NWJS_DIR}.tar.gz"
-
-      echo "=== Preparing desktop application ==="
-      APP_DIR="${WORK_DIR}/${NWJS_DIR}"
-
-      # Copy web files (desktop code expects "cesium/" not "www/")
-      mkdir -p "${APP_DIR}/cesium"
-      cp -r "${CI_PROJECT_DIR}/dist/web/www/"* "${APP_DIR}/cesium/"
-
-      # Copy desktop files
-      DESKTOP_SRC="${CI_PROJECT_DIR}/dist/desktop/src"
-      if [ -d "${DESKTOP_SRC}" ]; then
-        cp "${DESKTOP_SRC}/cesium-desktop.js" "${APP_DIR}/"
-        cp "${DESKTOP_SRC}/splash.html" "${APP_DIR}/"
-        cp "${DESKTOP_SRC}/package.json" "${APP_DIR}/"
-        [ -f "${DESKTOP_SRC}/package-lock.json" ] && cp "${DESKTOP_SRC}/package-lock.json" "${APP_DIR}/"
-      fi
-
-      # Inject cesium-desktop.js into index.html
-      sed -i 's|<script src="config.js"></script>|<script src="config.js"></script>\n    <script src="../cesium-desktop.js"></script>|' "${APP_DIR}/cesium/index.html"
-
-      # Install desktop node dependencies
-      cd "${APP_DIR}"
-      npm install --production 2>/dev/null || true
-      cd "${WORK_DIR}"
-
-      echo "=== Creating .tar.gz ==="
-      TARBALL="${PROJECT_NAME}-desktop-v${CURRENT_VERSION}-linux-arm64.tar.gz"
-      tar czf "${CI_PROJECT_DIR}/${BUILD_DIR}/${TARBALL}" -C "${WORK_DIR}" "${NWJS_DIR}"
-      echo "Created: ${TARBALL}"
-
-      echo "=== Creating .deb package ==="
-      DEB_ROOT="${WORK_DIR}/deb-root"
-      mkdir -p "${DEB_ROOT}/opt/cesium"
-
-      # Copy NW.js + app directly into /opt/cesium (no nw.nwb compression)
-      cp -r "${APP_DIR}/"* "${DEB_ROOT}/opt/cesium/"
-      chmod a+x "${DEB_ROOT}/opt/cesium/nw"
-
-      # Copy package structure from submodule (usr/share/*, etc.) but NOT DEBIAN/
-      PKG_SRC="${CI_PROJECT_DIR}/dist/desktop/arch/linux/package"
-      if [ -d "${PKG_SRC}/usr" ]; then
-        cp -r "${PKG_SRC}/usr" "${DEB_ROOT}/"
-      fi
-
-      # Generate our own DEBIAN/ control files
-      mkdir -p "${DEB_ROOT}/DEBIAN"
-      INSTALLED_SIZE=$(du -sk "${DEB_ROOT}" | awk '{print $1}')
-      printf '%s\n' \
-        "Package: cesium-desktop" \
-        "Version: ${CURRENT_VERSION}" \
-        "Architecture: arm64" \
-        "Maintainer: Duniter Team <contact@duniter.org>" \
-        "Installed-Size: ${INSTALLED_SIZE}" \
-        "Depends: libnss3 (>= 3.26), libatk-bridge2.0-0, libatomic1, libgtk-3-0" \
-        "Conflicts: cesium-desktop" \
-        "Replaces: cesium-desktop" \
-        "Provides: cesium-desktop" \
-        "Section: contrib/misc" \
-        "Priority: optional" \
-        "Homepage: https://www.cesium.app" \
-        "Description: Cesium Wallet for G1 currency" \
-        " Cesium is a wallet (client-software) for G1 a libre currency." \
-        " Please visit https://www.duniter.org for more information." \
-        " License AGPL-3" \
-        > "${DEB_ROOT}/DEBIAN/control"
-
-      printf '#!/bin/bash\nln -sf /opt/cesium/nw /usr/bin/cesium\nchmod a+rX -R /opt/cesium\n' \
-        > "${DEB_ROOT}/DEBIAN/postinst"
-      chmod 755 "${DEB_ROOT}/DEBIAN/postinst"
-
-      printf '#!/bin/bash\n[ -L /usr/bin/cesium ] && rm -f /usr/bin/cesium\n' \
-        > "${DEB_ROOT}/DEBIAN/prerm"
-      chmod 755 "${DEB_ROOT}/DEBIAN/prerm"
-
-      # Gzip changelog if present
-      [ -f "${DEB_ROOT}/usr/share/doc/cesium-desktop/changelog.Debian" ] && \
-        gzip -9 "${DEB_ROOT}/usr/share/doc/cesium-desktop/changelog.Debian" 2>/dev/null || true
-
-      # Copy icon
-      ICON_SRC="${CI_PROJECT_DIR}/resources/icon.png"
-      if [ -f "${ICON_SRC}" ]; then
-        mkdir -p "${DEB_ROOT}/usr/share/pixmaps"
-        cp "${ICON_SRC}" "${DEB_ROOT}/usr/share/pixmaps/cesium.png"
-      fi
-
-      DEB_FILE="${PROJECT_NAME}-desktop-v${CURRENT_VERSION}-linux-arm64.deb"
-      fakeroot dpkg-deb --build "${DEB_ROOT}" "${CI_PROJECT_DIR}/${BUILD_DIR}/${DEB_FILE}"
-      echo "Created: ${DEB_FILE}"
+      # makensis outputs Cesium-setup.exe next to the .nsi file
+      mv "${CI_PROJECT_DIR}/resources/windows/Cesium-setup.exe" \
+         "${CI_PROJECT_DIR}/${BUILD_DIR}/${EXE_NAME}"
+      echo "Created installer: ${EXE_NAME}"
 
       echo "=== Generating SHA256 checksums ==="
       cd "${CI_PROJECT_DIR}/${BUILD_DIR}"
@@ -870,6 +739,94 @@ build:macOS:arm64:
     paths:
       - dist/desktop/build/
     expire_in: 2 hours
+
+build:macOS:universal:
+  stage: build
+  tags:
+    - macos
+  needs:
+    - job: build:macOS:x86_64
+      artifacts: true
+    - job: build:macOS:arm64
+      artifacts: true
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - |
+      set -e
+      TAG_VERSION=$(echo "${CI_COMMIT_TAG}" | sed 's/^v//')
+      BUILD_DIR="dist/desktop/build"
+      WORK_DIR="$(pwd)/universal-work"
+      mkdir -p "${WORK_DIR}"
+
+      X86_ZIP="${BUILD_DIR}/cesium-desktop-v${TAG_VERSION}-macos-x86_64.zip"
+      ARM_ZIP="${BUILD_DIR}/cesium-desktop-v${TAG_VERSION}-macos-arm64.zip"
+
+      echo "=== Extracting x86_64 app ==="
+      mkdir -p "${WORK_DIR}/x86_64"
+      cd "${WORK_DIR}/x86_64"
+      unzip -q "${CI_PROJECT_DIR}/${X86_ZIP}"
+
+      echo "=== Extracting arm64 app ==="
+      mkdir -p "${WORK_DIR}/arm64"
+      cd "${WORK_DIR}/arm64"
+      unzip -q "${CI_PROJECT_DIR}/${ARM_ZIP}"
+
+      echo "=== Creating universal binary app ==="
+      # Use arm64 as base (newer Macs)
+      cp -R "${WORK_DIR}/arm64/Cesium.app" "${WORK_DIR}/Cesium.app"
+
+      # Find all Mach-O binaries and create universal (fat) binaries with lipo
+      cd "${WORK_DIR}/arm64/Cesium.app"
+      find . -type f | while read -r RELPATH; do
+        FILE_TYPE=$(file -b "${WORK_DIR}/arm64/Cesium.app/${RELPATH}" 2>/dev/null || true)
+        case "${FILE_TYPE}" in
+          *Mach-O*)
+            X86_FILE="${WORK_DIR}/x86_64/Cesium.app/${RELPATH}"
+            if [ -f "${X86_FILE}" ]; then
+              echo "  lipo: ${RELPATH}"
+              lipo -create \
+                "${WORK_DIR}/arm64/Cesium.app/${RELPATH}" \
+                "${X86_FILE}" \
+                -output "${WORK_DIR}/Cesium.app/${RELPATH}"
+            fi
+            ;;
+        esac
+      done
+
+      echo "=== Verifying universal binary ==="
+      NWJS_BIN=$(find "${WORK_DIR}/Cesium.app" -name "nwjs" -type f | head -1)
+      if [ -n "${NWJS_BIN}" ]; then
+        file "${NWJS_BIN}"
+      fi
+
+      echo "=== Creating .dmg ==="
+      DMG_DIR="${WORK_DIR}/dmg-content"
+      mkdir -p "${DMG_DIR}"
+      cp -R "${WORK_DIR}/Cesium.app" "${DMG_DIR}/"
+      ln -s /Applications "${DMG_DIR}/Applications"
+
+      DMG_FILE="cesium-desktop-v${TAG_VERSION}-macos-universal.dmg"
+      hdiutil create \
+        -volname "Cesium" \
+        -srcfolder "${DMG_DIR}" \
+        -ov -format UDZO \
+        "${CI_PROJECT_DIR}/${BUILD_DIR}/${DMG_FILE}"
+      echo "Created: ${DMG_FILE}"
+
+      echo "=== Generating SHA256 checksum ==="
+      cd "${CI_PROJECT_DIR}/${BUILD_DIR}"
+      shasum -a 256 "${DMG_FILE}" > "${DMG_FILE}.sha256"
+      cat "${DMG_FILE}.sha256"
+
+      echo "=== Build complete ==="
+      ls -la "${CI_PROJECT_DIR}/${BUILD_DIR}/"
+  artifacts:
+    paths:
+      - dist/desktop/build/
+    expire_in: 2 hours
+  rules:
+    - if: $CI_COMMIT_TAG
 
 # ---------------------------------------------------------------
 # Stage: publish
@@ -1100,13 +1057,13 @@ publish:release:
     - job: build:x86_64:windows
       artifacts: true
       optional: true
-    - job: build:arm64:deb
-      artifacts: true
-      optional: true
     - job: build:macOS:x86_64
       artifacts: true
       optional: true
     - job: build:macOS:arm64
+      artifacts: true
+      optional: true
+    - job: build:macOS:universal
       artifacts: true
       optional: true
     # --- Optional signed artifacts ---
@@ -1270,40 +1227,22 @@ publish:release:
           "$(file_url "${JOB_ID}" "dist/desktop/build/${PROJECT_NAME}-desktop-v${TAG_VERSION}-linux-x86_64.deb")" "package"
         add_asset_link "${PROJECT_NAME}-desktop-v${TAG_VERSION}-linux-x86_64.tar.gz" \
           "$(file_url "${JOB_ID}" "dist/desktop/build/${PROJECT_NAME}-desktop-v${TAG_VERSION}-linux-x86_64.tar.gz")" "package"
+        add_asset_link "${PROJECT_NAME}-desktop-v${TAG_VERSION}-linux-x86_64.AppImage" \
+          "$(file_url "${JOB_ID}" "dist/desktop/build/${PROJECT_NAME}-desktop-v${TAG_VERSION}-linux-x86_64.AppImage")" "package"
       fi
 
-      # --- Windows x86_64 (.exe + .zip) ---
+      # --- Windows x86_64 (.exe) ---
       JOB_ID=$(get_job_id "build:x86_64:windows")
       if [ -n "${JOB_ID}" ] && [ "${JOB_ID}" != "null" ]; then
-        if [ -f "dist/desktop/build/${PROJECT_NAME}-desktop-v${TAG_VERSION}-windows-x86_64.exe" ]; then
-          add_asset_link "${PROJECT_NAME}-desktop-v${TAG_VERSION}-windows-x86_64.exe" \
-            "$(file_url "${JOB_ID}" "dist/desktop/build/${PROJECT_NAME}-desktop-v${TAG_VERSION}-windows-x86_64.exe")" "package"
-        fi
-        add_asset_link "${PROJECT_NAME}-desktop-v${TAG_VERSION}-windows-x86_64.zip" \
-          "$(file_url "${JOB_ID}" "dist/desktop/build/${PROJECT_NAME}-desktop-v${TAG_VERSION}-windows-x86_64.zip")" "package"
+        add_asset_link "${PROJECT_NAME}-desktop-v${TAG_VERSION}-windows-x86_64.exe" \
+          "$(file_url "${JOB_ID}" "dist/desktop/build/${PROJECT_NAME}-desktop-v${TAG_VERSION}-windows-x86_64.exe")" "package"
       fi
 
-      # --- macOS x86_64 (.zip) ---
-      JOB_ID=$(get_job_id "build:macOS:x86_64")
+      # --- macOS universal (.dmg) ---
+      JOB_ID=$(get_job_id "build:macOS:universal")
       if [ -n "${JOB_ID}" ] && [ "${JOB_ID}" != "null" ]; then
-        add_asset_link "${PROJECT_NAME}-desktop-v${TAG_VERSION}-macos-x86_64.zip" \
-          "$(file_url "${JOB_ID}" "dist/desktop/build/${PROJECT_NAME}-desktop-v${TAG_VERSION}-macos-x86_64.zip")" "package"
-      fi
-
-      # --- macOS arm64 (.zip) ---
-      JOB_ID=$(get_job_id "build:macOS:arm64")
-      if [ -n "${JOB_ID}" ] && [ "${JOB_ID}" != "null" ]; then
-        add_asset_link "${PROJECT_NAME}-desktop-v${TAG_VERSION}-macos-arm64.zip" \
-          "$(file_url "${JOB_ID}" "dist/desktop/build/${PROJECT_NAME}-desktop-v${TAG_VERSION}-macos-arm64.zip")" "package"
-      fi
-
-      # --- Linux arm64 (.deb + .tar.gz) ---
-      JOB_ID=$(get_job_id "build:arm64:deb")
-      if [ -n "${JOB_ID}" ] && [ "${JOB_ID}" != "null" ]; then
-        add_asset_link "${PROJECT_NAME}-desktop-v${TAG_VERSION}-linux-arm64.deb" \
-          "$(file_url "${JOB_ID}" "dist/desktop/build/${PROJECT_NAME}-desktop-v${TAG_VERSION}-linux-arm64.deb")" "package"
-        add_asset_link "${PROJECT_NAME}-desktop-v${TAG_VERSION}-linux-arm64.tar.gz" \
-          "$(file_url "${JOB_ID}" "dist/desktop/build/${PROJECT_NAME}-desktop-v${TAG_VERSION}-linux-arm64.tar.gz")" "package"
+        add_asset_link "${PROJECT_NAME}-desktop-v${TAG_VERSION}-macos-universal.dmg" \
+          "$(file_url "${JOB_ID}" "dist/desktop/build/${PROJECT_NAME}-desktop-v${TAG_VERSION}-macos-universal.dmg")" "package"
       fi
 
       echo ""
