@@ -250,6 +250,8 @@ build:iOS:
     - job: build:web
       artifacts: true
   before_script:
+    # UTF-8 locale required by CocoaPods/Ruby 3.4 (ASCII-8BIT encoding crash)
+    - 'export LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8'
     # Load nvm, install it if missing (shell runner on macOS)
     - 'export NVM_DIR="$HOME/.nvm"'
     - '[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" || true'
