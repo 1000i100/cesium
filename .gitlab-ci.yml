@@ -757,6 +757,7 @@ build:macOS:universal:
       TAG_VERSION=$(echo "${CI_COMMIT_TAG}" | sed 's/^v//')
       BUILD_DIR="dist/desktop/build"
       WORK_DIR="$(pwd)/universal-work"
+      rm -rf "${WORK_DIR}"
       mkdir -p "${WORK_DIR}"
 
       X86_ZIP="${BUILD_DIR}/cesium-desktop-v${TAG_VERSION}-macos-x86_64.zip"
