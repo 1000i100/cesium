@@ -266,6 +266,7 @@ build:iOS:
         nvm install 18
       fi
       nvm use 18
+    - gem install ffi --user-install || true
     - npm install -g yarn gulp cordova
     - yarn install --ignore-engines
     # Copy web build into www
