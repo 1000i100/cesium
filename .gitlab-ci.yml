@@ -811,14 +811,19 @@ build:macOS:universal:
       hdiutil create \
         -volname "Cesium" \
         -srcfolder "${DMG_DIR}" \
-        -ov -format UDZO \
+        -ov -format ULFO \
         "${CI_PROJECT_DIR}/${BUILD_DIR}/${DMG_FILE}"
       echo "Created: ${DMG_FILE}"
+      ls -lh "${CI_PROJECT_DIR}/${BUILD_DIR}/${DMG_FILE}"
+
+      echo "=== Compressing .dmg with xz for artifact upload ==="
+      xz -9 "${CI_PROJECT_DIR}/${BUILD_DIR}/${DMG_FILE}"
+      echo "Compressed: ${DMG_FILE}.xz"
 
       echo "=== Generating SHA256 checksum ==="
       cd "${CI_PROJECT_DIR}/${BUILD_DIR}"
-      shasum -a 256 "${DMG_FILE}" > "${DMG_FILE}.sha256"
-      cat "${DMG_FILE}.sha256"
+      shasum -a 256 "${DMG_FILE}.xz" > "${DMG_FILE}.xz.sha256"
+      cat "${DMG_FILE}.xz.sha256"
 
       echo "=== Build complete ==="
       ls -la "${CI_PROJECT_DIR}/${BUILD_DIR}/"
@@ -1242,8 +1247,8 @@ publish:release:
       # --- macOS universal (.dmg) ---
       JOB_ID=$(get_job_id "build:macOS:universal")
       if [ -n "${JOB_ID}" ] && [ "${JOB_ID}" != "null" ]; then
-        add_asset_link "${PROJECT_NAME}-desktop-v${TAG_VERSION}-macos-universal.dmg" \
-          "$(file_url "${JOB_ID}" "dist/desktop/build/${PROJECT_NAME}-desktop-v${TAG_VERSION}-macos-universal.dmg")" "package"
+        add_asset_link "${PROJECT_NAME}-desktop-v${TAG_VERSION}-macos-universal.dmg.xz" \
+          "$(file_url "${JOB_ID}" "dist/desktop/build/${PROJECT_NAME}-desktop-v${TAG_VERSION}-macos-universal.dmg.xz")" "package"
       fi
 
       echo ""
