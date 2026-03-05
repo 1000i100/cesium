@@ -266,7 +266,12 @@ build:iOS:
         nvm install 18
       fi
       nvm use 18
-    - gem install ffi --user-install || true
+    # Fix CocoaPods: ensure Homebrew Ruby is used and ffi gem is present
+    - |
+      if [ -d /opt/homebrew/opt/ruby/bin ]; then
+        export PATH="/opt/homebrew/opt/ruby/bin:$(gem environment gemdir)/bin:$PATH"
+      fi
+      gem install ffi --user-install 2>/dev/null || true
     - npm install -g yarn gulp cordova
     - yarn install --ignore-engines
     # Copy web build into www
