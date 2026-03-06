@@ -11,8 +11,7 @@
 #               ├── build:iOS ───────────────────────────────────┤
 #               ├── build:x86_64:deb ────────────────────────────┤
 #               ├── build:x86_64:windows ────────────────────────┤
-#               ├── build:macOS:x86_64 ──┬── build:macOS:universal ┤
-#               └── build:macOS:arm64 ───┘                        │
+#               └── build:macOS ─────────────────────────────────┤
 #                                                                │
 #                            pages (master) ─────────────────────┤
 #                            publish:sign:extFirefox ─────────────┤
@@ -575,7 +574,7 @@ build:x86_64:windows:
       - dist/desktop/build/
     expire_in: 2 hours
 
-build:macOS:x86_64:
+build:macOS:
   extends:
     - .desktop_base
   tags:
@@ -594,208 +593,95 @@ build:macOS:x86_64:
   script:
     - |
       set -e
-      NWJS_DIR="nwjs-v${NWJS_VERSION}-osx-x64"
-      BUILD_DIR="dist/desktop/build"
-      WORK_DIR="$(pwd)/desktop-work"
-      mkdir -p "${BUILD_DIR}" "${WORK_DIR}"
-
-      echo "=== Downloading NW.js v${NWJS_VERSION} osx-x64 ==="
-      cd "${WORK_DIR}"
-      curl -sLO "https://dl.nwjs.io/v${NWJS_VERSION}/${NWJS_DIR}.zip"
-      unzip -q "${NWJS_DIR}.zip"
-
-      echo "=== Preparing macOS application ==="
-      APP_BUNDLE="${WORK_DIR}/${NWJS_DIR}/nwjs.app"
-      APP_NW="${APP_BUNDLE}/Contents/Resources/app.nw"
-      mkdir -p "${APP_NW}"
-
-      # Copy web files
-      # Copy web files (desktop code expects "cesium/" not "www/")
-      mkdir -p "${APP_NW}/cesium"
-      cp -r "${CI_PROJECT_DIR}/dist/web/www/"* "${APP_NW}/cesium/"
-
-      # Copy desktop files
-      DESKTOP_SRC="${CI_PROJECT_DIR}/dist/desktop/src"
-      if [ -d "${DESKTOP_SRC}" ]; then
-        cp "${DESKTOP_SRC}/cesium-desktop.js" "${APP_NW}/"
-        cp "${DESKTOP_SRC}/splash.html" "${APP_NW}/"
-        cp "${DESKTOP_SRC}/package.json" "${APP_NW}/"
-        [ -f "${DESKTOP_SRC}/package-lock.json" ] && cp "${DESKTOP_SRC}/package-lock.json" "${APP_NW}/"
-      fi
-
-      # Inject cesium-desktop.js into index.html
-      sed -i '' 's|<script src="config.js"></script>|<script src="config.js"></script>\
-          <script src="../cesium-desktop.js"></script>|' "${APP_NW}/cesium/index.html"
-
-      # Install desktop node dependencies
-      cd "${APP_NW}"
-      npm install --production 2>/dev/null || true
-      cd "${WORK_DIR}"
-
-      # Copy app icon
-      ICON_SRC="${CI_PROJECT_DIR}/dist/desktop/arch/osx/package/Contents/Resources/app.icns"
-      if [ -f "${ICON_SRC}" ]; then
-        cp "${ICON_SRC}" "${APP_BUNDLE}/Contents/Resources/app.icns"
-      fi
-
-      # Rename to Cesium.app
-      CESIUM_APP="${WORK_DIR}/${NWJS_DIR}/Cesium.app"
-      mv "${APP_BUNDLE}" "${CESIUM_APP}"
-
-      echo "=== Creating .zip ==="
-      cd "${WORK_DIR}/${NWJS_DIR}"
-      ZIP_FILE="${PROJECT_NAME}-desktop-v${CURRENT_VERSION}-macos-x86_64.zip"
-      zip -qr "${CI_PROJECT_DIR}/${BUILD_DIR}/${ZIP_FILE}" "Cesium.app"
-      echo "Created: ${ZIP_FILE}"
-
-      echo "=== Generating SHA256 checksums ==="
-      cd "${CI_PROJECT_DIR}/${BUILD_DIR}"
-      for f in *; do
-        case "$f" in *.sha256) continue ;; esac
-        [ -f "$f" ] && shasum -a 256 "$f" > "$f.sha256"
-      done
-
-      echo "=== Build complete ==="
-      ls -la "${CI_PROJECT_DIR}/${BUILD_DIR}/"
-  artifacts:
-    paths:
-      - dist/desktop/build/
-    expire_in: 2 hours
-
-build:macOS:arm64:
-  extends:
-    - .desktop_base
-  allow_failure: true
-  tags:
-    - macos
-  before_script:
-    # Init desktop submodule
-    - git config --global url."https://git.duniter.org/".insteadOf "git@git.duniter.org:"
-    - git submodule init || true
-    - git submodule sync || true
-    - rm -rf dist/desktop dist/android/sources
-    - git submodule update --remote --merge || true
-    - CURRENT_VERSION=$(echo "${CI_COMMIT_TAG}" | sed 's/^v//')
-    - echo "VERSION=${CURRENT_VERSION}"
-  script:
-    - |
-      set -e
-      NWJS_DIR="nwjs-v${NWJS_VERSION}-osx-arm64"
-      BUILD_DIR="dist/desktop/build"
-      WORK_DIR="$(pwd)/desktop-work"
-      mkdir -p "${BUILD_DIR}" "${WORK_DIR}"
-
-      echo "=== Downloading NW.js v${NWJS_VERSION} osx-arm64 ==="
-      cd "${WORK_DIR}"
-      curl -sLO "https://dl.nwjs.io/v${NWJS_VERSION}/${NWJS_DIR}.zip"
-      unzip -q "${NWJS_DIR}.zip"
-
-      echo "=== Preparing macOS application ==="
-      APP_BUNDLE="${WORK_DIR}/${NWJS_DIR}/nwjs.app"
-      APP_NW="${APP_BUNDLE}/Contents/Resources/app.nw"
-      mkdir -p "${APP_NW}"
-
-      # Copy web files
-      # Copy web files (desktop code expects "cesium/" not "www/")
-      mkdir -p "${APP_NW}/cesium"
-      cp -r "${CI_PROJECT_DIR}/dist/web/www/"* "${APP_NW}/cesium/"
-
-      # Copy desktop files
-      DESKTOP_SRC="${CI_PROJECT_DIR}/dist/desktop/src"
-      if [ -d "${DESKTOP_SRC}" ]; then
-        cp "${DESKTOP_SRC}/cesium-desktop.js" "${APP_NW}/"
-        cp "${DESKTOP_SRC}/splash.html" "${APP_NW}/"
-        cp "${DESKTOP_SRC}/package.json" "${APP_NW}/"
-        [ -f "${DESKTOP_SRC}/package-lock.json" ] && cp "${DESKTOP_SRC}/package-lock.json" "${APP_NW}/"
-      fi
-
-      # Inject cesium-desktop.js into index.html
-      sed -i '' 's|<script src="config.js"></script>|<script src="config.js"></script>\
-          <script src="../cesium-desktop.js"></script>|' "${APP_NW}/cesium/index.html"
-
-      # Install desktop node dependencies
-      cd "${APP_NW}"
-      npm install --production 2>/dev/null || true
-      cd "${WORK_DIR}"
-
-      # Copy app icon
-      ICON_SRC="${CI_PROJECT_DIR}/dist/desktop/arch/osx/package/Contents/Resources/app.icns"
-      if [ -f "${ICON_SRC}" ]; then
-        cp "${ICON_SRC}" "${APP_BUNDLE}/Contents/Resources/app.icns"
-      fi
-
-      # Rename to Cesium.app
-      CESIUM_APP="${WORK_DIR}/${NWJS_DIR}/Cesium.app"
-      mv "${APP_BUNDLE}" "${CESIUM_APP}"
-
-      echo "=== Creating .zip ==="
-      cd "${WORK_DIR}/${NWJS_DIR}"
-      ZIP_FILE="${PROJECT_NAME}-desktop-v${CURRENT_VERSION}-macos-arm64.zip"
-      zip -qr "${CI_PROJECT_DIR}/${BUILD_DIR}/${ZIP_FILE}" "Cesium.app"
-      echo "Created: ${ZIP_FILE}"
-
-      echo "=== Generating SHA256 checksums ==="
-      cd "${CI_PROJECT_DIR}/${BUILD_DIR}"
-      for f in *; do
-        case "$f" in *.sha256) continue ;; esac
-        [ -f "$f" ] && shasum -a 256 "$f" > "$f.sha256"
-      done
-
-      echo "=== Build complete ==="
-      ls -la "${CI_PROJECT_DIR}/${BUILD_DIR}/"
-  artifacts:
-    paths:
-      - dist/desktop/build/
-    expire_in: 2 hours
-
-build:macOS:universal:
-  stage: build
-  tags:
-    - macos
-  needs:
-    - job: build:macOS:x86_64
-      artifacts: true
-    - job: build:macOS:arm64
-      artifacts: true
-  variables:
-    GIT_STRATEGY: none
-  script:
-    - |
-      set -e
       TAG_VERSION=$(echo "${CI_COMMIT_TAG}" | sed 's/^v//')
       BUILD_DIR="dist/desktop/build"
-      WORK_DIR="$(pwd)/universal-work"
+      WORK_DIR="$(pwd)/desktop-work"
       rm -rf "${WORK_DIR}"
-      mkdir -p "${WORK_DIR}"
+      mkdir -p "${BUILD_DIR}" "${WORK_DIR}"
 
-      X86_ZIP="${BUILD_DIR}/cesium-desktop-v${TAG_VERSION}-macos-x86_64.zip"
-      ARM_ZIP="${BUILD_DIR}/cesium-desktop-v${TAG_VERSION}-macos-arm64.zip"
+      # --- Shared function: prepare NW.js app bundle ---
+      prepare_app() {
+        local NWJS_DIR="$1"
+        local APP_BUNDLE="${WORK_DIR}/${NWJS_DIR}/nwjs.app"
+        local APP_NW="${APP_BUNDLE}/Contents/Resources/app.nw"
+        mkdir -p "${APP_NW}"
 
-      echo "=== Extracting x86_64 app ==="
-      mkdir -p "${WORK_DIR}/x86_64"
-      cd "${WORK_DIR}/x86_64"
-      unzip -qo "${CI_PROJECT_DIR}/${X86_ZIP}"
+        # Copy web files (desktop code expects "cesium/" not "www/")
+        mkdir -p "${APP_NW}/cesium"
+        cp -r "${CI_PROJECT_DIR}/dist/web/www/"* "${APP_NW}/cesium/"
 
-      echo "=== Extracting arm64 app ==="
-      mkdir -p "${WORK_DIR}/arm64"
-      cd "${WORK_DIR}/arm64"
-      unzip -qo "${CI_PROJECT_DIR}/${ARM_ZIP}"
+        # Copy desktop files
+        local DESKTOP_SRC="${CI_PROJECT_DIR}/dist/desktop/src"
+        if [ -d "${DESKTOP_SRC}" ]; then
+          cp "${DESKTOP_SRC}/cesium-desktop.js" "${APP_NW}/"
+          cp "${DESKTOP_SRC}/splash.html" "${APP_NW}/"
+          cp "${DESKTOP_SRC}/package.json" "${APP_NW}/"
+          [ -f "${DESKTOP_SRC}/package-lock.json" ] && cp "${DESKTOP_SRC}/package-lock.json" "${APP_NW}/"
+        fi
 
+        # Inject cesium-desktop.js into index.html
+        sed -i '' 's|<script src="config.js"></script>|<script src="config.js"></script>\
+            <script src="../cesium-desktop.js"></script>|' "${APP_NW}/cesium/index.html"
+
+        # Install desktop node dependencies
+        cd "${APP_NW}"
+        npm install --production 2>/dev/null || true
+        cd "${WORK_DIR}"
+
+        # Copy app icon
+        local ICON_SRC="${CI_PROJECT_DIR}/dist/desktop/arch/osx/package/Contents/Resources/app.icns"
+        if [ -f "${ICON_SRC}" ]; then
+          cp "${ICON_SRC}" "${APP_BUNDLE}/Contents/Resources/app.icns"
+        fi
+
+        # Rename to Cesium.app
+        mv "${APP_BUNDLE}" "${WORK_DIR}/${NWJS_DIR}/Cesium.app"
+      }
+
+      # --- Download both NW.js variants ---
+      echo "=== Downloading NW.js v${NWJS_VERSION} osx-x64 ==="
+      cd "${WORK_DIR}"
+      curl -sLO "https://dl.nwjs.io/v${NWJS_VERSION}/nwjs-v${NWJS_VERSION}-osx-x64.zip"
+      unzip -q "nwjs-v${NWJS_VERSION}-osx-x64.zip"
+
+      echo "=== Downloading NW.js v${NWJS_VERSION} osx-arm64 ==="
+      curl -sLO "https://dl.nwjs.io/v${NWJS_VERSION}/nwjs-v${NWJS_VERSION}-osx-arm64.zip"
+      unzip -q "nwjs-v${NWJS_VERSION}-osx-arm64.zip"
+
+      # --- Prepare both app bundles ---
+      echo "=== Preparing x86_64 app ==="
+      prepare_app "nwjs-v${NWJS_VERSION}-osx-x64"
+
+      echo "=== Preparing arm64 app ==="
+      prepare_app "nwjs-v${NWJS_VERSION}-osx-arm64"
+
+      # --- Create per-arch zips ---
+      echo "=== Creating x86_64.zip ==="
+      cd "${WORK_DIR}/nwjs-v${NWJS_VERSION}-osx-x64"
+      ZIP_X86="${PROJECT_NAME}-desktop-v${TAG_VERSION}-macos-x86_64.zip"
+      zip -qr "${CI_PROJECT_DIR}/${BUILD_DIR}/${ZIP_X86}" "Cesium.app"
+      echo "Created: ${ZIP_X86}"
+
+      echo "=== Creating arm64.zip ==="
+      cd "${WORK_DIR}/nwjs-v${NWJS_VERSION}-osx-arm64"
+      ZIP_ARM="${PROJECT_NAME}-desktop-v${TAG_VERSION}-macos-arm64.zip"
+      zip -qr "${CI_PROJECT_DIR}/${BUILD_DIR}/${ZIP_ARM}" "Cesium.app"
+      echo "Created: ${ZIP_ARM}"
+
+      # --- Create universal binary via lipo ---
       echo "=== Creating universal binary app ==="
-      # Use arm64 as base (newer Macs)
-      cp -R "${WORK_DIR}/arm64/Cesium.app" "${WORK_DIR}/Cesium.app"
+      cp -R "${WORK_DIR}/nwjs-v${NWJS_VERSION}-osx-arm64/Cesium.app" "${WORK_DIR}/Cesium.app"
 
-      # Find all Mach-O binaries and create universal (fat) binaries with lipo
-      cd "${WORK_DIR}/arm64/Cesium.app"
+      cd "${WORK_DIR}/nwjs-v${NWJS_VERSION}-osx-arm64/Cesium.app"
       find . -type f | while read -r RELPATH; do
-        FILE_TYPE=$(file -b "${WORK_DIR}/arm64/Cesium.app/${RELPATH}" 2>/dev/null || true)
+        FILE_TYPE=$(file -b "${WORK_DIR}/nwjs-v${NWJS_VERSION}-osx-arm64/Cesium.app/${RELPATH}" 2>/dev/null || true)
         case "${FILE_TYPE}" in
           *Mach-O*)
-            X86_FILE="${WORK_DIR}/x86_64/Cesium.app/${RELPATH}"
+            X86_FILE="${WORK_DIR}/nwjs-v${NWJS_VERSION}-osx-x64/Cesium.app/${RELPATH}"
             if [ -f "${X86_FILE}" ]; then
               echo "  lipo: ${RELPATH}"
               lipo -create \
-                "${WORK_DIR}/arm64/Cesium.app/${RELPATH}" \
+                "${WORK_DIR}/nwjs-v${NWJS_VERSION}-osx-arm64/Cesium.app/${RELPATH}" \
                 "${X86_FILE}" \
                 -output "${WORK_DIR}/Cesium.app/${RELPATH}"
             fi
@@ -809,13 +695,14 @@ build:macOS:universal:
         file "${NWJS_BIN}"
       fi
 
+      # --- Create DMG ---
       echo "=== Creating .dmg ==="
       DMG_DIR="${WORK_DIR}/dmg-content"
       mkdir -p "${DMG_DIR}"
       cp -R "${WORK_DIR}/Cesium.app" "${DMG_DIR}/"
       ln -s /Applications "${DMG_DIR}/Applications"
 
-      DMG_FILE="cesium-desktop-v${TAG_VERSION}-macos-universal.dmg"
+      DMG_FILE="${PROJECT_NAME}-desktop-v${TAG_VERSION}-macos-universal.dmg"
       hdiutil create \
         -volname "Cesium" \
         -srcfolder "${DMG_DIR}" \
@@ -824,23 +711,23 @@ build:macOS:universal:
       echo "Created: ${DMG_FILE}"
       ls -lh "${CI_PROJECT_DIR}/${BUILD_DIR}/${DMG_FILE}"
 
-      echo "=== Compressing .dmg with xz for artifact upload ==="
+      echo "=== Compressing .dmg with xz ==="
       xz -9 "${CI_PROJECT_DIR}/${BUILD_DIR}/${DMG_FILE}"
       echo "Compressed: ${DMG_FILE}.xz"
 
-      echo "=== Generating SHA256 checksum ==="
+      echo "=== Generating SHA256 checksums ==="
       cd "${CI_PROJECT_DIR}/${BUILD_DIR}"
-      shasum -a 256 "${DMG_FILE}.xz" > "${DMG_FILE}.xz.sha256"
-      cat "${DMG_FILE}.xz.sha256"
+      for f in *; do
+        case "$f" in *.sha256) continue ;; esac
+        [ -f "$f" ] && shasum -a 256 "$f" > "$f.sha256"
+      done
 
       echo "=== Build complete ==="
       ls -la "${CI_PROJECT_DIR}/${BUILD_DIR}/"
   artifacts:
     paths:
-      - dist/desktop/build/*universal*
+      - dist/desktop/build/
     expire_in: 2 hours
-  rules:
-    - if: $CI_COMMIT_TAG
 
 # ---------------------------------------------------------------
 # Stage: publish
@@ -1071,13 +958,7 @@ publish:release:
     - job: build:x86_64:windows
       artifacts: true
       optional: true
-    - job: build:macOS:x86_64
-      artifacts: true
-      optional: true
-    - job: build:macOS:arm64
-      artifacts: true
-      optional: true
-    - job: build:macOS:universal
+    - job: build:macOS
       artifacts: true
       optional: true
     # --- Optional signed artifacts ---
@@ -1107,7 +988,6 @@ publish:release:
         local NAME="$1" FILEPATH="$2"
         HASH=$(sha256sum "${FILEPATH}" | awk '{print $1}')
         echo "${HASH}  ${NAME}" >> "${RELEASE_DIR}/SHA256SUMS"
-        echo "${HASH}  ${NAME}" > "${RELEASE_DIR}/${NAME}.sha256"
         echo "${HASH}  ${NAME}"
       }
 
@@ -1141,6 +1021,13 @@ publish:release:
       echo "=== SHA256SUMS ==="
       cat "${RELEASE_DIR}/SHA256SUMS" 2>/dev/null || echo "(no artifacts found)"
 
+      # Create SHA256SUMS.zip
+      if [ -f "${RELEASE_DIR}/SHA256SUMS" ]; then
+        cd "${RELEASE_DIR}"
+        zip SHA256SUMS.zip SHA256SUMS
+        cd "${CI_PROJECT_DIR}"
+      fi
+
       # --- Build direct download links ---
       echo ""
       echo "=== Resolving job artifact URLs ==="
@@ -1172,9 +1059,9 @@ publish:release:
         echo "  Link: ${NAME} → ${URL}"
       }
 
-      # SHA256SUMS (from this job)
-      add_asset_link "SHA256SUMS" \
-        "$(file_url "${CI_JOB_ID}" "release-artifacts/SHA256SUMS")" "other"
+      # SHA256SUMS.zip (from this job)
+      add_asset_link "SHA256SUMS.zip" \
+        "$(file_url "${CI_JOB_ID}" "release-artifacts/SHA256SUMS.zip")" "other"
 
       # --- Web ---
       JOB_ID=$(get_job_id "build:web")
@@ -1252,8 +1139,8 @@ publish:release:
           "$(file_url "${JOB_ID}" "dist/desktop/build/${PROJECT_NAME}-desktop-v${TAG_VERSION}-windows-x86_64.exe")" "package"
       fi
 
-      # --- macOS universal (.dmg) ---
-      JOB_ID=$(get_job_id "build:macOS:universal")
+      # --- macOS universal (.dmg.xz) ---
+      JOB_ID=$(get_job_id "build:macOS")
       if [ -n "${JOB_ID}" ] && [ "${JOB_ID}" != "null" ]; then
         add_asset_link "${PROJECT_NAME}-desktop-v${TAG_VERSION}-macos-universal.dmg.xz" \
           "$(file_url "${JOB_ID}" "dist/desktop/build/${PROJECT_NAME}-desktop-v${TAG_VERSION}-macos-universal.dmg.xz")" "package"

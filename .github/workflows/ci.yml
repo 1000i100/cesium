@@ -1,0 +1,948 @@
+# ---------------------------------------------------------------
+# Cesium CI/CD Pipeline — GitHub Actions
+# ---------------------------------------------------------------
+# Jobs: build → publish
+#
+# On develop/master: build-web → deploy-pages (master only)
+# On tags:
+#   build-web ──┬── build-extensions ────────────────────────────┐
+#               ├── build-android ───────────────────────────────┤
+#               ├── build-ios ───────────────────────────────────┤
+#               ├── build-linux ─────────────────────────────────┤
+#               ├── build-windows ───────────────────────────────┤
+#               └── build-macos ─────────────────────────────────┤
+#                                                                │
+#                   build-extensions ──┬── sign-firefox ──────────┤
+#                                     ├── sign-chrome ───────────┤
+#                                     └── sign-edge ─────────────┤
+#                                                                │
+#                            release ────────────────────────────┘
+#
+# Build jobs produce final artifacts renamed with TAG_VERSION.
+# Signed versions are attempted when secrets are available (continue-on-error).
+# ---------------------------------------------------------------
+
+name: CI/CD
+
+on:
+  push:
+    tags:
+      - 'v*'
+    branches:
+      - master
+      - develop
+  pull_request:
+    branches:
+      - master
+
+env:
+  PROJECT_NAME: cesium
+  NWJS_VERSION: '0.83.0'
+  NODE_VERSION: '18'
+
+jobs:
+  # ---------------------------------------------------------------
+  # Build: Web
+  # ---------------------------------------------------------------
+  build-web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'yarn'
+      - run: npm install -g gulp
+      - run: yarn install
+      - run: yarn run build:web
+      - name: Rename with tag version
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          TAG_VERSION="${GITHUB_REF_NAME#v}"
+          WEB_ZIP=$(find dist/web/build -name "${PROJECT_NAME}-v*-web.zip" 2>/dev/null | head -1 || true)
+          [ -n "${WEB_ZIP}" ] && [ "${WEB_ZIP}" != "dist/web/build/${PROJECT_NAME}-v${TAG_VERSION}-web.zip" ] && \
+            cp "${WEB_ZIP}" "dist/web/build/${PROJECT_NAME}-v${TAG_VERSION}-web.zip" || true
+      - uses: actions/upload-artifact@v4
+        with:
+          name: web-build
+          path: dist/web/
+          retention-days: 1
+
+  # ---------------------------------------------------------------
+  # Build: Browser Extensions (Firefox + Chrome + Edge)
+  # ---------------------------------------------------------------
+  build-extensions:
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build-web
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'yarn'
+      - uses: actions/download-artifact@v4
+        with:
+          name: web-build
+          path: dist/web/
+      - run: npm install -g gulp
+      - run: yarn install
+      - name: Build Firefox extension
+        run: |
+          npx gulp webExtBuild --release
+          TAG_VERSION="${GITHUB_REF_NAME#v}"
+          EXT_ZIP=$(find dist/web/build -name "${PROJECT_NAME}-v*-extension.zip" -not -name "*-chrome*" 2>/dev/null | head -1 || true)
+          [ -n "${EXT_ZIP}" ] && cp "${EXT_ZIP}" "dist/web/build/${PROJECT_NAME}-v${TAG_VERSION}-extension-firefox.xpi"
+      - name: Build Chrome extension
+        run: |
+          npx gulp chromeExtBuild --release
+          TAG_VERSION="${GITHUB_REF_NAME#v}"
+          CHROME_ZIP=$(find dist/web/build -name "${PROJECT_NAME}-v*-extension-chrome.zip" 2>/dev/null | head -1 || true)
+          [ -n "${CHROME_ZIP}" ] && [ "${CHROME_ZIP}" != "dist/web/build/${PROJECT_NAME}-v${TAG_VERSION}-extension-chrome.zip" ] && \
+            cp "${CHROME_ZIP}" "dist/web/build/${PROJECT_NAME}-v${TAG_VERSION}-extension-chrome.zip" || true
+          # Edge = same zip as Chrome (Manifest v3)
+          [ -n "${CHROME_ZIP}" ] && cp "${CHROME_ZIP}" "dist/web/build/${PROJECT_NAME}-v${TAG_VERSION}-extension-edge.zip"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: extensions-build
+          path: |
+            dist/web/build/
+            dist/web/ext/
+          retention-days: 1
+
+  # ---------------------------------------------------------------
+  # Build: Android
+  # ---------------------------------------------------------------
+  build-android:
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build-web
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'yarn'
+      - uses: actions/download-artifact@v4
+        with:
+          name: web-build
+          path: dist/web/
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+      - name: Install SDK components
+        run: sdkmanager "platforms;android-35" "build-tools;35.0.0" "build-tools;34.0.0"
+      - name: Install tools and dependencies
+        run: |
+          npm install -g gulp cordova
+          yarn install --ignore-engines
+          cp -r dist/web/www/* www/ || true
+          cordova platform add android --confirm || true
+      - name: Build Android APK
+        run: cordova build android --release -- --packageType=apk
+      - name: Sign APK
+        run: |
+          TAG_VERSION="${GITHUB_REF_NAME#v}"
+          mkdir -p dist/android/build
+          APK_FILE=$(find platforms/android/app/build/outputs/apk/release -name "*.apk" 2>/dev/null | head -1 || true)
+          if [ -z "${APK_FILE}" ]; then
+            echo "ERROR: No APK found after cordova build"
+            exit 1
+          fi
+          echo "Found APK: ${APK_FILE}"
+
+          BUILD_TOOLS_DIR=$(find "${ANDROID_SDK_ROOT}/build-tools" -maxdepth 1 -type d | sort -V | tail -1)
+          echo "Using build-tools: ${BUILD_TOOLS_DIR}"
+
+          if [ -n "${{ secrets.CESIUM_KEYSTORE }}" ]; then
+            echo "Signing with release keystore"
+            echo "${{ secrets.CESIUM_KEYSTORE }}" | base64 -d > /tmp/cesium.keystore
+            FINAL_APK="dist/android/build/${PROJECT_NAME}-v${TAG_VERSION}-android.apk"
+            "${BUILD_TOOLS_DIR}/zipalign" -v 4 "${APK_FILE}" "${FINAL_APK}"
+            KEY_ALIAS_VALUE="${{ secrets.KEY_ALIAS }}"
+            [ -z "${KEY_ALIAS_VALUE}" ] && KEY_ALIAS_VALUE="Cesium"
+            "${BUILD_TOOLS_DIR}/apksigner" sign \
+              --ks /tmp/cesium.keystore \
+              --ks-pass "pass:${{ secrets.KEYSTORE_PWD }}" \
+              --ks-key-alias "${KEY_ALIAS_VALUE}" \
+              "${FINAL_APK}"
+            rm -f /tmp/cesium.keystore
+          else
+            echo "No release keystore available — signing with generated debug key"
+            DEBUG_KS="/tmp/debug.keystore"
+            keytool -genkey -v \
+              -keystore "${DEBUG_KS}" \
+              -storepass android \
+              -alias androiddebugkey \
+              -keypass android \
+              -keyalg RSA -keysize 2048 -validity 10000 \
+              -dname "CN=Debug,O=Debug,C=US"
+            FINAL_APK="dist/android/build/${PROJECT_NAME}-v${TAG_VERSION}-android-debug.apk"
+            "${BUILD_TOOLS_DIR}/zipalign" -v 4 "${APK_FILE}" "${FINAL_APK}"
+            "${BUILD_TOOLS_DIR}/apksigner" sign \
+              --ks "${DEBUG_KS}" \
+              --ks-pass pass:android \
+              --ks-key-alias androiddebugkey \
+              "${FINAL_APK}"
+          fi
+
+          "${BUILD_TOOLS_DIR}/apksigner" verify --verbose "${FINAL_APK}"
+          echo "Successfully signed APK: ${FINAL_APK}"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: android-build
+          path: dist/android/build/
+          retention-days: 1
+
+  # ---------------------------------------------------------------
+  # Build: iOS
+  # ---------------------------------------------------------------
+  build-ios:
+    runs-on: macos-14
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build-web
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'yarn'
+      - uses: actions/download-artifact@v4
+        with:
+          name: web-build
+          path: dist/web/
+      - name: Install tools and dependencies
+        run: |
+          npm install -g gulp cordova
+          yarn install --ignore-engines
+          cp -r dist/web/www/* www/ || true
+          cordova platform add ios --confirm || true
+      - name: Build iOS
+        run: |
+          cordova build ios --release || cordova build ios
+          TAG_VERSION="${GITHUB_REF_NAME#v}"
+          mkdir -p dist/ios/build
+          IPA=$(find platforms/ios/build -name "*.ipa" 2>/dev/null | head -1)
+          if [ -n "${IPA}" ]; then
+            cp "${IPA}" "dist/ios/build/${PROJECT_NAME}-v${TAG_VERSION}-ios.ipa"
+          else
+            APP_DIR=$(find platforms/ios/build -name "*.app" -type d 2>/dev/null | head -1)
+            if [ -n "${APP_DIR}" ]; then
+              cd "$(dirname "${APP_DIR}")"
+              zip -r "${GITHUB_WORKSPACE}/dist/ios/build/${PROJECT_NAME}-v${TAG_VERSION}-ios.zip" "$(basename "${APP_DIR}")"
+              cd "${GITHUB_WORKSPACE}"
+            fi
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ios-build
+          path: dist/ios/build/
+          retention-days: 1
+
+  # ---------------------------------------------------------------
+  # Build: Linux x86_64 (tar.gz + deb + AppImage)
+  # ---------------------------------------------------------------
+  build-linux:
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build-web
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+        env:
+          GIT_CONFIG_COUNT: 1
+          GIT_CONFIG_KEY_0: url.https://git.duniter.org/.insteadOf
+          GIT_CONFIG_VALUE_0: "git@git.duniter.org:"
+      - uses: actions/download-artifact@v4
+        with:
+          name: web-build
+          path: dist/web/
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget xz-utils zip unzip fakeroot dpkg-dev imagemagick desktop-file-utils file
+      - name: Build Linux desktop
+        run: |
+          set -e
+          TAG_VERSION="${GITHUB_REF_NAME#v}"
+          ARCH="x64"
+          NWJS_DIR="nwjs-v${NWJS_VERSION}-linux-${ARCH}"
+          BUILD_DIR="dist/desktop/build"
+          WORK_DIR="${GITHUB_WORKSPACE}/desktop-work"
+          mkdir -p "${BUILD_DIR}" "${WORK_DIR}"
+
+          echo "=== Downloading NW.js v${NWJS_VERSION} linux-${ARCH} ==="
+          cd "${WORK_DIR}"
+          wget -q "https://dl.nwjs.io/v${NWJS_VERSION}/${NWJS_DIR}.tar.gz"
+          tar xzf "${NWJS_DIR}.tar.gz"
+
+          echo "=== Preparing desktop application ==="
+          APP_DIR="${WORK_DIR}/${NWJS_DIR}"
+
+          mkdir -p "${APP_DIR}/cesium"
+          cp -r "${GITHUB_WORKSPACE}/dist/web/www/"* "${APP_DIR}/cesium/"
+
+          DESKTOP_SRC="${GITHUB_WORKSPACE}/dist/desktop/src"
+          if [ -d "${DESKTOP_SRC}" ]; then
+            cp "${DESKTOP_SRC}/cesium-desktop.js" "${APP_DIR}/"
+            cp "${DESKTOP_SRC}/splash.html" "${APP_DIR}/"
+            cp "${DESKTOP_SRC}/package.json" "${APP_DIR}/"
+            [ -f "${DESKTOP_SRC}/package-lock.json" ] && cp "${DESKTOP_SRC}/package-lock.json" "${APP_DIR}/"
+          fi
+
+          sed -i 's|<script src="config.js"></script>|<script src="config.js"></script>\n    <script src="../cesium-desktop.js"></script>|' "${APP_DIR}/cesium/index.html"
+
+          cd "${APP_DIR}"
+          npm install --production 2>/dev/null || true
+          cd "${WORK_DIR}"
+
+          echo "=== Creating .tar.gz ==="
+          TARBALL="${PROJECT_NAME}-desktop-v${TAG_VERSION}-linux-x86_64.tar.gz"
+          tar czf "${GITHUB_WORKSPACE}/${BUILD_DIR}/${TARBALL}" -C "${WORK_DIR}" "${NWJS_DIR}"
+          echo "Created: ${TARBALL}"
+
+          echo "=== Creating .deb package ==="
+          DEB_ROOT="${WORK_DIR}/deb-root"
+          mkdir -p "${DEB_ROOT}/opt/cesium"
+
+          cp -r "${APP_DIR}/"* "${DEB_ROOT}/opt/cesium/"
+          chmod a+x "${DEB_ROOT}/opt/cesium/nw"
+
+          PKG_SRC="${GITHUB_WORKSPACE}/dist/desktop/arch/linux/package"
+          if [ -d "${PKG_SRC}/usr" ]; then
+            cp -r "${PKG_SRC}/usr" "${DEB_ROOT}/"
+          fi
+
+          mkdir -p "${DEB_ROOT}/DEBIAN"
+          INSTALLED_SIZE=$(du -sk "${DEB_ROOT}" | awk '{print $1}')
+          printf '%s\n' \
+            "Package: cesium-desktop" \
+            "Version: ${TAG_VERSION}" \
+            "Architecture: amd64" \
+            "Maintainer: Duniter Team <contact@duniter.org>" \
+            "Installed-Size: ${INSTALLED_SIZE}" \
+            "Depends: libnss3 (>= 3.26), libatk-bridge2.0-0, libatomic1, libgtk-3-0" \
+            "Conflicts: cesium-desktop" \
+            "Replaces: cesium-desktop" \
+            "Provides: cesium-desktop" \
+            "Section: contrib/misc" \
+            "Priority: optional" \
+            "Homepage: https://www.cesium.app" \
+            "Description: Cesium Wallet for G1 currency" \
+            " Cesium is a wallet (client-software) for G1 a libre currency." \
+            " Please visit https://www.duniter.org for more information." \
+            " License AGPL-3" \
+            > "${DEB_ROOT}/DEBIAN/control"
+
+          printf '#!/bin/bash\nln -sf /opt/cesium/nw /usr/bin/cesium\nchmod a+rX -R /opt/cesium\n' \
+            > "${DEB_ROOT}/DEBIAN/postinst"
+          chmod 755 "${DEB_ROOT}/DEBIAN/postinst"
+
+          printf '#!/bin/bash\n[ -L /usr/bin/cesium ] && rm -f /usr/bin/cesium\n' \
+            > "${DEB_ROOT}/DEBIAN/prerm"
+          chmod 755 "${DEB_ROOT}/DEBIAN/prerm"
+
+          [ -f "${DEB_ROOT}/usr/share/doc/cesium-desktop/changelog.Debian" ] && \
+            gzip -9 "${DEB_ROOT}/usr/share/doc/cesium-desktop/changelog.Debian" 2>/dev/null || true
+
+          ICON_SRC="${GITHUB_WORKSPACE}/resources/icon.png"
+          if [ -f "${ICON_SRC}" ]; then
+            mkdir -p "${DEB_ROOT}/usr/share/pixmaps"
+            cp "${ICON_SRC}" "${DEB_ROOT}/usr/share/pixmaps/cesium.png"
+          fi
+
+          DEB_FILE="${PROJECT_NAME}-desktop-v${TAG_VERSION}-linux-x86_64.deb"
+          fakeroot dpkg-deb --build "${DEB_ROOT}" "${GITHUB_WORKSPACE}/${BUILD_DIR}/${DEB_FILE}"
+          echo "Created: ${DEB_FILE}"
+
+          echo "=== Creating .AppImage ==="
+          APPIMAGE_DIR="${WORK_DIR}/AppDir"
+          APPIMAGE_FILE="${PROJECT_NAME}-desktop-v${TAG_VERSION}-linux-x86_64.AppImage"
+
+          mkdir -p "${APPIMAGE_DIR}/usr/lib/cesium"
+          cp -r "${APP_DIR}/"* "${APPIMAGE_DIR}/usr/lib/cesium/"
+          chmod a+x "${APPIMAGE_DIR}/usr/lib/cesium/nw"
+
+          mkdir -p "${APPIMAGE_DIR}/usr/bin"
+          ln -sf ../lib/cesium/nw "${APPIMAGE_DIR}/usr/bin/cesium"
+
+          mkdir -p "${APPIMAGE_DIR}/usr/share/icons/hicolor/256x256/apps"
+          cp "${APPIMAGE_DIR}/usr/lib/cesium/cesium/img/logo_256px.png" \
+            "${APPIMAGE_DIR}/usr/share/icons/hicolor/256x256/apps/cesium.png"
+
+          cp "${APPIMAGE_DIR}/usr/share/icons/hicolor/256x256/apps/cesium.png" \
+            "${APPIMAGE_DIR}/cesium.png"
+
+          cat > "${APPIMAGE_DIR}/cesium.desktop" <<'DESKTOP'
+          [Desktop Entry]
+          Type=Application
+          Name=Cesium
+          Comment=Wallet for G1 libre currency
+          Exec=cesium
+          Icon=cesium
+          Categories=Finance;Network;
+          Terminal=false
+          DESKTOP
+          sed -i 's/^          //' "${APPIMAGE_DIR}/cesium.desktop"
+
+          cat > "${APPIMAGE_DIR}/AppRun" <<'APPRUN'
+          #!/bin/bash
+          APPDIR="$(dirname "$(readlink -f "$0")")"
+          exec "$APPDIR/usr/lib/cesium/nw" "$@"
+          APPRUN
+          sed -i 's/^          //' "${APPIMAGE_DIR}/AppRun"
+          chmod a+x "${APPIMAGE_DIR}/AppRun"
+
+          wget -q "https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage" \
+            -O "${WORK_DIR}/appimagetool"
+          chmod +x "${WORK_DIR}/appimagetool"
+          APPIMAGE_EXTRACT_AND_RUN=1 "${WORK_DIR}/appimagetool" "${APPIMAGE_DIR}" \
+            "${GITHUB_WORKSPACE}/${BUILD_DIR}/${APPIMAGE_FILE}"
+          echo "Created: ${APPIMAGE_FILE}"
+
+          echo "=== Build complete ==="
+          ls -la "${GITHUB_WORKSPACE}/${BUILD_DIR}/"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: linux-build
+          path: dist/desktop/build/
+          retention-days: 1
+
+  # ---------------------------------------------------------------
+  # Build: Windows x86_64 (NSIS installer)
+  # ---------------------------------------------------------------
+  build-windows:
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build-web
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+        env:
+          GIT_CONFIG_COUNT: 1
+          GIT_CONFIG_KEY_0: url.https://git.duniter.org/.insteadOf
+          GIT_CONFIG_VALUE_0: "git@git.duniter.org:"
+      - uses: actions/download-artifact@v4
+        with:
+          name: web-build
+          path: dist/web/
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget xz-utils zip unzip p7zip-full nsis
+      - name: Build Windows installer
+        run: |
+          set -e
+          TAG_VERSION="${GITHUB_REF_NAME#v}"
+          NWJS_DIR="nwjs-v${NWJS_VERSION}-win-x64"
+          BUILD_DIR="dist/desktop/build"
+          WORK_DIR="${GITHUB_WORKSPACE}/desktop-work"
+          mkdir -p "${BUILD_DIR}" "${WORK_DIR}"
+
+          echo "=== Downloading NW.js v${NWJS_VERSION} win-x64 ==="
+          cd "${WORK_DIR}"
+          wget -q "https://dl.nwjs.io/v${NWJS_VERSION}/${NWJS_DIR}.zip"
+          7z x -y "${NWJS_DIR}.zip" >/dev/null
+
+          echo "=== Preparing desktop application ==="
+          APP_DIR="${WORK_DIR}/${NWJS_DIR}"
+
+          mkdir -p "${APP_DIR}/cesium"
+          cp -r "${GITHUB_WORKSPACE}/dist/web/www/"* "${APP_DIR}/cesium/"
+
+          DESKTOP_SRC="${GITHUB_WORKSPACE}/dist/desktop/src"
+          if [ -d "${DESKTOP_SRC}" ]; then
+            cp "${DESKTOP_SRC}/cesium-desktop.js" "${APP_DIR}/"
+            cp "${DESKTOP_SRC}/splash.html" "${APP_DIR}/"
+            cp "${DESKTOP_SRC}/package.json" "${APP_DIR}/"
+            [ -f "${DESKTOP_SRC}/package-lock.json" ] && cp "${DESKTOP_SRC}/package-lock.json" "${APP_DIR}/"
+          fi
+
+          sed -i 's|<script src="config.js"></script>|<script src="config.js"></script>\n    <script src="../cesium-desktop.js"></script>|' "${APP_DIR}/cesium/index.html"
+
+          cd "${APP_DIR}"
+          npm install --production 2>/dev/null || true
+          cd "${WORK_DIR}"
+
+          echo "=== Building Windows installer with NSIS ==="
+          cp "${GITHUB_WORKSPACE}/LICENSE" "${APP_DIR}/LICENSE.txt"
+
+          NSI_FILE="${GITHUB_WORKSPACE}/resources/windows/cesium.nsi"
+          EXE_NAME="${PROJECT_NAME}-desktop-v${TAG_VERSION}-windows-x86_64.exe"
+
+          makensis -DAPP_VERSION="v${TAG_VERSION}" \
+                   -DAPP_SRC_DIR="${APP_DIR}" \
+                   "${NSI_FILE}"
+
+          mv "${GITHUB_WORKSPACE}/resources/windows/Cesium-setup.exe" \
+             "${GITHUB_WORKSPACE}/${BUILD_DIR}/${EXE_NAME}"
+          echo "Created installer: ${EXE_NAME}"
+
+          echo "=== Build complete ==="
+          ls -la "${GITHUB_WORKSPACE}/${BUILD_DIR}/"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows-build
+          path: dist/desktop/build/
+          retention-days: 1
+
+  # ---------------------------------------------------------------
+  # Build: macOS (x86_64 + arm64 + universal in one job)
+  # ---------------------------------------------------------------
+  build-macos:
+    runs-on: macos-14
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build-web
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+        env:
+          GIT_CONFIG_COUNT: 1
+          GIT_CONFIG_KEY_0: url.https://git.duniter.org/.insteadOf
+          GIT_CONFIG_VALUE_0: "git@git.duniter.org:"
+      - uses: actions/download-artifact@v4
+        with:
+          name: web-build
+          path: dist/web/
+      - name: Build macOS universal app
+        run: |
+          set -e
+          TAG_VERSION="${GITHUB_REF_NAME#v}"
+          BUILD_DIR="dist/desktop/build"
+          WORK_DIR="${GITHUB_WORKSPACE}/desktop-work"
+          mkdir -p "${BUILD_DIR}" "${WORK_DIR}"
+
+          # --- Shared function: prepare NW.js app bundle ---
+          prepare_app() {
+            local NWJS_DIR="$1" ARCH_LABEL="$2"
+            local APP_BUNDLE="${WORK_DIR}/${NWJS_DIR}/nwjs.app"
+            local APP_NW="${APP_BUNDLE}/Contents/Resources/app.nw"
+            mkdir -p "${APP_NW}"
+
+            # Copy web files
+            mkdir -p "${APP_NW}/cesium"
+            cp -r "${GITHUB_WORKSPACE}/dist/web/www/"* "${APP_NW}/cesium/"
+
+            # Copy desktop files
+            local DESKTOP_SRC="${GITHUB_WORKSPACE}/dist/desktop/src"
+            if [ -d "${DESKTOP_SRC}" ]; then
+              cp "${DESKTOP_SRC}/cesium-desktop.js" "${APP_NW}/"
+              cp "${DESKTOP_SRC}/splash.html" "${APP_NW}/"
+              cp "${DESKTOP_SRC}/package.json" "${APP_NW}/"
+              [ -f "${DESKTOP_SRC}/package-lock.json" ] && cp "${DESKTOP_SRC}/package-lock.json" "${APP_NW}/"
+            fi
+
+            # Inject cesium-desktop.js into index.html
+            sed -i '' 's|<script src="config.js"></script>|<script src="config.js"></script>\
+                <script src="../cesium-desktop.js"></script>|' "${APP_NW}/cesium/index.html"
+
+            # Install desktop node dependencies
+            cd "${APP_NW}"
+            npm install --production 2>/dev/null || true
+            cd "${WORK_DIR}"
+
+            # Copy app icon
+            local ICON_SRC="${GITHUB_WORKSPACE}/dist/desktop/arch/osx/package/Contents/Resources/app.icns"
+            if [ -f "${ICON_SRC}" ]; then
+              cp "${ICON_SRC}" "${APP_BUNDLE}/Contents/Resources/app.icns"
+            fi
+
+            # Rename to Cesium.app
+            mv "${APP_BUNDLE}" "${WORK_DIR}/${NWJS_DIR}/Cesium.app"
+          }
+
+          # --- Download both NW.js variants ---
+          echo "=== Downloading NW.js v${NWJS_VERSION} osx-x64 ==="
+          cd "${WORK_DIR}"
+          curl -sLO "https://dl.nwjs.io/v${NWJS_VERSION}/nwjs-v${NWJS_VERSION}-osx-x64.zip"
+          unzip -q "nwjs-v${NWJS_VERSION}-osx-x64.zip"
+
+          echo "=== Downloading NW.js v${NWJS_VERSION} osx-arm64 ==="
+          curl -sLO "https://dl.nwjs.io/v${NWJS_VERSION}/nwjs-v${NWJS_VERSION}-osx-arm64.zip"
+          unzip -q "nwjs-v${NWJS_VERSION}-osx-arm64.zip"
+
+          # --- Prepare both app bundles ---
+          echo "=== Preparing x86_64 app ==="
+          prepare_app "nwjs-v${NWJS_VERSION}-osx-x64" "x86_64"
+
+          echo "=== Preparing arm64 app ==="
+          prepare_app "nwjs-v${NWJS_VERSION}-osx-arm64" "arm64"
+
+          # --- Create per-arch zips ---
+          echo "=== Creating x86_64.zip ==="
+          cd "${WORK_DIR}/nwjs-v${NWJS_VERSION}-osx-x64"
+          ZIP_X86="${PROJECT_NAME}-desktop-v${TAG_VERSION}-macos-x86_64.zip"
+          zip -qr "${GITHUB_WORKSPACE}/${BUILD_DIR}/${ZIP_X86}" "Cesium.app"
+          echo "Created: ${ZIP_X86}"
+
+          echo "=== Creating arm64.zip ==="
+          cd "${WORK_DIR}/nwjs-v${NWJS_VERSION}-osx-arm64"
+          ZIP_ARM="${PROJECT_NAME}-desktop-v${TAG_VERSION}-macos-arm64.zip"
+          zip -qr "${GITHUB_WORKSPACE}/${BUILD_DIR}/${ZIP_ARM}" "Cesium.app"
+          echo "Created: ${ZIP_ARM}"
+
+          # --- Create universal binary via lipo ---
+          echo "=== Creating universal binary app ==="
+          cp -R "${WORK_DIR}/nwjs-v${NWJS_VERSION}-osx-arm64/Cesium.app" "${WORK_DIR}/Cesium.app"
+
+          cd "${WORK_DIR}/nwjs-v${NWJS_VERSION}-osx-arm64/Cesium.app"
+          find . -type f | while read -r RELPATH; do
+            FILE_TYPE=$(file -b "${WORK_DIR}/nwjs-v${NWJS_VERSION}-osx-arm64/Cesium.app/${RELPATH}" 2>/dev/null || true)
+            case "${FILE_TYPE}" in
+              *Mach-O*)
+                X86_FILE="${WORK_DIR}/nwjs-v${NWJS_VERSION}-osx-x64/Cesium.app/${RELPATH}"
+                if [ -f "${X86_FILE}" ]; then
+                  echo "  lipo: ${RELPATH}"
+                  lipo -create \
+                    "${WORK_DIR}/nwjs-v${NWJS_VERSION}-osx-arm64/Cesium.app/${RELPATH}" \
+                    "${X86_FILE}" \
+                    -output "${WORK_DIR}/Cesium.app/${RELPATH}"
+                fi
+                ;;
+            esac
+          done
+
+          echo "=== Verifying universal binary ==="
+          NWJS_BIN=$(find "${WORK_DIR}/Cesium.app" -name "nwjs" -type f | head -1)
+          if [ -n "${NWJS_BIN}" ]; then
+            file "${NWJS_BIN}"
+          fi
+
+          # --- Create DMG ---
+          echo "=== Creating .dmg ==="
+          DMG_DIR="${WORK_DIR}/dmg-content"
+          mkdir -p "${DMG_DIR}"
+          cp -R "${WORK_DIR}/Cesium.app" "${DMG_DIR}/"
+          ln -s /Applications "${DMG_DIR}/Applications"
+
+          DMG_FILE="${PROJECT_NAME}-desktop-v${TAG_VERSION}-macos-universal.dmg"
+          hdiutil create \
+            -volname "Cesium" \
+            -srcfolder "${DMG_DIR}" \
+            -ov -format ULFO \
+            "${GITHUB_WORKSPACE}/${BUILD_DIR}/${DMG_FILE}"
+          echo "Created: ${DMG_FILE}"
+          ls -lh "${GITHUB_WORKSPACE}/${BUILD_DIR}/${DMG_FILE}"
+
+          echo "=== Compressing .dmg with xz ==="
+          xz -9 "${GITHUB_WORKSPACE}/${BUILD_DIR}/${DMG_FILE}"
+          echo "Compressed: ${DMG_FILE}.xz"
+
+          echo "=== Build complete ==="
+          ls -la "${GITHUB_WORKSPACE}/${BUILD_DIR}/"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: macos-build
+          path: dist/desktop/build/
+          retention-days: 1
+
+  # ---------------------------------------------------------------
+  # Publish: Sign Firefox Extension
+  # ---------------------------------------------------------------
+  sign-firefox:
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build-extensions
+    continue-on-error: true
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: extensions-build
+          path: dist/web/
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm install -g web-ext
+      - name: Sign Firefox extension
+        run: |
+          if [ -z "${{ secrets.AMO_JWT_ISSUER }}" ] || [ -z "${{ secrets.AMO_JWT_SECRET }}" ]; then
+            echo "SKIP: AMO secrets not configured"
+            exit 0
+          fi
+          TAG_VERSION="${GITHUB_REF_NAME#v}"
+          echo "Signing Firefox extension v${TAG_VERSION} via AMO..."
+          web-ext sign \
+            --upload-source-code \
+            --api-key="${{ secrets.AMO_JWT_ISSUER }}" \
+            --api-secret="${{ secrets.AMO_JWT_SECRET }}" \
+            --source-dir=dist/web/ext \
+            --artifacts-dir=dist/web/build \
+            --channel=unlisted || true
+
+          XPI_FILE=$(find dist/web/build -name "*.xpi" | head -1)
+          if [ -n "${XPI_FILE}" ]; then
+            mv "${XPI_FILE}" "dist/web/build/${PROJECT_NAME}-v${TAG_VERSION}-extension-firefox.xpi"
+            echo "Signed XPI: ${PROJECT_NAME}-v${TAG_VERSION}-extension-firefox.xpi"
+          else
+            echo "WARN: No XPI produced by web-ext sign"
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: firefox-signed
+          path: dist/web/build/
+          retention-days: 1
+
+  # ---------------------------------------------------------------
+  # Publish: Sign Chrome Extension
+  # ---------------------------------------------------------------
+  sign-chrome:
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build-extensions
+    continue-on-error: true
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: extensions-build
+          path: dist/web/
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm install -g chrome-webstore-upload-cli
+      - name: Upload to Chrome Web Store
+        run: |
+          if [ -z "${{ secrets.CWS_CLIENT_ID }}" ] || [ -z "${{ secrets.CWS_EXTENSION_ID }}" ]; then
+            echo "SKIP: Chrome Web Store secrets not configured"
+            exit 0
+          fi
+          TAG_VERSION="${GITHUB_REF_NAME#v}"
+          CHROME_ZIP=$(find dist/web/build -name "${PROJECT_NAME}-v*-extension-chrome.zip" 2>/dev/null | head -1)
+          if [ -z "${CHROME_ZIP}" ]; then
+            echo "ERROR: Chrome extension zip not found"
+            exit 1
+          fi
+
+          echo "Uploading Chrome extension v${TAG_VERSION}..."
+          chrome-webstore-upload upload \
+            --source "${CHROME_ZIP}" \
+            --extension-id "${{ secrets.CWS_EXTENSION_ID }}" \
+            --client-id "${{ secrets.CWS_CLIENT_ID }}" \
+            --client-secret "${{ secrets.CWS_CLIENT_SECRET }}" \
+            --refresh-token "${{ secrets.CWS_REFRESH_TOKEN }}"
+
+          echo "Publishing..."
+          chrome-webstore-upload publish \
+            --extension-id "${{ secrets.CWS_EXTENSION_ID }}" \
+            --client-id "${{ secrets.CWS_CLIENT_ID }}" \
+            --client-secret "${{ secrets.CWS_CLIENT_SECRET }}" \
+            --refresh-token "${{ secrets.CWS_REFRESH_TOKEN }}" || echo "WARN: Publish may require manual review"
+
+  # ---------------------------------------------------------------
+  # Publish: Sign Edge Extension
+  # ---------------------------------------------------------------
+  sign-edge:
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build-extensions
+    continue-on-error: true
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: extensions-build
+          path: dist/web/
+      - name: Upload to Edge Add-ons
+        run: |
+          if [ -z "${{ secrets.EDGE_CLIENT_ID }}" ] || [ -z "${{ secrets.EDGE_API_KEY }}" ] || [ -z "${{ secrets.EDGE_PRODUCT_ID }}" ]; then
+            echo "SKIP: Edge Add-ons secrets not configured"
+            exit 0
+          fi
+          TAG_VERSION="${GITHUB_REF_NAME#v}"
+          CHROME_ZIP=$(find dist/web/build -name "${PROJECT_NAME}-v*-extension-chrome.zip" 2>/dev/null | head -1)
+          if [ -z "${CHROME_ZIP}" ]; then
+            echo "ERROR: Chrome extension zip not found (used as Edge source)"
+            exit 1
+          fi
+
+          echo "=== Obtaining Edge API access token ==="
+          TOKEN_RESPONSE=$(curl -s -X POST \
+            "https://login.microsoftonline.com/consumers/oauth2/v2.0/token" \
+            -H "Content-Type: application/x-www-form-urlencoded" \
+            -d "client_id=${{ secrets.EDGE_CLIENT_ID }}&scope=https://api.addons.microsoftedge.microsoft.com/.default&client_secret=${{ secrets.EDGE_API_KEY }}&grant_type=client_credentials")
+
+          ACCESS_TOKEN=$(echo "${TOKEN_RESPONSE}" | grep -o '"access_token":"[^"]*"' | cut -d'"' -f4)
+          if [ -z "${ACCESS_TOKEN}" ]; then
+            echo "ERROR: Failed to obtain Edge API access token"
+            echo "NOTE: Edge API key expires every 72 days."
+            exit 1
+          fi
+
+          EDGE_API="https://api.addons.microsoftedge.microsoft.com/v1/products/${{ secrets.EDGE_PRODUCT_ID }}/submissions"
+
+          echo "=== Uploading package to Edge Add-ons ==="
+          UPLOAD_RESPONSE=$(curl -s -w "\n%{http_code}" -X POST \
+            "${EDGE_API}/draft/package" \
+            -H "Authorization: Bearer ${ACCESS_TOKEN}" \
+            -H "Content-Type: application/zip" \
+            --data-binary "@${CHROME_ZIP}")
+
+          HTTP_CODE=$(echo "${UPLOAD_RESPONSE}" | tail -1)
+          BODY=$(echo "${UPLOAD_RESPONSE}" | head -n -1)
+
+          if [ "${HTTP_CODE}" -lt 200 ] || [ "${HTTP_CODE}" -ge 300 ]; then
+            echo "ERROR: Upload failed (HTTP ${HTTP_CODE})"
+            echo "${BODY}"
+            exit 1
+          fi
+
+          OPERATION_ID=$(echo "${BODY}" | grep -o '"operationId":"[^"]*"' | cut -d'"' -f4)
+          echo "Upload started, operation: ${OPERATION_ID}"
+
+          for i in $(seq 1 30); do
+            sleep 10
+            STATUS_RESPONSE=$(curl -s \
+              "${EDGE_API}/draft/package/operations/${OPERATION_ID}" \
+              -H "Authorization: Bearer ${ACCESS_TOKEN}")
+            STATUS=$(echo "${STATUS_RESPONSE}" | grep -o '"status":"[^"]*"' | cut -d'"' -f4)
+            echo "Upload status: ${STATUS} (attempt ${i}/30)"
+            if [ "${STATUS}" = "Succeeded" ]; then
+              break
+            elif [ "${STATUS}" = "Failed" ]; then
+              echo "ERROR: Upload processing failed"
+              echo "${STATUS_RESPONSE}"
+              exit 1
+            fi
+          done
+
+          echo "=== Publishing Edge extension ==="
+          PUBLISH_RESPONSE=$(curl -s -w "\n%{http_code}" -X POST \
+            "${EDGE_API}" \
+            -H "Authorization: Bearer ${ACCESS_TOKEN}" \
+            -H "Content-Type: application/json" \
+            -d '{}')
+
+          HTTP_CODE=$(echo "${PUBLISH_RESPONSE}" | tail -1)
+          if [ "${HTTP_CODE}" -ge 200 ] && [ "${HTTP_CODE}" -lt 300 ]; then
+            echo "Edge extension publish requested successfully"
+          else
+            echo "WARN: Publish request returned HTTP ${HTTP_CODE}"
+          fi
+
+  # ---------------------------------------------------------------
+  # Release: Create GitHub Release
+  # ---------------------------------------------------------------
+  release:
+    runs-on: ubuntu-latest
+    if: always() && startsWith(github.ref, 'refs/tags/v')
+    needs:
+      - build-web
+      - build-extensions
+      - build-android
+      - build-ios
+      - build-linux
+      - build-windows
+      - build-macos
+      - sign-firefox
+      - sign-chrome
+      - sign-edge
+    permissions:
+      contents: write
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts/
+      - name: Prepare release files
+        run: |
+          set -e
+          TAG_VERSION="${GITHUB_REF_NAME#v}"
+          RELEASE_DIR="release-files"
+          mkdir -p "${RELEASE_DIR}"
+
+          echo "=== Collecting release artifacts for v${TAG_VERSION} ==="
+
+          # Web
+          WEB_ZIP="artifacts/web-build/web/build/${PROJECT_NAME}-v${TAG_VERSION}-web.zip"
+          [ -f "${WEB_ZIP}" ] && cp "${WEB_ZIP}" "${RELEASE_DIR}/"
+
+          # Extensions
+          for F in artifacts/extensions-build/web/build/${PROJECT_NAME}-v${TAG_VERSION}-extension*.zip \
+                   artifacts/extensions-build/web/build/${PROJECT_NAME}-v${TAG_VERSION}-extension*.xpi; do
+            [ -f "${F}" ] && cp "${F}" "${RELEASE_DIR}/"
+          done
+
+          # Prefer signed Firefox XPI if available
+          SIGNED_XPI=$(find artifacts/firefox-signed/ -name "${PROJECT_NAME}-v${TAG_VERSION}-extension-firefox.xpi" 2>/dev/null | head -1)
+          [ -n "${SIGNED_XPI}" ] && [ -f "${SIGNED_XPI}" ] && cp "${SIGNED_XPI}" "${RELEASE_DIR}/"
+
+          # Android
+          for F in artifacts/android-build/${PROJECT_NAME}-v${TAG_VERSION}-android*.apk; do
+            [ -f "${F}" ] && cp "${F}" "${RELEASE_DIR}/"
+          done
+
+          # iOS
+          for F in artifacts/ios-build/${PROJECT_NAME}-v${TAG_VERSION}-ios*; do
+            [ -f "${F}" ] && cp "${F}" "${RELEASE_DIR}/"
+          done
+
+          # Linux desktop
+          for F in artifacts/linux-build/${PROJECT_NAME}-desktop-v${TAG_VERSION}-linux-x86_64.*; do
+            case "${F}" in *.sha256) continue ;; esac
+            [ -f "${F}" ] && cp "${F}" "${RELEASE_DIR}/"
+          done
+
+          # Windows desktop
+          for F in artifacts/windows-build/${PROJECT_NAME}-desktop-v${TAG_VERSION}-windows-x86_64.*; do
+            case "${F}" in *.sha256) continue ;; esac
+            [ -f "${F}" ] && cp "${F}" "${RELEASE_DIR}/"
+          done
+
+          # macOS desktop — only .dmg.xz
+          DMG_XZ="artifacts/macos-build/${PROJECT_NAME}-desktop-v${TAG_VERSION}-macos-universal.dmg.xz"
+          [ -f "${DMG_XZ}" ] && cp "${DMG_XZ}" "${RELEASE_DIR}/"
+
+          # Generate SHA256SUMS
+          echo "=== Generating SHA256SUMS ==="
+          cd "${RELEASE_DIR}"
+          if ls * >/dev/null 2>&1; then
+            for f in *; do
+              [ -f "$f" ] && sha256sum "$f" >> SHA256SUMS
+            done
+            cat SHA256SUMS
+            zip SHA256SUMS.zip SHA256SUMS
+          fi
+          cd ..
+
+          echo "=== Release files ==="
+          ls -la "${RELEASE_DIR}/"
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Release ${{ github.ref_name }}
+          body: |
+            Release ${{ github.ref_name }} — Built automatically by CI/CD pipeline.
+            Download artifacts from below. Verify integrity with SHA256SUMS.zip.
+          files: release-files/*
+          fail_on_unmatched_files: false
+
+  # ---------------------------------------------------------------
+  # Deploy: GitHub Pages (master only)
+  # ---------------------------------------------------------------
+  deploy-pages:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    needs: build-web
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: web-build
+          path: dist/web/
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist/web/www
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
