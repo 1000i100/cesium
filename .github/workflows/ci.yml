@@ -641,7 +641,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: macos-build
-          path: dist/desktop/build/
+          path: dist/desktop/build/*universal*
           retention-days: 1
 
   # ---------------------------------------------------------------
@@ -898,7 +898,7 @@ jobs:
           DMG_XZ="artifacts/macos-build/${PROJECT_NAME}-desktop-v${TAG_VERSION}-macos-universal.dmg.xz"
           [ -f "${DMG_XZ}" ] && cp "${DMG_XZ}" "${RELEASE_DIR}/"
 
-          # Generate SHA256SUMS
+          # Generate SHA256SUMS (only for release files, not for SHA256SUMS itself)
           echo "=== Generating SHA256SUMS ==="
           cd "${RELEASE_DIR}"
           if ls * >/dev/null 2>&1; then
@@ -906,7 +906,6 @@ jobs:
               [ -f "$f" ] && sha256sum "$f" >> SHA256SUMS
             done
             cat SHA256SUMS
-            zip SHA256SUMS.zip SHA256SUMS
           fi
           cd ..
 
@@ -918,7 +917,7 @@ jobs:
           name: Release ${{ github.ref_name }}
           body: |
             Release ${{ github.ref_name }} — Built automatically by CI/CD pipeline.
-            Download artifacts from below. Verify integrity with SHA256SUMS.zip.
+            Download artifacts from below. Verify integrity with SHA256SUMS.
           files: release-files/*
           fail_on_unmatched_files: false
 

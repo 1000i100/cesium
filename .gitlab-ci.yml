@@ -715,18 +715,11 @@ build:macOS:
       xz -9 "${CI_PROJECT_DIR}/${BUILD_DIR}/${DMG_FILE}"
       echo "Compressed: ${DMG_FILE}.xz"
 
-      echo "=== Generating SHA256 checksums ==="
-      cd "${CI_PROJECT_DIR}/${BUILD_DIR}"
-      for f in *; do
-        case "$f" in *.sha256) continue ;; esac
-        [ -f "$f" ] && shasum -a 256 "$f" > "$f.sha256"
-      done
-
       echo "=== Build complete ==="
       ls -la "${CI_PROJECT_DIR}/${BUILD_DIR}/"
   artifacts:
     paths:
-      - dist/desktop/build/
+      - dist/desktop/build/*universal*
     expire_in: 2 hours
 
 # ---------------------------------------------------------------
@@ -1011,22 +1004,23 @@ publish:release:
         [ -f "${F}" ] && add_to_checksums "$(basename ${F})" "${F}"
       done
 
-      # Desktop
-      for F in dist/desktop/build/${PROJECT_NAME}-desktop-v${TAG_VERSION}*; do
-        case "${F}" in *.sha256) continue ;; esac
+      # Desktop — Linux
+      for SUFFIX in linux-x86_64.deb linux-x86_64.tar.gz linux-x86_64.AppImage; do
+        F="dist/desktop/build/${PROJECT_NAME}-desktop-v${TAG_VERSION}-${SUFFIX}"
         [ -f "${F}" ] && add_to_checksums "$(basename ${F})" "${F}"
       done
+
+      # Desktop — Windows
+      F="dist/desktop/build/${PROJECT_NAME}-desktop-v${TAG_VERSION}-windows-x86_64.exe"
+      [ -f "${F}" ] && add_to_checksums "$(basename ${F})" "${F}"
+
+      # Desktop — macOS (only universal .dmg.xz)
+      F="dist/desktop/build/${PROJECT_NAME}-desktop-v${TAG_VERSION}-macos-universal.dmg.xz"
+      [ -f "${F}" ] && add_to_checksums "$(basename ${F})" "${F}"
 
       echo ""
       echo "=== SHA256SUMS ==="
       cat "${RELEASE_DIR}/SHA256SUMS" 2>/dev/null || echo "(no artifacts found)"
-
-      # Create SHA256SUMS.zip
-      if [ -f "${RELEASE_DIR}/SHA256SUMS" ]; then
-        cd "${RELEASE_DIR}"
-        zip SHA256SUMS.zip SHA256SUMS
-        cd "${CI_PROJECT_DIR}"
-      fi
 
       # --- Build direct download links ---
       echo ""
@@ -1059,9 +1053,9 @@ publish:release:
         echo "  Link: ${NAME} → ${URL}"
       }
 
-      # SHA256SUMS.zip (from this job)
-      add_asset_link "SHA256SUMS.zip" \
-        "$(file_url "${CI_JOB_ID}" "release-artifacts/SHA256SUMS.zip")" "other"
+      # SHA256SUMS (from this job)
+      add_asset_link "SHA256SUMS" \
+        "$(file_url "${CI_JOB_ID}" "release-artifacts/SHA256SUMS")" "other"
 
       # --- Web ---
       JOB_ID=$(get_job_id "build:web")
