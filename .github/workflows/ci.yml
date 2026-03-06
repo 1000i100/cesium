@@ -217,7 +217,7 @@ jobs:
           path: dist/web/
       - name: Install tools and dependencies
         run: |
-          pip3 install setuptools
+          pip3 install --break-system-packages setuptools
           npm install -g gulp cordova
           yarn install --ignore-engines
           cp -r dist/web/www/* www/ || true
